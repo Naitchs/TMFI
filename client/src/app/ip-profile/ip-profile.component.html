@@ -1,0 +1,168 @@
+
+
+      
+      <form (ngSubmit)="onSubmit()" #profileForm="ngForm" class="row g-3">
+  
+        <div class="mb-3">
+          <div class="col-2">
+            <input type="file" multipleid="profilePicture" name="profilePicture" 
+            (change)="onFileSelected($event)" class="form-control">
+          </div>
+        </div>
+        
+        <h5 [ngStyle]="{ 'text-align': 'center' }">Information</h5>
+      
+      
+      
+        <div  class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">First Name</span>
+          <div class="col-2">
+          <input type="text" id=" firstName" name="firstName" 
+          [(ngModel)]="ipUser.firstName" class="form-control" required>
+         </div>
+        </div>
+      
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">Last Name</span>
+          <div class="col-2">
+            <input type="text" id="lastName" name="lastName" 
+            [(ngModel)]="ipUser.lastName" class="form-control" required>
+          </div>
+        </div>
+      
+      
+         <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">Middle Name</span>
+          <div class="col-2">
+          <input type="text" id="middleName" name="middleName" 
+          [(ngModel)]="ipUser.middleName" class="form-control" required>
+          </div>
+        </div>
+        
+        <div class="input-group mb-3">
+          <div class="col-2">
+          <select id="gender" name="gender" 
+          [(ngModel)]="ipUser.gender" 
+          class="form-select" aria-label="Default select example" required>
+            <option value="" disabled selected>Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+         </div>
+        </div>
+      
+        <div class="input-group mb-3">
+          <div class="col-2">
+          <select name="status" id="status" 
+          [(ngModel)]="ipUser.status" 
+          class="form-select" aria-label="Default select example" required>
+            <option value=""  disabled selected>Select Status</option>
+            <option value="single">Single</option>
+            <option value="married">Married</option>
+            <option value="widow">Widow</option>
+          </select>
+         </div>
+        </div>
+      
+        <div class="input-group mb-3">
+         <div class="col-2">
+          <select name="tribe" id="tribe" 
+          [(ngModel)]="ipUser.tribe" 
+          class="form-select" aria-label="Default select example"required>
+            <option value="" disabled selected>Select Tribe</option>
+            <option value="Ata">ata</option>
+            <option value="baloy">baloy</option>
+          </select>
+         </div>
+        </div>
+      
+        <h5 [ngStyle]="{ 'text-align': 'center' }">Contact</h5>
+      
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">Phone Number</span>
+          <div class="col-2">
+          <input type="text" id="phoneNum" name="phoneNum" 
+          [(ngModel)]="ipUser.phoneNum" class="form-control" required>
+         </div>
+        </div>
+      
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">E-mail</span>
+          <div class="col-2">
+          <input type="text" id="email" name="email" [(ngModel)]="ipUser.email" class="form-control" required>
+         </div>
+        </div>
+      
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">facebook</span>
+          <div class="col-2">
+          <input type="text" id="facebook" name="facebook" 
+          [(ngModel)]="ipUser.facebook" class="form-control">
+         </div>
+        </div>
+      
+        <h5 [ngStyle]="{ 'text-align': 'center' }">Address</h5>
+      
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">Street</span>
+          <div class="col-2">
+          <input type="text" id="street" name="street" 
+          [(ngModel)]="ipUser.street" class="form-control" required>
+         </div>
+        </div>
+      
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">Barangay</span>
+          <div class="col-2">
+          <input type="text" id="barangay" name="barangay" 
+          [(ngModel)]="ipUser.barangay" class="form-control" required>
+          </div>
+        </div>
+      
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">City</span>
+          <div class="col-2">
+          <input type="text" id="city" name="city" 
+          [(ngModel)]="ipUser.city" class="form-control" required>
+         </div>
+        </div>
+      
+        <h5 [ngStyle]="{ 'text-align': 'center' }">Church</h5>
+      
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">Church</span>
+          <div class="col-2">
+          <input type="text" id="church" name="church" 
+          [(ngModel)]="ipUser.churchName" class="form-control" required>
+          </div>
+        </div>
+      
+        <div class="input-group mb-3">
+          <div class="col-6">
+          <textarea type="text" id="ministry" name="ministry" 
+          [(ngModel)]="ipUser.ministry" class="form-control" placeholder="Ministry" required></textarea>
+          </div>
+        </div>
+      
+        <div class="input-group mb-3">
+          <div class="col-6">
+          <textarea type="text" id="reason" name="reason" 
+          [(ngModel)]="ipUser.reason" class="form-control" placeholder="Reason" required></textarea>
+         </div>
+        </div>
+      
+        <div class="input-group mb-3">
+          <div class="col-6">
+            <button class="btn btn-primary" type="submit" [disabled]="!profileForm.valid" >
+            Submit</button>
+          </div>
+        </div>
+      
+      
+       
+      </form>
+
+
+
+
+
