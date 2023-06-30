@@ -1,6 +1,7 @@
 import { NgModule  } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { IpProfileComponent } from './ip-profile/ip-profile.component';
@@ -48,6 +49,8 @@ import { LoginComponent } from './login/login.component';
     MatDividerModule,
     MatListModule,
     MatExpansionModule,
+
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 
@@ -10,9 +11,9 @@ import { NavigationEnd, Router } from '@angular/router';
 })
 export class AppComponent implements OnInit{
   title = 'DMNSS';
-
-  constructor(private router: Router) { }
-
+  users: any;
+  
+  constructor(private router: Router, private http: HttpClient) { }
 
   currentRoute: string;
   sideBarOpen = true;
@@ -23,6 +24,13 @@ export class AppComponent implements OnInit{
         this.currentRoute = event.url;
       }
     });
+
+    this.http.get('https://localhost:5001/api/users').subscribe({
+      next: response => this.users = response,
+       error: error => console.log(error),
+       complete: ()=> console.log('Request completed')
+    })
+   
   }
 
   sideBarToggler() {
