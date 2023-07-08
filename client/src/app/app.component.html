@@ -1,26 +1,11 @@
-<!-- <mat-drawer-container>
-  <mat-drawer mode="side" [opened]="sideBarOpen">
-    
-    <app-sidenav></app-sidenav>
-  </mat-drawer>
-  <mat-drawer-content>
-    <app-header (toggleSidebarForMe)="sideBarToggler()"></app-header>
 
-    <div class="container-fluid page">
-      <div class="d-flex page__box p-3 mt-2"><p>{{ currentRoute }}</p>
-      </div>
-      <div class="page__content shadow p-3 position-relative">
 
-          <router-outlet></router-outlet>
-
-      </div>
-    </div>
-      
-  </mat-drawer-content>
-</mat-drawer-container> -->
 
 
 <!-- <app-login></app-login> -->
+
+
+<!-- <div class="container" style="margin-top: 50px;">
 
 
 {{ title }}
@@ -30,3 +15,9 @@
          {{user.id}} - {{user.userName}}
   </li>
 </ul>
+
+</div> -->
+
+
+<app-header></app-header>
+<app-heroes *ngIf="!(accountService.currentUser$ | async)"></app-heroes>

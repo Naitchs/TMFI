@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { AccountService } from '../_services/account.service';
 
 
 @Component({
@@ -10,11 +11,16 @@ import { Router } from '@angular/router';
 export class HeaderComponent implements OnInit {
   @Output() toggleSidebarForMe: EventEmitter<any> = new EventEmitter();
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, public accountService: AccountService) {}
 
   ngOnInit(): void {}
 
   toggleSidebar() {
     this.toggleSidebarForMe.emit();
   }
+
+  logout(){
+    this.accountService.logout();
+  }
+
 }

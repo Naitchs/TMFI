@@ -1,4 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Component} from '@angular/core';
+import { Router } from '@angular/router';
+import { AccountService } from '../_services/account.service';
 
 @Component({
   selector: 'app-home',
@@ -7,4 +10,9 @@ import { Component} from '@angular/core';
 })
 export class HomeComponent {
 
+  users: any;
+  
+  constructor(private router: Router, private http: HttpClient, public accountService: AccountService) { }
+
+  
 }

@@ -1,31 +1,28 @@
-<mat-toolbar>
-   <mat-toolbar-row class="justify-content-between">
-     <button mat-icon-button (click)="toggleSidebar()">
-       <mat-icon>menu</mat-icon>TMFI
-     </button>
-     <div class="row mr-2 ml-auto">
-       <ul class="row m-0 align-items-center">
-         <li>
-           <button
-             mat-button
-             [matMenuTriggerFor]="menu"
-             class="user mt-2 d-flex align-items-center"
-           >
-             <img src="../../assets/picture.png" alt="user-profile" class="user-image mr-1 p-2" />
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#">TMFI</a>
+
+      <ul class="navbar-nav me-auto mb-2 mb-md-0" *ngIf="accountService.currentUser$ | async">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled">Disabled</a>
+        </li>
+      </ul>
+
+        <div class="dropdown" *ngIf="accountService.currentUser$ | async" dropdown >
+          <a  class="dropdown-toggle text-light text-decoration-none" dropdownToggle>Welcome User</a>
+          <div class="dropdown-menu mt-3" *dropdownMenu>
+              <a class="dropdown-item"> Edit Profile</a>
+              <a class="dropdown-item"(click)="logout()"> Logout</a>
+            </div>
+        </div>
+
+
+    </div>
  
-             User Name
-             <mat-icon class="user-image-icon ml-1"
-               >keyboard_arrow_down</mat-icon
-             >
-           </button>
-           <mat-menu #menu="matMenu">
-             <button mat-menu-item>
-               <mat-icon>exit_to_app</mat-icon>
-               Logout
-             </button>
-           </mat-menu>
-         </li>
-       </ul>
-     </div>
-   </mat-toolbar-row>
- </mat-toolbar>
+</nav>

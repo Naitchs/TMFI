@@ -1,38 +1,56 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-  <div class="container">
-    <a class="navbar-brand" href="#">TMFI</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-      <ul class="navbar-nav me-auto mb-2 mb-md-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled">Disabled</a>
-        </li>
-      </ul>
-      <!-- <form #loginForm="ngForm" class="d-flex" (ngSubmit)="login()" autocomplete="off">
-        <input 
-        name="username"
-        [(ngModel)]="model.username"
-        class="form-control me-2" 
-        type="text" 
-        placeholder="username">
+  <button 
+          type="button" 
+          class="btn btn-primary btn-lg px-4" 
+          data-bs-toggle="modal" 
+          data-bs-target="#loginModal">Login</button>
 
-        <input 
-        name="password"
-        [(ngModel)]="model.password"
-        class="form-control me-2" 
-        type="password" 
-        placeholder="password" >
 
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form> -->
+ 
+<div class="modal fade" id="loginModal" tabindex="-3"  aria-hidden="true">
+ <form *ngIf="!(accountService.currentUser$ | async)" #loginForm="ngForm" class="" (ngSubmit)="login()"          autocomplete="off">
+  
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header ">
+        <h1 class="text-center ">Log In</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+
+      <div class="modal-body">
+        
+    
+          <div class="form-floating mb-3">
+            <input type="email"
+                   class="form-control rounded-3" 
+                   id="floatingInput" 
+                   placeholder="name@example.com"
+                   name="username"
+                   [(ngModel)]="model.username">
+            <label for="floatingInput">Username</label>
+          </div>
+
+          <div class="form-floating mb-3">
+            <input type="password" 
+                    class="form-control rounded-3" 
+                    id="floatingPassword" 
+                    placeholder="Password"
+                    name="password"
+                    [(ngModel)]="model.password">
+            <label for="floatingPassword">Password</label>
+          </div>
+
+          <div class="checkbox mb-3">
+            <label>
+              <input type="checkbox" value="remember-me"> Remember me
+            </label>
+
+            <hr>
+        <button class="btn btn-primary btn-lg px-4 me-md-2" type="submit">Log In</button>
+  
+    </div>
     </div>
   </div>
-</nav>
+</div>  
+  </form>
+</div>

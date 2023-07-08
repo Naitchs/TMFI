@@ -19,7 +19,9 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { LoginComponent } from './login/login.component';
-
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { HeroesComponent } from './heroes/heroes.component';
+import { RegisterComponent } from './register/register.component';
 
 
 
@@ -32,6 +34,8 @@ import { LoginComponent } from './login/login.component';
     SidenavComponent,
     DashboardComponent,
     LoginComponent,
+    HeroesComponent,
+    RegisterComponent,
 
 
   ],
@@ -51,6 +55,7 @@ import { LoginComponent } from './login/login.component';
     MatExpansionModule,
 
     HttpClientModule,
+    BsDropdownModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
