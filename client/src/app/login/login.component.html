@@ -9,10 +9,10 @@
 <div class="modal fade" id="loginModal" tabindex="-3"  aria-hidden="true">
  <form *ngIf="!(accountService.currentUser$ | async)" #loginForm="ngForm" class="" (ngSubmit)="login()"          autocomplete="off">
   
-  <div class="modal-dialog">
+  <div class="modal-dialog " role="document">
     <div class="modal-content">
       <div class="modal-header ">
-        <h1 class="text-center ">Log In</h1>
+        <h1 class="modal-title ">Log In</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
@@ -46,7 +46,7 @@
             </label>
 
             <hr>
-        <button class="btn btn-primary btn-lg px-4 me-md-2" type="submit">Log In</button>
+        <button class="btn btn-primary btn-lg " type="submit">Log In</button>
   
     </div>
     </div>

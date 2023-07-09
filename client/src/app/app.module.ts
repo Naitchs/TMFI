@@ -19,9 +19,13 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { LoginComponent } from './login/login.component';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { HeroesComponent } from './heroes/heroes.component';
 import { RegisterComponent } from './register/register.component';
+import { MembersListComponent } from './members/members-list/members-list.component';
+import { MembersDetailComponent } from './members/members-detail/members-detail.component';
+import { ListsComponent } from './lists/lists.component';
+import { MessagesComponent } from './messages/messages.component';
+import { SharedModule } from './_modules/shared.module';
 
 
 
@@ -36,6 +40,10 @@ import { RegisterComponent } from './register/register.component';
     LoginComponent,
     HeroesComponent,
     RegisterComponent,
+    MembersListComponent,
+    MembersDetailComponent,
+    ListsComponent,
+    MessagesComponent,
 
 
   ],
@@ -55,7 +63,7 @@ import { RegisterComponent } from './register/register.component';
     MatExpansionModule,
 
     HttpClientModule,
-    BsDropdownModule.forRoot()
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

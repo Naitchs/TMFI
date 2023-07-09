@@ -1,0 +1,19 @@
+.align-right {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 50px;
+  margin-top: 10px;
+}
+
+
+button[type="submit"] {
+  margin-left: 10px;
+}
+
+button.btn-info {
+  margin-left: 10px;
+}
+
+.custom-bg {
+  background-color: rgb(224, 224, 224);
+}

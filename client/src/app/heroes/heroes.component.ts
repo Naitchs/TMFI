@@ -17,4 +17,8 @@ export class HeroesComponent {
     this.registerMode = !this.registerMode;
   }
 
+  cancelRegisterMode(event: boolean){
+    this.registerMode = event;
+  }
+
 }
