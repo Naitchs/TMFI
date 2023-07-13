@@ -1,0 +1,12 @@
+<h4>Server Error 500</h4>
+
+<ng-container *ngIf="error">
+    <h5 class="text-danger"> Error: {{error.message}}</h5>
+    <p class="font-weight-bold"> angular is not to blame</p>
+
+    <p>Stack trace</p>
+
+    <code class="mt-5" style="background-color: whitesmoke;">
+        {{error.details}}
+    </code>
+</ng-container>
