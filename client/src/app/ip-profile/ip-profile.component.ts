@@ -41,7 +41,7 @@ export class IpProfileComponent {
   }
 
   ngAfterViewInit() {
-    M.AutoInit();
+    // M.AutoInit();
   }
 
 }
