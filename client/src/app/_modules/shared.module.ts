@@ -7,6 +7,7 @@ import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
+import { FileUploadModule } from 'ng2-file-upload';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { BrowserModule } from '@angular/platform-browser';
     NgxGalleryModule,
     NgxSpinnerModule.forRoot({ type: 'ball-spin' }),
     BrowserAnimationsModule,
-    BrowserModule
+    BrowserModule,
+    FileUploadModule
   ],
   exports:[
     BsDropdownModule,
@@ -30,7 +32,8 @@ import { BrowserModule } from '@angular/platform-browser';
     NgxGalleryModule,
     NgxSpinnerModule,
     BrowserAnimationsModule,
-    BrowserModule
+    BrowserModule,
+    FileUploadModule
   ]
 })
 export class SharedModule { }

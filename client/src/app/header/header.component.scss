@@ -40,3 +40,11 @@ mat-toolbar {
   vertical-align: middle;
   margin-right: 1rem;
 }
+
+img {
+  max-height: 40px;
+  max-width: 40px;
+  border: 2px solid white;
+  display: inline;
+  border-radius: 50%;
+}

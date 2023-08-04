@@ -28,6 +28,7 @@
     "jquery": "^3.7.0",
     "materialize-css": "^1.0.0-rc.2",
     "ng": "^0.0.0",
+    "ng2-file-upload": "^3.0.0",
     "ngx-bootstrap": "^10.2.0",
     "ngx-spinner": "^15.0.1",
     "ngx-toastr": "^15.2.0",
