@@ -8,6 +8,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { FileUploadModule } from 'ng2-file-upload';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { FileUploadModule } from 'ng2-file-upload';
     NgxSpinnerModule.forRoot({ type: 'ball-spin' }),
     BrowserAnimationsModule,
     BrowserModule,
-    FileUploadModule
+    FileUploadModule,
+    BsDatepickerModule.forRoot()
   ],
   exports:[
     BsDropdownModule,
@@ -33,7 +35,8 @@ import { FileUploadModule } from 'ng2-file-upload';
     NgxSpinnerModule,
     BrowserAnimationsModule,
     BrowserModule,
-    FileUploadModule
+    FileUploadModule,
+    BsDatepickerModule
   ]
 })
 export class SharedModule { }

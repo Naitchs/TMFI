@@ -2,12 +2,14 @@
           type="button" 
           class="btn btn-primary btn-lg px-4" 
           data-bs-toggle="modal" 
-          data-bs-target="#loginModal">Login</button>
+          data-bs-target="#loginModal"
+          *ngIf="!(accountService.currentUser$ | async)"
+          >Login</button>
 
 
- 
-<div class="modal fade" id="loginModal" tabindex="-3"  aria-hidden="true">
- <form *ngIf="!(accountService.currentUser$ | async)" #loginForm="ngForm" class="" (ngSubmit)="login()"          autocomplete="off">
+ <ng-template [ngIf]="!(accountService.currentUser$ | async)">
+<div class="modal fade" id="loginModal" tabindex="-3"  aria-hidden="true" *ngIf="!(accountService.currentUser$ | async)">
+ <form  #loginForm="ngForm" class="" (ngSubmit)="login()"  autocomplete="off">
   
   <div class="modal-dialog " role="document">
     <div class="modal-content">
@@ -54,3 +56,5 @@
 </div>  
   </form>
 </div>
+
+</ng-template>

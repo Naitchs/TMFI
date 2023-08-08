@@ -1,25 +1,46 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AccountService } from '../_services/account.service';
 
-import { User } from '../_models/user';
-import { Route, Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Subject, filter, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit, OnDestroy{
 
   model: any = {};
+  private ngUnsubscribe = new Subject<void>();
   
-  constructor(public accountService: AccountService, private router: Router, 
-    private toastr: ToastrService){}
+  constructor(
+    public accountService: AccountService, 
+    private router: Router, 
+    private toastr: ToastrService
+    ) { }
 
   ngOnInit(): void {
+    this.router.events
+    .pipe(
+      filter((event) => event instanceof NavigationEnd),
+      takeUntil(this.ngUnsubscribe)
+    )
+    .subscribe(() => {
+      // Close the modal when navigating away from the login page
+      const modal = document.getElementById('loginModal');
+      if (modal) {
+        modal.classList.remove('show');
+      }
+    });
   }
 
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 
   login(){
     this.accountService.login(this.model).subscribe({
