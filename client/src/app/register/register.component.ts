@@ -25,6 +25,24 @@ export class RegisterComponent implements OnInit{
     this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
   }
 
+    // Validation function for requiring at least one digit
+    passwordRequiresDigit(control: AbstractControl): { [key: string]: any } | null {
+      const value: string = control.value;
+      if (/[0-9]/.test(value)) {
+        return null; // Valid
+      }
+      return { passwordRequiresDigit: true }; // Invalid
+    }
+  
+    // Validation function for requiring at least one uppercase letter
+    passwordRequiresUpper(control: AbstractControl): { [key: string]: any } | null {
+      const value: string = control.value;
+      if (/[A-Z]/.test(value)) {
+        return null; // Valid
+      }
+      return { passwordRequiresUpper: true }; // Invalid
+    }
+
   initializeForm(){
     this.registerForm = this.fb.group({
       gender: ['', Validators.required],
@@ -32,17 +50,29 @@ export class RegisterComponent implements OnInit{
       knownAs: ['', Validators.required],
       dateOfBirth: ['', Validators.required],
       city: ['', Validators.required],
-       country: ['', Validators.required],
-       password: ['', [Validators.required, 
-                Validators.maxLength(15), Validators.minLength(8)]],
-       confirmPassword: ['', [Validators.required, this.matchValue('password')]]
+       country: ['', 
+                Validators.required
+              ],
+       password: ['', [
+                Validators.required, 
+                Validators.maxLength(15), 
+                Validators.minLength(8),
+                this.passwordRequiresDigit, 
+                this.passwordRequiresUpper
+                ]
+              ],
+       confirmPassword: ['', [
+                Validators.required, 
+                  this.matchValue('password')
+                ]
+              ]
     });
     this.registerForm.controls['password'].valueChanges.subscribe({
       next: () => this.registerForm.controls['confirmPassword'].updateValueAndValidity()
     });
-    this.registerForm.controls['gender'].valueChanges.subscribe({
-      next: () => this.registerForm.controls['gender'].updateValueAndValidity()
-    });
+    // this.registerForm.controls['gender'].valueChanges.subscribe({
+    //   next: () => this.registerForm.controls['gender'].updateValueAndValidity()
+    // });
   }
 
   matchValue(matchTo: string): ValidatorFn {

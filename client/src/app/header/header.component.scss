@@ -48,3 +48,9 @@ img {
   display: inline;
   border-radius: 50%;
 }
+
+.navbar img {
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+}

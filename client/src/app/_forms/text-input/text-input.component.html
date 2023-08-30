@@ -21,6 +21,12 @@
   <div class="invalid-feedback" *ngIf="control.errors?.['notMatching']">
     Passwords do not match
   </div>
+  <div class="invalid-feedback" *ngIf="control.errors?.['passwordRequiresDigit']">
+    Password must have at least one digit (0-9).
+  </div>
+  <div class="invalid-feedback" *ngIf="control.errors?.['passwordRequiresUpper']">
+    Password must have at least one uppercase letter (A-Z).
+  </div>
 
    </div>
 </div>

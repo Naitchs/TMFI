@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { FileUploadModule } from 'ng2-file-upload';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     BrowserAnimationsModule,
     BrowserModule,
     FileUploadModule,
-    BsDatepickerModule.forRoot()
+    BsDatepickerModule.forRoot(),
+    ModalModule.forRoot()
   ],
   exports:[
     BsDropdownModule,
@@ -36,7 +38,8 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     BrowserAnimationsModule,
     BrowserModule,
     FileUploadModule,
-    BsDatepickerModule
+    BsDatepickerModule,
+    ModalModule
   ]
 })
 export class SharedModule { }
