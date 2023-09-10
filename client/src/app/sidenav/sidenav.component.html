@@ -1,171 +1,56 @@
-
-<mat-nav-list class="flex-shrink-0 p-3 bg-white" >
-
-    <a href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
-      <mat-icon class="bi pe-none me-2">bootstrap</mat-icon>
-      <span class="fs-5 fw-semibold">Collapsible</span>
-    </a>
-    <ul class="list-unstyled ps-0">
-      <li class="mb-1">
-        <a mat-list-item class="btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
-         data-bs-toggle="collapse" data-bs-target="#home-collapse">
-          <mat-icon>home</mat-icon> Home
-        </a>
-        <div class="collapse" id="home-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a mat-list-item routerLinkActive="list-item-active" routerLink="/home"
-              class="link-dark d-inline-flex text-decoration-none rounded">
-              <mat-icon>subject</mat-icon> Overview</a></li>
-            <li><a mat-list-item routerLinkActive="list-item-active" routerLink="/profile"
-              class="link-dark d-inline-flex text-decoration-none rounded">
-              <mat-icon>subject</mat-icon> Updates</a></li>
-            <li><a mat-list-item href="#" class="link-dark d-inline-flex text-decoration-none rounded">Reports</a>
-            </li>
-            </ul>
-        </div>
-      </li>
-    </ul>
-      <mat-list-item class="mb-1">
-        <button mat-button class="btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
-          matAccordionToggle="dashboard-collapse">
-          Dashboard
-        </button>
-      
-      </mat-list-item>
-      <mat-list-item class="mb-1">
-        <button mat-button class="btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
-          matAccordionToggle="orders-collapse">
-          Orders
-        </button>
-        <div [@expandAnimation] class="collapse" id="orders-collapse">
-          <mat-nav-list class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <a mat-list-item href="#" class="link-dark d-inline-flex text-decoration-none rounded">New</a>
-            <a mat-list-item href="#" class="link-dark d-inline-flex text-decoration-none rounded">Processed</a>
-            <a mat-list-item href="#" class="link-dark d-inline-flex text-decoration-none rounded">Shipped</a>
-            <a mat-list-item href="#" class="link-dark d-inline-flex text-decoration-none rounded">Returned</a>
-          </mat-nav-list>
-        </div>
-      </mat-list-item>
-      <mat-divider class="border-top my-3"></mat-divider>
-      <mat-list-item class="mb-1">
-        <button mat-button class="btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
-          matAccordionToggle="account-collapse">
-          Account
-        </button>
-        <div [@expandAnimation] class="collapse" id="account-collapse">
-          <mat-nav-list class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <a mat-list-item href="#" class="link-dark d-inline-flex text-decoration-none rounded">New...</a>
-            <a mat-list-item href="#" class="link-dark d-inline-flex text-decoration-none rounded">Profile</a>
-            <a mat-list-item href="#" class="link-dark d-inline-flex text-decoration-none rounded">Settings</a>
-            <a mat-list-item href="#" class="link-dark d-inline-flex text-decoration-none rounded">Sign out</a>
-          </mat-nav-list>
-        </div>
-      </mat-list-item>
+<nav id="sidebar" class="d-flex flex-column flex-shrink-0 p-3 " [ngClass]="{ 'd-none': !sideBarOpen }">
  
   
-  
-  
-</mat-nav-list>
+
+  <ul class="navbar-nav me-auto mb-2 mb-md-0" *ngIf="(accountService.currentUser$ | async) as user">
+    <strong class="title">Welcome {{user.username | titlecase}}</strong>
+    <hr>
+    <ng-container *ngIf="!(accountService.currentUser$ | async) ">
+    <li class="nav-item">
+      <a class="nav-link active"  routerLink="/members" routerLinkActive="active">Mission</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active"  routerLink="/members" routerLinkActive="active">Visios</a>
+    </li>
+  </ng-container>
+
+    <ng-container  >
+        
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/list" routerLinkActive="active">Lists</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " routerLink="/profiling" routerLinkActive="active">Profiling</a>
+        </li>
+        
+        <ng-container *appHasRole="['SuperAdmin', 'Admin' ]">
+          <hr>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/admin" routerLinkActive="active">Admin</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active"  routerLink="/members" routerLinkActive="active">Members</a>
+          </li>
 
 
-<!-- 
-<div class="logo py-4">
-  <img src="../../assets/TMFII logo.png" alt="Company Logo" />
+        </ng-container>
+     
+        
+  </ng-container>
+  </ul >
+
+
+  
+<div class=""> <!-- Use mt-auto to push the dropdown to the bottom -->
+  <hr>
+  <div class="dropdown" *ngIf="(accountService.currentUser$ | async) as user" dropdown>
+    <img src="{{user.photoUrl || './assets/user.png'}}" alt="user photo" style="margin: 0; padding: 0; max-height: 40px; max-width: 40px; border: 2px solid white; border-radius: 50%;">
+    <a class="dropdown-toggle text-light text-decoration-none ms-2" dropdownToggle style="margin: 0; padding: 0;"><strong> {{user.username | titlecase}} </strong></a>
+    <div class="dropdown-menu mt-3 " *dropdownMenu>
+      <a class="dropdown-item" routerLink="/member/edit"> Edit Profile</a>
+      <a class="dropdown-item" (click)="logout()"> Logout</a>
+    </div>
+  </div>
 </div>
-<mat-divider></mat-divider>
-<h2 mat-subheader class="mt-2">APPLICATIONS</h2>
-
-
-<mat-list-item >
-  <a mat-list-item routerLinkActive="list-item-active" routerLink="/home">
-    <mat-icon>home</mat-icon> Home
-  </a>
-</mat-list-item>
-
-<mat-list-item>
-  <a mat-list-item routerLinkActive="list-item-active" routerLink="/dashboard">
-    <mat-icon>dashboard</mat-icon> Dashboard
-  </a>
-</mat-list-item>
-
-<mat-list-item>
-  <a mat-list-item routerLinkActive="list-item-active" routerLink="/profile"
-  class=" align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#profile-collapse" aria-expanded="false"> 
-    <mat-icon>edit</mat-icon> Profile </a></mat-list-item>
-    
-    <mat-list-item class="collapse show" id="profile-collapse">
-      <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-        <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Overview</a></li>
-        <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Updates</a></li>
-        <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Reports</a></li>
-      </ul>
-    </mat-list-item>
   
-
-
-<a mat-list-item> <mat-icon>edit</mat-icon> Link 4 </a>
-  <a mat-list-item> <mat-icon>edit</mat-icon> Link 5 </a>
-  <a mat-list-item> <mat-icon>edit</mat-icon> Link 6 </a> -->
-
-
-
-<!-- <div class="flex-shrink-0 p-3 bg-white" style="width: 280px;">
-  <a href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
-    <svg class="bi pe-none me-2" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
-    <span class="fs-5 fw-semibold">Collapsible</span>
-  </a>
-  <ul class="list-unstyled ps-0">
-    <li class="mb-1">
-      <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
-        Home
-      </button>
-      <div class="collapse show" id="home-collapse">
-        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-          <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Overview</a></li>
-          <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Updates</a></li>
-          <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Reports</a></li>
-        </ul>
-      </div>
-    </li>
-    <li class="mb-1">
-      <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
-        Dashboard
-      </button>
-      <div class="collapse" id="dashboard-collapse">
-        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-          <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Overview</a></li>
-          <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Weekly</a></li>
-          <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Monthly</a></li>
-          <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Annually</a></li>
-        </ul>
-      </div>
-    </li>
-    <li class="mb-1">
-      <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
-        Orders
-      </button>
-      <div class="collapse" id="orders-collapse">
-        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-          <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">New</a></li>
-          <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Processed</a></li>
-          <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Shipped</a></li>
-          <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Returned</a></li>
-        </ul>
-      </div>
-    </li>
-    <li class="border-top my-3"></li>
-    <li class="mb-1">
-      <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
-        Account
-      </button>
-      <div class="collapse" id="account-collapse">
-        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-          <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">New...</a></li>
-          <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Profile</a></li>
-          <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Settings</a></li>
-          <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Sign out</a></li>
-        </ul>
-      </div>
-    </li>
-  </ul>
-</div> -->
+</nav>

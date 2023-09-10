@@ -1,38 +1,20 @@
-<nav class="navbar navbar-expand-lg fixed-top bg-dark" data-bs-theme="dark">
+<nav class="navbar fixed-top bg-dark" data-bs-theme="dark">
   <div class="container">
-    <img src="../../assets/logo.png" alt="tmfi logo" height="45"  width="100">
-    <a class="navbar-brand" routerLink="/" routerLinkActive="active">TMFI</a>
-
-      <ul class="navbar-nav me-auto mb-2 mb-md-0" >
-        <ng-container *ngIf="accountService.currentUser$ | async">
-            <li class="nav-item">
-              <a class="nav-link active" routerLink="/members" routerLinkActive="active">Members</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/list" routerLinkActive="active">Lists</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link " routerLink="/messages" routerLinkActive="active">Messages</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" *appHasRole="['SuperAdmin', 'Admin' ]" routerLink="/admin" routerLinkActive="active">Admin</a>
-            </li>
-      </ng-container>
-      <!-- <li class="nav-item">
-        <a class="nav-link " routerLink="/errors" routerLinkActive="active">Errors</a>
-      </li> -->
-      </ul>
-
-        <div class="dropdown" *ngIf="(accountService.currentUser$ | async) as user" dropdown >
-          <img src="{{user.photoUrl || './assets/user.png'}}" alt="user photo">
-          <a  class="dropdown-toggle text-light text-decoration-none ms-2" dropdownToggle>{{user.username | titlecase}}</a>
-          <div class="dropdown-menu mt-3 " *dropdownMenu>
-              <a class="dropdown-item" routerLink="/member/edit"> Edit Profile</a>
-              <a class="dropdown-item"(click)="logout()"> Logout</a>
-            </div>
-        </div>
-
-
+    <div>
+    <button class="navbar-toggler" type="button" (click)="onToggleSidebar()" style="margin: 0; padding: 0; border: none; background: none;">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <a class="navbar-brand" routerLink="/home" routerLinkActive="active" style="margin: 0; padding: 0;"><img src="../../assets/logo.png" alt="tmfi logo" height="45" width="100" style="margin: 0; padding: 0;" >TMFI</a>
+  </div>
+  
+    <div class="dropdown" *ngIf="(accountService.currentUser$ | async) as user" dropdown>
+      <img src="{{user.photoUrl || './assets/user.png'}}" alt="user photo" style="margin: 0; padding: 0; max-height: 40px; max-width: 40px; border: 2px solid white; border-radius: 50%;">
+      <a class="dropdown-toggle text-light text-decoration-none ms-2" dropdownToggle style="margin: 0; padding: 0;">{{user.username | titlecase}}</a>
+      <div class="dropdown-menu mt-3" *dropdownMenu>
+        <a class="dropdown-item" routerLink="/member/edit"> Edit Profile</a>
+        <a class="dropdown-item" (click)="logout()"> Logout</a>
+      </div>
     </div>
- 
+  </div>
 </nav>

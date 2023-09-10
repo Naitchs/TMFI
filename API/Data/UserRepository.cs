@@ -18,7 +18,31 @@ namespace API.Data
         
     }
 
-    public async Task<MemberDto> GetMemberAsync(string username)
+        public void Add(AppIp ip)
+        {
+             _context.Ips.Add(ip);
+        }
+
+        public async Task<IEnumerable<IpDto>> GetIpsAsync()
+        {
+             return await _context.Ips
+              .ProjectTo<IpDto>(_mapper.ConfigurationProvider)
+              .ToListAsync();
+        }
+
+       public async Task<IpDto> GetIpsByIdAsync(int id)
+        {
+            // return await _context.Ips.FindAsync(id);
+            //  return await _context.Ips
+            //   .ProjectTo<IpDto>(_mapper.ConfigurationProvider)
+            //   .FindAsync(id);
+               return await _context.Ips
+        .Where(ip => ip.Id == id)
+        .ProjectTo<IpDto>(_mapper.ConfigurationProvider)
+        .FirstOrDefaultAsync();
+        }
+
+        public async Task<MemberDto> GetMemberAsync(string username)
     {
       return await _context.Users
               .Where(x => x.UserName == username)
@@ -60,5 +84,10 @@ namespace API.Data
     {
      _context.Entry(user).State = EntityState.Modified;
     }
-  }
+
+        public void Update(AppIp ip)
+        {
+            _context.Entry(ip).State = EntityState.Modified;
+        }
+    }
 }

@@ -92,7 +92,6 @@ export class RegisterComponent implements OnInit{
       error: error => {
         this.validationErrors = error
       }
-      
     })
   }
 

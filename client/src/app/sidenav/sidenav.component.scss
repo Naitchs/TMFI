@@ -1,31 +1,32 @@
 // :host {
 
 // }
-.logo {
-  text-align: center;
-  padding: 2.6rem 1rem;
-  img {
-    width: 200px;
-    height: 50px;
-  }
-}
-.mat-divider {
-  border-top-width: 2px;
-  border-color: white;
-}
-  .mat-icon {
-    vertical-align: middle;
-    margin-right: 1rem;
-    // color: #f2f5f7;
-    color: #000;
-  }
+//prev
+// .logo {
+//   text-align: center;
+//   padding: 2.6rem 1rem;
+//   img {
+//     width: 200px;
+//     height: 50px;
+//   }
+// }
+// .mat-divider {
+//   border-top-width: 2px;
+//   border-color: white;
+// }
+//   .mat-icon {
+//     vertical-align: middle;
+//     margin-right: 1rem;
+//     // color: #f2f5f7;
+//     color: #000;
+//   }
 
 // a {
 //   color: #f2f5f7;
 //   font-size: 16px;
   
 // }
-
+// this
 
 // .mat-nav-list{
 // a.mat-list-item {
@@ -71,28 +72,70 @@
 //   letter-spacing: 1px;
 // }
 
-.flex-shrink-0 {
-  height: 100%;
-  width: 280px;
-  background: #fcfcfd;
+
+// prev comment
+// .flex-shrink-0 {
+//   height: 100%;
+//   width: 280px;
+//   background: #fcfcfd;
+// }
+
+// ::ng-deep .btn-toggle {
+//   /* Add your base styles here */
+//   background-color: #f8f8f8;
+//   color: #333;
+//   padding: 10px;
+//   transition: background-color 0.5s ease;
+// }
+
+// ::ng-deep .btn-toggle:hover {
+//   /* Add your hover styles here */
+//   background-color: #f0f0f0;
+//   color: #000;
+// }
+
+// .bg-white {
+//   --bs-bg-opacity: 1;
+//   background-color: rgba(var(--bs-white-rgb),var(--bs-bg-opacity))!important;
+// }
+
+#sidebar {
+  background-color: #5c5c5c; /* Change the color to your desired background color */
+  width: 250px; /* Adjust the width as needed */
+  height: 100%; /* Make the sidebar full height */
+  position: fixed; /* Fix the sidebar position */
+  top: 0;
+  left: 0;
+  overflow-y: auto; /* Enable vertical scrolling if content exceeds height */
+  z-index: 1;
 }
 
-::ng-deep .btn-toggle {
-  /* Add your base styles here */
-  background-color: #f8f8f8;
-  color: #333;
-  padding: 10px;
-  transition: background-color 0.5s ease;
+.navbar-nav {
+  padding-top: 50px; /* Adjust the top padding to align content with the header */
 }
 
-::ng-deep .btn-toggle:hover {
-  /* Add your hover styles here */
-  background-color: #f0f0f0;
-  color: #000;
+.nav-link {
+  color: white; /* Change the text color to your desired color */
 }
 
-.bg-white {
-  --bs-bg-opacity: 1;
-  background-color: rgba(var(--bs-white-rgb),var(--bs-bg-opacity))!important;
+.nav-link:hover {
+  background-color: #555; /* Add a background color on hover if desired */
 }
 
+/* Add this CSS to your styles.scss or styles.css file */
+.nav-link.router-link-active {
+  border-left: 4px solid #007bff; /* Add a left border with your desired color */
+  background-color: #333; /* Change the background color to your desired color */
+  color: #fff; /* Change the text color to white or your desired color */
+  font-weight: bold; /* Make the font bold or adjust as needed */
+  padding-left: 12px; /* Add padding to the left for the border */
+}
+
+
+hr{
+  color: white;
+}
+
+.title {
+  color: white;
+}

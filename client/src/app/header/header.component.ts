@@ -9,14 +9,14 @@ import { AccountService } from '../_services/account.service';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  @Output() toggleSidebarForMe: EventEmitter<any> = new EventEmitter();
+  @Output() toggleSidebar: EventEmitter<any> = new EventEmitter();
 
   constructor(private router: Router, public accountService: AccountService) {}
 
   ngOnInit(): void {}
 
-  toggleSidebar() {
-    this.toggleSidebarForMe.emit();
+  onToggleSidebar() {
+    this.toggleSidebar.emit();
   }
 
   logout(){

@@ -1,0 +1,14 @@
+<h2>Profiling Panel</h2>
+<div class="tab-panel">
+  <tabset class="member-tabset">
+    <tab heading="Add Ip Profile" *appHasRole="['Member']">
+      <app-ip-profile></app-ip-profile>
+    </tab>
+    <tab heading="Ip List" *appHasRole="['Member']">
+           <div class="container">
+               <app-ip-list></app-ip-list>
+           </div>
+    </tab>
+    
+  </tabset>
+</div>

@@ -14,7 +14,7 @@
         </div>
   
         Multiple
-        <input type="file" ng2FileSelect [uploader]="uploader" multiple  /><br/>
+        <input type="file" ng2FileSelect [uploader]="uploader" multiple/><br/>
   
         Single
         <input type="file" ng2FileSelect [uploader]="uploader" />
@@ -67,6 +67,7 @@
     </div>
   
   </div>
+  
 <div class="row mb-3" *ngIf="member">
   <div class="col-md-2 mb-1" *ngFor="let photo of member.photos">
         <img src="{{photo.url}}" alt="photo of user" class="img-thumbnail mb-1 ">

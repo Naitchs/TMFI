@@ -17,5 +17,6 @@ namespace API.Entities
     public int AppUserId { get; set; }
 
     public AppUser AppUser { get; set; }
+
   }
 }

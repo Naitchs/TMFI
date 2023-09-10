@@ -20,6 +20,10 @@ export class ErrorInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) =>{
         if (error) {
           switch (error.status){
+            // case 200: // Handle successful response (not an error)
+            // const message = error.error; // Assuming the message is in error.error
+            // this.toastr.success(message, 'Success');
+            // break;
             case 400: 
               if (error.error.errors){
                 const modalStateErrors = [];
@@ -46,7 +50,8 @@ export class ErrorInterceptor implements HttpInterceptor {
               default:
                 this.toastr.error('Something unexpected went wrong ');
                 console.log(error);
-                break;
+
+              break;
           }
         }
         throw error;

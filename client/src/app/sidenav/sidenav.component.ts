@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { Router } from '@angular/router';
+import { AccountService } from '../_services/account.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -16,8 +18,15 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 })
 export class SidenavComponent implements OnInit{
 
+  @Input() sideBarOpen: boolean = true;
+
+
+  constructor(private router: Router, public accountService: AccountService) {}
+
   ngOnInit() {
     // Component initialization code...
   }
+
+
 
 }

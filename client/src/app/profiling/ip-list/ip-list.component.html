@@ -1,0 +1,26 @@
+<div class="row">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Age</th>
+        <th>Gender</th>
+        <th>Tribe</th>
+        <th>City</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let ipProfile of ipProfile" (click)="redirectToDetail(ipProfile.id)">
+        <td>{{ ipProfile.firstname }}</td>
+        <td>{{ ipProfile.lastname }}</td>
+        <td>{{ ipProfile.age }}</td>
+        <td>{{ ipProfile.gender }}</td>
+        <td>{{ ipProfile.tribe }}</td>
+        <td>{{ ipProfile.city }}</td>
+        <td><button class="btn btn-info">Edit</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

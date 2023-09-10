@@ -3,7 +3,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { IpProfileComponent } from './ip-profile/ip-profile.component';
+
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
@@ -40,6 +40,11 @@ import { HasRoleDirective } from './_directives/has-role.directive';
 import { UserManagementComponent } from './admin/user-management/user-management.component';
 import { RegisterMemberComponent } from './admin/register-member/register-member.component';
 import { RolesModalComponent } from './modals/roles-modal/roles-modal.component';
+import { ProfilingPanelComponent } from './profiling/profiling-panel/profiling-panel.component';
+import { IpProfileComponent } from './profiling/ip-profile/ip-profile.component';
+import { IpListComponent } from './profiling/ip-list/ip-list.component';
+import { IpDetailComponent } from './profiling/ip-detail/ip-detail.component';
+
 
 
 
@@ -71,6 +76,9 @@ import { RolesModalComponent } from './modals/roles-modal/roles-modal.component'
     UserManagementComponent,
     RegisterMemberComponent,
     RolesModalComponent,
+    ProfilingPanelComponent,
+    IpListComponent,
+    IpDetailComponent,
 
 
   ],
