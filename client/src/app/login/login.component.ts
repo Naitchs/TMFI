@@ -4,6 +4,7 @@ import { AccountService } from '../_services/account.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subject, filter, takeUntil } from 'rxjs';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,8 @@ export class LoginComponent implements OnInit, OnDestroy{
   constructor(
     public accountService: AccountService, 
     private router: Router, 
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private location: Location,
     ) { }
 
   ngOnInit(): void {
@@ -44,9 +46,11 @@ export class LoginComponent implements OnInit, OnDestroy{
 
   login(){
     this.accountService.login(this.model).subscribe({
-      next: () => this.router.navigateByUrl('/members'),
-      
-      // error: error => this.toastr.error(error.error)
+      next: () => {
+        window.location.reload();
+        this.router.navigateByUrl('/home');
+      },
+      error: error => this.toastr.error(error.error)
     })
   }
 

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { ProfileService } from 'src/app/_services/profile.service';
+import { Location } from '@angular/common';
 declare const M: any;
 
 @Component({
@@ -17,7 +18,7 @@ export class IpProfileComponent {
   validationErrors: string [] | undefined;
 
   constructor(private profileService: ProfileService, private toastr: ToastrService,
-    private fb: FormBuilder, private router: Router){ }
+    private fb: FormBuilder, private router: Router, private location: Location){ }
 
   
 
@@ -30,7 +31,7 @@ export class IpProfileComponent {
 
   ngOnInit(): void {
     this.initializeForm();
-    this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
+    this.maxDate.setFullYear(this.maxDate.getFullYear() - 12);
   }
 
   initializeForm(){
@@ -45,7 +46,7 @@ export class IpProfileComponent {
       phonenum: [''],
       email: [''],
       facebook: [''],
-      street: ['', Validators.required],
+      street: [''],
       barangay: ['', Validators.required],
       city: ['', Validators.required],
       churchname: ['', Validators.required],
@@ -59,11 +60,15 @@ export class IpProfileComponent {
     const values = {...this.ipForm.value, dateOfBirth: dob};
     this.profileService.registerProfile(values).subscribe(
       () => {
+        window.location.reload();
         this.toastr.success('Profile registered successfully', 'Success');
         this.ipForm.reset(); // This will reset all the form fields
       },
       (error) => {
+        console.log(error);
+        this.validationErrors = error; // Set the validationErrors array with the error messages
         this.toastr.error('Error registering profile', 'Error');
+        
       }
     );
   }

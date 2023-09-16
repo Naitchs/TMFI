@@ -1,29 +1,38 @@
 <form [formGroup]="ipForm" (ngSubmit)="registerIp()" autocomplete="off">
 
-  <fieldset>
+  
   <div class="formGroup">
+
+    <legend>Information</legend>
+    <hr>
+
     <div class="row">
-  <app-text-input [formControl]="$any(ipForm.controls['firstname'])" 
+      <div class="col-md-4 mb-3">
+          <app-text-input [formControl]="$any(ipForm.controls['firstname'])" 
                   [label]="'First Name'">
-  </app-text-input>
-
-  <app-text-input [formControl]="$any(ipForm.controls['middlename'])" 
+          </app-text-input>
+      </div>
+      <div class="col-md-4 mb-3">
+          <app-text-input [formControl]="$any(ipForm.controls['middlename'])" 
                   [label]="'Middile Name'">
-  </app-text-input>
-
-  <app-text-input [formControl]="$any(ipForm.controls['lastname'])" 
+          </app-text-input>
+      </div>
+      <div class="col-md-4 mb-3">
+          <app-text-input [formControl]="$any(ipForm.controls['lastname'])" 
                   [label]="'Last Name'">
-  </app-text-input>
-</div>
-  </div>
-</fieldset>
+          </app-text-input>
+      </div>
+    </div>
+  
 
+<div class="row">
+  <div class="col-md-4 mb-3">
   <app-date-picker [formControl]="$any(ipForm.controls['dateOfBirth'])" 
                   [label]="'Date of Birth'" [maxDate]="maxDate">
   </app-date-picker>
+</div>
 
-  <div class="mb-3">
-    <div class="col-md-4">
+    <div class="col-md-4 mb-3">
       <select id="gender" formControlName="gender" class="form-select">
         <option value="" disabled selected>Select Gender</option>
         <option value="male">Male</option>
@@ -33,12 +42,11 @@
         Please select a gender
       </div>
     </div>
-  </div>
 
-  <div class="mb-3">
-    <div class="col-md-4">
+
+    <div class="col-md-4 mb-3">
       <select id="status" formControlName="status" class="form-select">
-        <option value="" disabled selected>Select Gender</option>
+        <option value="" disabled selected>Select status</option>
         <option value="single">Single</option>
         <option value="married">Married</option>
         <option value="widow">Widow</option>
@@ -47,59 +55,99 @@
         Please select a Status
       </div>
     </div>
-  </div>
 
-  <app-text-input [formControl]="$any(ipForm.controls['tribe'])" 
+</div>
+
+<div class="row">
+  <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(ipForm.controls['tribe'])" 
                   [label]="'Tribe'">
-  </app-text-input>
-
-  <app-text-input [formControl]="$any(ipForm.controls['phonenum'])" 
-                  [label]="'Phone Number'">
-  </app-text-input>
-
-  <app-text-input [formControl]="$any(ipForm.controls['email'])" 
-                  [label]="'email'">
-  </app-text-input>
-
-  <app-text-input [formControl]="$any(ipForm.controls['facebook'])" 
-                  [label]="'facebook'">
-  </app-text-input>
-
-  <app-text-input [formControl]="$any(ipForm.controls['street'])" 
-                  [label]="'street'">
-  </app-text-input>
-
-  <app-text-input [formControl]="$any(ipForm.controls['barangay'])" 
-                  [label]="'barangay'">
-  </app-text-input>
-
-  <app-text-input [formControl]="$any(ipForm.controls['city'])" 
-                  [label]="'city'">
-  </app-text-input>
-
-  <app-text-input [formControl]="$any(ipForm.controls['churchname'])" 
-                  [label]="'Church Name'">
-  </app-text-input>
-
-  <app-text-input [formControl]="$any(ipForm.controls['ministry'])" 
-                  [label]="'ministry'">
-  </app-text-input>
-
-  <app-text-input [formControl]="$any(ipForm.controls['reason'])" 
-                  [label]="'reason'">
-  </app-text-input>
-  
-  <div class="row" *ngIf="validationErrors">
-    <ul class="text-danger">
-        <li *ngFor="let error of validationErrors">
-          {{error}}
-        </li>
-    </ul>
+        </app-text-input>
   </div>
+</div>
+
+
+<legend>Contact</legend>
+<hr>
+
+<div class="row">
+  <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(ipForm.controls['phonenum'])" 
+                  [label]="'Phone Number'">
+        </app-text-input>
+  </div>
+  <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(ipForm.controls['email'])" 
+                  [label]="'email'">
+        </app-text-input>
+  </div>
+
+  <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(ipForm.controls['facebook'])" 
+                  [label]="'facebook'">
+        </app-text-input>
+  </div>
+</div>
+
+
+<legend>Location</legend>
+<hr>
+
+<div class="row">
+  <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(ipForm.controls['street'])" 
+                  [label]="'street'">
+        </app-text-input>
+  </div>
+  <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(ipForm.controls['barangay'])" 
+                  [label]="'barangay'">
+        </app-text-input>
+  </div>
+  <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(ipForm.controls['city'])" 
+                  [label]="'city'">
+        </app-text-input>
+  </div>
+</div>
+
+
+<legend>Church</legend>
+<hr>
+  <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(ipForm.controls['churchname'])" 
+                  [label]="'Church Name'">
+        </app-text-input>
+  </div>
+
+
+<div class="col-md-8 mb-3">
+  <textarea class="form-control" 
+            [formControl]="ipForm.controls['ministry']"
+            name="ministry" 
+            rows="4"
+            placeholder="Enter Ministry"></textarea>
+</div>
+
+<div class="col-md-8 mb-3">
+  <textarea class="form-control" 
+            [formControl]="ipForm.controls['reason']"
+            name="reason" 
+            rows="4"
+            placeholder="Enter Reason"></textarea>
+</div>
+
+<div class="row" *ngIf="validationErrors">
+  <ul class="text-danger">
+    <li *ngFor="let error of validationErrors">
+      {{ error }}
+    </li>
+  </ul>
+</div>
 
   <div class="text-center">
     <button class="btn btn-success me-2" type="submit">submit</button>
     <!-- <button class="btn btn-default" type="button" (click)="cancel()">cancel</button> -->
   </div>
-
+</div>
 </form>

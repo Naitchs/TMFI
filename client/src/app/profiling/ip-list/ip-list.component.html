@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row col-md-12">
   <table class="table">
     <thead>
       <tr>
@@ -13,13 +13,13 @@
     </thead>
     <tbody>
       <tr *ngFor="let ipProfile of ipProfile" (click)="redirectToDetail(ipProfile.id)">
-        <td>{{ ipProfile.firstname }}</td>
-        <td>{{ ipProfile.lastname }}</td>
+        <td>{{ caps(ipProfile.firstname) }}</td>
+        <td>{{ caps(ipProfile.lastname) }}</td>
         <td>{{ ipProfile.age }}</td>
-        <td>{{ ipProfile.gender }}</td>
-        <td>{{ ipProfile.tribe }}</td>
-        <td>{{ ipProfile.city }}</td>
-        <td><button class="btn btn-info">Edit</button></td>
+        <td>{{ caps(ipProfile.gender) }}</td>
+        <td>{{ caps(ipProfile.tribe) }}</td>
+        <td>{{ caps(ipProfile.city) }}</td>
+        <td><button class="btn btn-info"  routerLink="">Edit</button></td>
       </tr>
     </tbody>
   </table>

@@ -1,0 +1,26 @@
+<div class="row">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Age</th>
+        <th>Gender</th>
+        <th>Tribe</th>
+        <th>City</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let sapProfile of sapProfile" (click)="redirectToDetail(sapProfile.id)">
+        <td>{{ caps(sapProfile.firstname) }}</td>
+        <td>{{ caps(sapProfile.lastname) }}</td>
+        <td>{{ sapProfile.age }}</td>
+        <td>{{ caps(sapProfile.gender) }}</td>
+        <td>{{ caps(sapProfile.tribe) }}</td>
+        <td>{{ caps(sapProfile.city) }}</td>
+        <td><button class="btn btn-info"  routerLink="">Edit</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

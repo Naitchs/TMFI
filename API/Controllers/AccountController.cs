@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using API.Data;
@@ -28,14 +29,16 @@ namespace API.Controllers
         [HttpPost("register")]
 
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto){
+
+            var normalizedUsername = registerDto.Username.ToLower();
             
-            if (await UserExist(registerDto.Username)) return BadRequest("Username is Taken");
+            if (await UserExist(normalizedUsername)) return BadRequest("Username is Taken");
               // using var hmac = new HMACSHA512();
             // user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password));
             // user.PasswordHalt = hmac.Key;
             var user = _mapper.Map<AppUser>(registerDto);
 
-            user.UserName = registerDto.Username.ToLower();
+            user.UserName = normalizedUsername;
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
 
@@ -55,17 +58,25 @@ namespace API.Controllers
         [HttpPost("login")]
         
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto){
-
+            
+            var normalizedUsername = loginDto.Username.ToLower();
             var user = await _userManager.Users
                .Include(p => p.Photos)
                .SingleOrDefaultAsync(x => 
-               x.UserName == loginDto.Username);
+               x.UserName == normalizedUsername);
 
             if (user == null) return Unauthorized("invalid username");
 
             var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
 
             if (!result) return Unauthorized("Invalid Password");
+
+             // User is authenticated, generate JWT token
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.UserName)
+            // Add other claims if needed
+            };
 
             // using var hmac = new HMACSHA512(user.PasswordHalt);
 

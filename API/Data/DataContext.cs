@@ -15,6 +15,7 @@ namespace API.Data
 
         // public DbSet<AppUser> Users { get; set; }
            public DbSet<AppIp> Ips { get; set; }
+           public DbSet<AppSap> Saps { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

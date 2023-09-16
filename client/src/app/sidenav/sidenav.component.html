@@ -22,6 +22,7 @@
         <li class="nav-item">
           <a class="nav-link " routerLink="/profiling" routerLinkActive="active">Profiling</a>
         </li>
+
         
         <ng-container *appHasRole="['SuperAdmin', 'Admin' ]">
           <hr>
@@ -31,8 +32,6 @@
           <li class="nav-item">
             <a class="nav-link active"  routerLink="/members" routerLinkActive="active">Members</a>
           </li>
-
-
         </ng-container>
      
         

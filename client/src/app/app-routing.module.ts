@@ -15,6 +15,7 @@ import { AdminGuard } from "./_guards/admin.guard";
 import { IpProfileComponent } from "./profiling/ip-profile/ip-profile.component";
 import { ProfilingPanelComponent } from "./profiling/profiling-panel/profiling-panel.component";
 import { IpDetailComponent } from "./profiling/ip-detail/ip-detail.component";
+import { SapDetailComponent } from "./profiling/sap-detail/sap-detail.component";
 
 const routes : Routes = [
   {path: '', component: HomeComponent}, 
@@ -27,6 +28,7 @@ const routes : Routes = [
       {path: 'member/edit', component: MemberEditComponent, canDeactivate: [PreventUnsavedChangesGuard]},
       {path: 'list', component: ListsComponent},
       {path: 'ip-detail/:id', component: IpDetailComponent},
+      {path: 'sap-detail/:id', component: SapDetailComponent},
       {path: 'profiling', component: ProfilingPanelComponent},
       {path: 'admin', component: AdminPanelComponent, canActivate: [AdminGuard]},
       {path: 'home', component: HomeComponent }

@@ -45,20 +45,50 @@ namespace API.Controllers
   
     }
 
+    // [HttpPut]
+    // public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto){
+
+    //   var user = await _userRepository.GetUsersByUsernameAsync(User.GetUsername());
+
+    //   if (user == null) return NotFound();
+
+    //   _mapper.Map(memberUpdateDto, user);
+
+    //   if (await _userRepository.SaveAllAsync()) return NoContent();
+
+    //   return BadRequest("Failed to update user");
+
+    // }
+
     [HttpPut]
-    public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto){
+public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
+{
+    try
+    {
+        var user = await _userRepository.GetUsersByUsernameAsync(User.GetUsername());
 
-      var user = await _userRepository.GetUsersByUsernameAsync(User.GetUsername());
+        if (user == null)
+        {
+            return NotFound("User not found");
+        }
 
-      if (user == null) return NotFound();
+        _mapper.Map(memberUpdateDto, user);
 
-      _mapper.Map(memberUpdateDto, user);
-
-      if (await _userRepository.SaveAllAsync()) return NoContent();
-
-      return BadRequest("Failed to update user");
-
+        if (await _userRepository.SaveAllAsync())
+        {
+            return NoContent();
+        }
+        else
+        {
+            return BadRequest("Failed to update user");
+        }
     }
+    catch (Exception ex)
+    {
+        return StatusCode(500, $"Internal server error: {ex.Message}");
+    }
+}
+
 
     [HttpPost("add-photo")]
     public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file){

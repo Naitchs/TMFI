@@ -44,6 +44,11 @@ import { ProfilingPanelComponent } from './profiling/profiling-panel/profiling-p
 import { IpProfileComponent } from './profiling/ip-profile/ip-profile.component';
 import { IpListComponent } from './profiling/ip-list/ip-list.component';
 import { IpDetailComponent } from './profiling/ip-detail/ip-detail.component';
+import { SapProfileRegisterComponent } from './profiling/sap-profile-register/sap-profile-register.component';
+import { SapListComponent } from './profiling/sap-list/sap-list.component';
+import { SapDetailComponent } from './profiling/sap-detail/sap-detail.component';
+import { TrenComponent } from './tren/tren.component';
+
 
 
 
@@ -79,6 +84,11 @@ import { IpDetailComponent } from './profiling/ip-detail/ip-detail.component';
     ProfilingPanelComponent,
     IpListComponent,
     IpDetailComponent,
+    SapProfileRegisterComponent,
+    SapListComponent,
+    SapDetailComponent,
+    TrenComponent,
+
 
 
   ],

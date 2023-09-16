@@ -1,22 +1,24 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace API.DTOs
 {
     public class RegisterIpDto
     {
         // public int Id { get; set; }
 
-        public string Firstname { get; set; }
+        [Required] public string Firstname { get; set; }
         
         public string Middlename { get; set; }
 
-        public string Lastname { get; set; }
+        [Required] public string Lastname { get; set; }
 
-        public DateOnly? DateOfBirth { get; set; }
+        [Required] public DateOnly? DateOfBirth { get; set; }
 
-        public string Gender { get; set; }
+        [Required] public string Gender { get; set; }
 
-        public string Status { get; set; }
+        [Required] public string Status { get; set; }
 
-        public string Tribe { get; set; }
+        [Required] public string Tribe { get; set; }
 
         public string PhoneNum { get; set; }
 
@@ -26,11 +28,11 @@ namespace API.DTOs
 
         public string Street { get; set; }
 
-        public string Barangay { get; set; }
+        [Required] public string Barangay { get; set; }
 
-        public string City { get; set; }
+        [Required] public string City { get; set; }
 
-        public string ChurchName { get; set; }
+        [Required] public string ChurchName { get; set; }
 
         public string Ministry { get; set; }
 

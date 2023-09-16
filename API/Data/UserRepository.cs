@@ -23,6 +23,11 @@ namespace API.Data
              _context.Ips.Add(ip);
         }
 
+        public void Add(AppSap sap)
+        {
+             _context.Saps.Add(sap);
+        }
+
         public async Task<IEnumerable<IpDto>> GetIpsAsync()
         {
              return await _context.Ips
@@ -32,14 +37,11 @@ namespace API.Data
 
        public async Task<IpDto> GetIpsByIdAsync(int id)
         {
-            // return await _context.Ips.FindAsync(id);
-            //  return await _context.Ips
-            //   .ProjectTo<IpDto>(_mapper.ConfigurationProvider)
-            //   .FindAsync(id);
+
                return await _context.Ips
-        .Where(ip => ip.Id == id)
-        .ProjectTo<IpDto>(_mapper.ConfigurationProvider)
-        .FirstOrDefaultAsync();
+                    .Where(ip => ip.Id == id)
+                    .ProjectTo<IpDto>(_mapper.ConfigurationProvider)
+                    .FirstOrDefaultAsync();
         }
 
         public async Task<MemberDto> GetMemberAsync(string username)
@@ -56,7 +58,22 @@ namespace API.Data
               .ToListAsync();
     }
 
-    public async Task<IEnumerable<AppUser>> GetUsersAsync()
+        public async Task<IEnumerable<SapDto>> GetSapsAsync()
+        {
+            return await _context.Saps
+                   .ProjectTo<SapDto>(_mapper.ConfigurationProvider)
+                   .ToListAsync();
+        }
+
+        public async Task<SapDto> GetSapsByIdAsync(int id)
+        {
+            return await _context.Saps
+                    .Where(ip => ip.Id == id)
+                    .ProjectTo<SapDto>(_mapper.ConfigurationProvider)
+                    .FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<AppUser>> GetUsersAsync()
     {
       return await _context.Users
                 .Include(p => p.Photos)
@@ -88,6 +105,11 @@ namespace API.Data
         public void Update(AppIp ip)
         {
             _context.Entry(ip).State = EntityState.Modified;
+        }
+
+        public void Update(AppSap sap)
+        {
+            throw new NotImplementedException();
         }
     }
 }

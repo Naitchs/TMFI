@@ -29,11 +29,30 @@ export class IpDetailComponent implements OnInit{
   loadIp(id: number) {
     this.profileService.getIp(id).subscribe({
       next: ipProfile => {
-        console.log(ipProfile);
+        // console.log(ipProfile);
         this.ipProfile = ipProfile;
       }
     });
   }
+
+  caps(str: string): string {
+    if (!str) return str;
+  
+    return str
+      .toLowerCase()
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
+
+  getFormattedDate(dateOfBirth: string): string {
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateOfBirth).toLocaleDateString(undefined, options);
+  }
+  
+  
+  
+
 
   // loadIp(){
   //   const id = this.route.snapshot.paramMap.get('id');

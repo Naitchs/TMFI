@@ -20,6 +20,9 @@ namespace API.Helpers
                 CreateMap<RegisterIpDto, AppIp>();
                 CreateMap<AppIp, IpDto>().ForMember(dest => dest.Age, 
                          opt => opt.MapFrom(src => src.DateOfBirth.CalculateAge()));
+                CreateMap<RegisterSapDto, AppSap>();
+                CreateMap<AppSap, SapDto>().ForMember(dest => dest.Age, 
+                         opt => opt.MapFrom(src => src.DateOfBirth.CalculateAge()));
         }
     }
 }

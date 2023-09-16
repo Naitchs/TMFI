@@ -26,4 +26,14 @@ export class IpListComponent implements OnInit{
     this.router.navigate(['/ip-detail', id]);
   }
 
+  caps(str: string): string {
+    if (!str) return str;
+  
+    return str
+      .toLowerCase()
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
+
 }

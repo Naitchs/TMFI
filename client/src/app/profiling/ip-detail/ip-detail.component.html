@@ -1,10 +1,11 @@
 <div class="row" *ngIf="ipProfile">
   <div class="col-md-4">
     <div class="card">   
+             <div class="card-body">
 
                  <div>
                       <strong>Name:</strong>
-                      <p>{{ipProfile?.firstname}} {{ipProfile?.middlename}} {{ipProfile?.lastname}}</p>
+                      <p>{{caps(ipProfile?.firstname)}} {{caps(ipProfile?.middlename)}} {{caps(ipProfile?.lastname)}}</p>
                 </div>  
 
                  <div>
@@ -13,49 +14,59 @@
                 </div>  
       
                 <div>
-                      <strong>Birthday:</strong>
-                      <p>{{ipProfile?.dateOfBirth}}</p>
+                  <strong>Birthday:</strong>
+                  <p>{{ getFormattedDate(ipProfile?.dateOfBirth) }}</p>
                 </div>
+                
                 <div>
                   <strong>Gender:</strong>
-                  <p>{{ipProfile?.gender}}</p>
+                  <p>{{caps(ipProfile?.gender)}}</p>
                 </div>
                 <div>
                   <strong>Status:</strong>
-                  <p>{{ipProfile?.status}}</p>
+                  <p>{{caps(ipProfile?.status)}}</p>
                 </div>
                 <div>
                   <strong>Tribe:</strong>
-                  <p>{{ipProfile?.tribe}}</p>
+                  <p>{{caps(ipProfile?.tribe)}}</p>
                 </div>
                 <div>
                       <strong>Location:</strong>
-                      <p>{{ipProfile?.street}}, {{ipProfile?.barangay}}, {{ipProfile?.city}}</p>
+                      <p>{{caps(ipProfile?.street)}} {{caps(ipProfile?.barangay)}}, {{caps(ipProfile?.city)}}</p>
                 </div>
                 
                 <div>
                   <strong>Phone Number:</strong>
                   <p>{{ipProfile?.phoneNum}}</p>
                 </div>
+              
+              
+              </div>
 
+                <div class="card-footer">
+                  <div class="btn-group d-flex">
+    
+                      <button class="btn btn-success">Edit</button>
+    
+                  </div>
+                </div>
            
-            </div>
-            
-
-   
     </div>
   </div>
 
-  <div class="col-md-8">
+  <div class="col-md-4">
       <tabset class="member-tabset">
-        <tab heading="About {{ipProfile?.lastname}}">
+        <tab heading="About {{caps(ipProfile?.lastname)}}">
             <h4>Social Media</h4>
-            <p>{{ipProfile?.email}}</p>
-            <p>{{ipProfile?.facebook}}</p>
+            <p>Email: {{ipProfile?.email}}</p>
+            <p>Facebook: {{ipProfile?.facebook}}</p>
             <h4>Ministry</h4>
-            <p>{{ipProfile?.ministry}}</p>
+            <p>{{caps(ipProfile?.ministry)}}</p>
             <h4>Reason</h4>
-            <p>{{ipProfile?.ministry}}</p>
+            <p>{{caps(ipProfile?.reason)}}</p>
         </tab> 
+        <tab heading="Tren">
+            <app-tren></app-tren>
+      </tab> 
       </tabset>
   </div>

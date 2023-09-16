@@ -1,0 +1,211 @@
+<form [formGroup]="sapForm" (ngSubmit)="registerSap()"autocomplete="off">
+
+  <div class="formGroup">
+
+    <legend>Information</legend>
+    <hr>
+
+    <div class="row">
+
+      <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(sapForm.controls['firstname'])" 
+                  [label]="'First Name'">
+          </app-text-input>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(sapForm.controls['middlename'])" 
+                  [label]="'Middle Name'">
+          </app-text-input>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(sapForm.controls['lastname'])" 
+                  [label]="'Last Name'">
+          </app-text-input>
+      </div>
+  
+    </div>
+
+    <div class="row">
+
+    <div class="col-md-4 mb-3">
+      <select id="gender" formControlName="gender" class="form-select">
+        <option value="" disabled selected>Select Gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+      <div class="invalid-feedback" *ngIf="sapForm.get('gender')?.errors?.['required'] && sapForm.get('gender').touched">
+        Please select a gender
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <app-date-picker [formControl]="$any(sapForm.controls['dateOfBirth'])" 
+                      [label]="'Date of Birth'" [maxDate]="maxDate">
+      </app-date-picker>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <app-text-input [formControl]="$any(sapForm.controls['birthPlaceCity'])" 
+                [label]="'Birth Place City'">
+        </app-text-input>
+    </div>
+
+    </div>
+    
+    <div class="row">
+
+      <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(sapForm.controls['tribe'])" 
+                  [label]="'Tribe'">
+        </app-text-input>
+      </div>
+
+    </div>
+
+    <legend>Location</legend>
+    <hr>
+
+    <div class="row">
+
+      <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(sapForm.controls['street'])" 
+                  [label]="'Barangay'">
+        </app-text-input>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(sapForm.controls['city'])" 
+                  [label]="'City'">
+        </app-text-input>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(sapForm.controls['churchName'])" 
+                  [label]="'Church Name'">
+        </app-text-input>
+      </div>
+
+    </div>
+
+    <legend>Family Background</legend>
+    <hr>
+
+    <div class="row">
+
+      <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(sapForm.controls['fathername'])" 
+                  [label]="'Father Name'">
+        </app-text-input>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(sapForm.controls['mothername'])" 
+                  [label]="'Mother Name'">
+        </app-text-input>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(sapForm.controls['parentOccupation'])" 
+                  [label]="'Parent Occupation'">
+        </app-text-input>
+      </div>
+
+    </div>
+
+    <div class="row">
+
+      <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(sapForm.controls['numberOfSibling'])" 
+                  [label]="'Number of Sibling'">
+        </app-text-input>
+      </div>
+      
+    </div>
+
+    <legend>School</legend>
+    <hr>
+
+    <div class="row">
+
+      <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(sapForm.controls['schoolName'])" 
+                  [label]="'School Name'">
+        </app-text-input>
+      </div>
+
+      
+      <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(sapForm.controls['gradeLevel'])" 
+                  [label]="'Grade Level'">
+        </app-text-input>
+      </div>
+
+      
+      <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(sapForm.controls['yearSapStarted'])" 
+                  [label]="'Year Sap Started'">
+        </app-text-input>
+      </div>
+
+    </div>
+
+    <legend>Others</legend>
+    <hr>
+
+    <div class="row">
+
+      <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(sapForm.controls['communityInvolvement'])" 
+                  [label]="'Community Involvement'">
+        </app-text-input>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(sapForm.controls['talent'])" 
+                  [label]="'Talen'">
+        </app-text-input>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(sapForm.controls['sport'])" 
+                  [label]="'Sport'">
+        </app-text-input>
+      </div>
+
+    </div>
+
+    <div class="row">
+
+      <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(sapForm.controls['ambition'])" 
+                  [label]="'Ambition'">
+        </app-text-input>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(sapForm.controls['motto'])" 
+                  [label]="'Motto'">
+        </app-text-input>
+      </div>
+
+    </div>
+
+  
+    <div class="row" *ngIf="validationErrors">
+      <ul class="text-danger">
+          <li *ngFor="let error of validationErrors">
+            {{error}}
+          </li>
+      </ul>
+    </div>
+  
+    <div class="text-center">
+      <button class="btn btn-success me-2" type="submit">submit</button>
+      <!-- <button class="btn btn-default" type="button" (click)="cancel()">cancel</button> -->
+    </div>
+
+  </div><!-- form group -->
+  
+</form>
