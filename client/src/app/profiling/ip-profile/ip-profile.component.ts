@@ -60,12 +60,11 @@ export class IpProfileComponent {
     const values = {...this.ipForm.value, dateOfBirth: dob};
     this.profileService.registerProfile(values).subscribe(
       () => {
-        window.location.reload();
+        // window.location.reload();
         this.toastr.success('Profile registered successfully', 'Success');
         this.ipForm.reset(); // This will reset all the form fields
       },
       (error) => {
-        console.log(error);
         this.validationErrors = error; // Set the validationErrors array with the error messages
         this.toastr.error('Error registering profile', 'Error');
         

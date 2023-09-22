@@ -30,19 +30,8 @@ export class MembersService {
     const member = this.members.find(x => x.userName === username);
     if (member) return of (member);
     return this.http.get<Member>(this.baseUrl + 'users/' + username);
-    // this.getHttpOptions()
   }
 
-  // getHttpOptions(){
-  //   const userString = localStorage.getItem('user');
-  //   if (!userString) return;
-  //   const user = JSON.parse(userString);
-  //   return {
-  //     headers: new HttpHeaders({
-  //       Authorization: 'Bearer ' + user.token
-  //     })
-  //   }
-  // }
 
   updateMember(member: Member){
     return this.http.put(this.baseUrl + 'users', member).pipe(

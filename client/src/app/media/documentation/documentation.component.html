@@ -1,0 +1,147 @@
+
+  <form [formGroup]="documentationForm" (ngSubmit)="registerDocumentation()" autocomplete="off">
+<div class="row">
+    <div class="card col-md-4">
+      <div class="card-body">
+    <div class="form-group ">
+      <legend>Media Upload</legend>
+      <hr>
+      <label for="title">Title</label>
+      <app-text-input [formControl]="$any(documentationForm.controls['title'])" 
+           [label]="'Title'">
+      </app-text-input>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+        <textarea class="form-control" 
+        [formControl]="documentationForm.controls['description']"
+        name="reason" 
+        rows="4"
+        placeholder="Description"></textarea>
+    </div>
+   
+<hr>
+
+<div class="form-group mb-3">
+  <label for="files">Files</label>
+  <input type="file" id="files" (change)="onFileChange($event)" multiple />
+</div>
+
+    <hr>
+
+
+    
+    <div class="form-group mb-3">
+      <label for="pictures">Pictures</label>
+      <input type="file" id="pictures" (change)="onPictureChange($event)" multiple /> 
+    </div>
+   
+  
+  
+    <hr>
+
+    <div class="form-group mb-3">
+      <label for="videos">Videos/Audio</label>
+      <input type="file" id="videos" (change)="onVideoChange($event)" multiple />
+    </div>
+
+    <hr>
+
+    <div class="row" *ngIf="validationErrors">
+      <ul class="text-danger">
+          <li *ngFor="let error of validationErrors">
+            {{error}}
+          </li>
+      </ul>
+    </div>
+
+    <div class="card-footer">
+      <div class="btn-group d-flex">
+        <button type="submit" 
+                [disabled]="!documentationForm.dirty"
+                class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="col-md-8">
+      
+      <div class="col-md-9" style="margin-bottom: 40px" *ngIf="files && files.length">
+        <h3>Upload File</h3>
+        <p>Queue Length: {{files.length}} files</p>
+        <table class="table">
+          <thead>
+            <tr>
+              <th width="50%">Name</th>
+              <th>Size</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let file of files; let i = index">
+              <td><strong>{{ file.name }}</strong></td>
+              <td>{{ (file.size / 1024 / 1024).toFixed(2) }} MB</td>
+              <td>
+                <button (click)="removeFile(i)" class="btn btn-danger">Remove</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    
+
+      <div class="col-md-9" style="margin-bottom: 40px" *ngIf="pictures && pictures.length">
+        <h3>Upload Picture </h3>
+        <p>Queue Length: {{pictures.length}} pictures</p>
+        <table class="table">
+          <thead>
+            <tr>
+              <th width="50%">Name</th>
+              <th>Size</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let picture of pictures; let i = index">
+              <td><strong>{{ picture.name }}</strong></td>
+              <td>{{ (picture.size / 1024 / 1024).toFixed(1) }} MB</td>
+              <td>
+                     <button (click)="removePicture(i)" class="btn btn-danger">Remove</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col-md-9" style="margin-bottom: 40px" *ngIf="videos && videos.length">
+        <h3>Upload Videos</h3>
+        <p>Queue Length: {{videos.length}} videos</p>
+        <table class="table">
+          <thead>
+            <tr>
+              <th width="50%">Name</th>
+              <th>Size</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let video of videos; let i = index">
+              <td><strong>{{ video.name }}</strong></td>
+              <td>{{ (video.size / 1024 / 1024).toFixed(1) }} MB</td>
+              <td>
+                <button (click)="removeVideo(i)" class="btn btn-danger">Remove</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    
+    </div>
+</div>
+
+
+  </form>
+
+
+
+

@@ -1,0 +1,13 @@
+input[type=file]{
+  color: transparent;
+}
+
+.arrow-icon::before {
+  display: inline-block;
+  content: '\25B8'; /* Right-pointing arrow */
+  transition: transform 0.3s;
+}
+
+.arrow-rotated::before {
+  transform: rotate(90deg);
+}

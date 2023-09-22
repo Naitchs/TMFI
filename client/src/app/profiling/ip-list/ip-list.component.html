@@ -12,7 +12,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let ipProfile of ipProfile" (click)="redirectToDetail(ipProfile.id)">
+      <tr *ngFor="let ipProfile of paginatedList" (click)="redirectToDetail(ipProfile.id)">
         <td>{{ caps(ipProfile.firstname) }}</td>
         <td>{{ caps(ipProfile.lastname) }}</td>
         <td>{{ ipProfile.age }}</td>
@@ -23,4 +23,9 @@
       </tr>
     </tbody>
   </table>
+  <div class="pagination">
+    <button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+    <span> Page {{ currentPage }} of {{ totalPages }} </span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+  </div>
 </div>

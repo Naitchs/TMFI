@@ -2,6 +2,7 @@ using API.DTOs;
 using API.Entities;
 using API.Extensions;
 using AutoMapper;
+using static API.Entities.MediaModels;
 
 namespace API.Helpers
 {
@@ -23,6 +24,57 @@ namespace API.Helpers
                 CreateMap<RegisterSapDto, AppSap>();
                 CreateMap<AppSap, SapDto>().ForMember(dest => dest.Age, 
                          opt => opt.MapFrom(src => src.DateOfBirth.CalculateAge()));
+               CreateMap<AppDocumentation, DocumentationDto>()
+              .ForMember(dest => dest.Videos, opt => opt.MapFrom(src => src.Videos.Select(v => new VideoDto
+              {
+                  PublicId = v.PublicId,
+                  Url = v.Url,
+                  
+              })))
+              .ForMember(dest => dest.Files, opt => opt.MapFrom(src => src.Files.Select(f => new FilesDto
+              {
+                  PublicId = f.PublicId,
+                  Url = f.Url
+              })))
+              .ForMember(dest => dest.Pictures, opt => opt.MapFrom(src => src.Pictures.Select(p => new PictureDto
+              {
+                  PublicId = p.PublicId,
+                  Url = p.Url,
+                 
+              })));
+
+            CreateMap<DocumentationDto, AppDocumentation>();
+            // .ForMember(dest => dest.Videos, opt => opt.MapFrom(src => src.Videos.Select(v => new Video
+            // {
+            //     Url = v.FileName  // Assuming 'Url' in Video corresponds to the file name
+            // })))
+            // .ForMember(dest => dest.Files, opt => opt.MapFrom(src => src.Files.Select(f => new Files
+            // {
+            //     Url = f.FileName  // Assuming 'Url' in Files corresponds to the file name
+            // })))
+            // .ForMember(dest => dest.Pictures, opt => opt.MapFrom(src => src.Pictures.Select(p => new Picture
+            // {
+            //     Url = p.FileName  // Assuming 'Url' in Picture corresponds to the file name
+            // })));
+           CreateMap<AppDocumentation, GetDocsDto>()
+    .ForMember(dest => dest.Videos, opt => opt.MapFrom(src => src.Videos.Select(v => new VideoDto
+    {
+        PublicId = v.PublicId,
+        Url = v.Url,
+    })))
+    .ForMember(dest => dest.Files, opt => opt.MapFrom(src => src.Files.Select(f => new FilesDto
+    {
+        PublicId = f.PublicId,
+        Url = f.Url
+    })))
+    .ForMember(dest => dest.Pictures, opt => opt.MapFrom(src => src.Pictures.Select(p => new PictureDto
+    {
+        PublicId = p.PublicId,
+        Url = p.Url,
+    })));
+
+
+
         }
     }
 }

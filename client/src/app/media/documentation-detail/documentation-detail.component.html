@@ -1,0 +1,87 @@
+<div class="row" *ngIf="documentations">
+  <div class="col-md-4">
+    <div class="card">   
+             <div class="card-body">
+
+                 <div>
+                      <strong>Title</strong>
+                      <p>{{caps(documentations?.title)}}
+                </div>  
+
+                 <div>
+                      <strong>Description:</strong>
+                      <p>{{documentations?.description}}</p>
+                </div>  
+                
+                <div>
+                  <strong>Date/Time:</strong>
+                  <p>{{documentations?.addedDateTime | date:'medium'}}</p>
+                </div>  
+     
+              
+              </div>
+
+                <div class="card-footer">
+                  <div class="btn-group d-flex">
+    
+                      <button class="btn btn-success">Edit</button>
+    
+                  </div>
+                </div>
+           
+    </div>
+  </div>
+
+  
+  <div class="col-md-8">
+    <tabset class="member-tabset">
+      <ng-container *ngIf="documentations">
+        <ng-container *ngIf="documentations.pictures && documentations.pictures.length > 0" class="col-md-12">
+          <tab heading="Pictures">
+            <ngx-gallery [options]="galleryOptions" [images]="galleryImages" class="ngx-gallery"></ngx-gallery>
+          </tab>
+        </ng-container>
+    
+        <ng-container *ngIf="documentations && documentations.videos && documentations.videos.length > 0 ">
+          <tab heading="Audio/Video">
+            <div *ngFor="let media of documentations.videos">
+
+              <div class="audio-container">
+                <audio #audioElement [vgMedia]="media" preload="metadata" controls 
+                   style="max-width: 100%; height: auto; max-height: 400px;">
+                  <source [src]="media.url" type="audio/mp3">
+                </audio>
+              </div>
+              
+
+                  <!-- Display video -->
+                  <div class="video-container" (mouseenter)="onVideoHover(media)" (mouseleave)="hoveredVideo = null">
+                    <vg-player>
+                      <video [vgMedia]="media" #mediaElement preload="metadata" controls
+                        style="max-width: 100%; height: auto; max-height: 400px;">
+                        <source [src]="media.url" type="video/mp4">
+                      </video> {{ media.publicId }}
+                    </vg-player>
+                    <div class="overlay" *ngIf="hoveredVideo === media">
+                      {{ media.publicId }}
+                    </div>
+                  </div>
+
+            </div>
+          </tab>
+        </ng-container>
+        
+    
+        <ng-container *ngIf="documentations.files && documentations.files.length > 0">
+          <tab heading="Files">
+            <ul>
+              <li *ngFor="let file of documentations.files">
+                <a [href]="file.url" download="{{ file.publicId }}">{{ file.publicId }}</a>
+              </li>
+            </ul>
+          </tab>
+        </ng-container>
+      </ng-container>
+    </tabset>
+    
+  </div>

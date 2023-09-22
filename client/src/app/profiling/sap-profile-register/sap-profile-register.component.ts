@@ -66,7 +66,7 @@ export class SapProfileRegisterComponent {
       const values = {...this.sapForm.value, dateOfBirth: dob};
       this.profileService.registerSap(values).subscribe(
         () => {
-          window.location.reload();
+          // window.location.reload();
           this.toastr.success('Sap registered successfully', 'Success');
           this.sapForm.reset(); // This will reset all the form fields
         },

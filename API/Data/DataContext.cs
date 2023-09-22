@@ -2,6 +2,7 @@ using API.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using static API.Entities.MediaModels;
 
 namespace API.Data
 {
@@ -14,6 +15,10 @@ namespace API.Data
     }
 
         // public DbSet<AppUser> Users { get; set; }
+           public DbSet<AppDocumentation> AppDocumentations { get; set; }
+           public DbSet<Video> Videos { get; set; }
+           public DbSet<Files> Files { get; set; }
+           public DbSet<Picture> Pictures { get; set; }
            public DbSet<AppIp> Ips { get; set; }
            public DbSet<AppSap> Saps { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
@@ -26,11 +31,26 @@ namespace API.Data
             .HasForeignKey(ur => ur.UserId)
             .IsRequired();
 
-             builder.Entity<AppRole>()
+            builder.Entity<AppRole>()
             .HasMany(ur => ur.UserRoles)
             .WithOne(u => u.Role)
             .HasForeignKey(ur => ur.RoleId)
             .IsRequired();
+
+            builder.Entity<Video>()
+            .HasOne(v => v.AppDocumentation)
+            .WithMany(ad => ad.Videos)
+            .HasForeignKey(v => v.AppDocumentationId);
+
+            builder.Entity<Files>()
+            .HasOne(f => f.AppDocumentation)
+            .WithMany(ad => ad.Files)
+            .HasForeignKey(f => f.AppDocumentationId);
+
+            builder.Entity<Picture>()
+            .HasOne(p => p.AppDocumentation)
+            .WithMany(ad => ad.Pictures)
+            .HasForeignKey(p => p.AppDocumentationId);
 
         }
         

@@ -28,6 +28,47 @@ namespace API.Data
              _context.Saps.Add(sap);
         }
 
+
+        public void Add(AppDocumentation doc)
+        {
+            _context.AppDocumentations.Add(doc);
+        }
+
+        public void Add(MediaModels.Files fileEntity)
+        {
+            _context.Files.Add(fileEntity);
+        }
+
+        public void Add(MediaModels.Picture pictureEntity)
+        {
+            _context.Pictures.Add(pictureEntity);
+        }
+
+        public void Add(MediaModels.Video videoEntity)
+        {
+            _context.Videos.Add(videoEntity);
+        }
+
+
+
+        public async Task<IEnumerable<GetDocsDto>> GetDocsDtoAsync()
+        {
+               return await _context.AppDocumentations
+                .Include(d => d.Files)
+                .Include(d => d.Pictures)
+                .Include(d => d.Videos)
+              .ProjectTo<GetDocsDto>(_mapper.ConfigurationProvider)
+              .ToListAsync();
+        }
+
+        public async Task<GetDocsDto> GetDocsDtoByIdAsync(int id)
+        {
+            return await _context.AppDocumentations
+                    .Where(ip => ip.Id == id)
+                    .ProjectTo<GetDocsDto>(_mapper.ConfigurationProvider)
+                    .FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<IpDto>> GetIpsAsync()
         {
              return await _context.Ips
@@ -111,5 +152,12 @@ namespace API.Data
         {
             throw new NotImplementedException();
         }
+
+        public void update(AppDocumentation doc)
+        {
+            throw new NotImplementedException();
+        }
+
+
     }
 }

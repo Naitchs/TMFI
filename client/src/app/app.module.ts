@@ -48,8 +48,10 @@ import { SapProfileRegisterComponent } from './profiling/sap-profile-register/sa
 import { SapListComponent } from './profiling/sap-list/sap-list.component';
 import { SapDetailComponent } from './profiling/sap-detail/sap-detail.component';
 import { TrenComponent } from './tren/tren.component';
-
-
+import { DocumentationPanelComponent } from './media/documentation-panel/documentation-panel.component';
+import { DocumentationListComponent } from './media/documentation-list/documentation-list.component';
+import { DocumentationComponent } from './media/documentation/documentation.component';
+import { DocumentationDetailComponent } from './media/documentation-detail/documentation-detail.component';
 
 
 
@@ -88,6 +90,15 @@ import { TrenComponent } from './tren/tren.component';
     SapListComponent,
     SapDetailComponent,
     TrenComponent,
+    DocumentationPanelComponent,
+    DocumentationListComponent,
+    DocumentationComponent,
+    DocumentationDetailComponent,
+
+
+
+    
+    
 
 
 
@@ -105,7 +116,6 @@ import { TrenComponent } from './tren/tren.component';
     MatListModule,
     MatExpansionModule,
     ReactiveFormsModule,
-
     HttpClientModule,
     SharedModule
   ],

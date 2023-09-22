@@ -13,6 +13,11 @@ export class SapListComponent {
   @Input() profile: Sap | undefined;
   sapProfile: Sap [] = [];
 
+  currentPage: number = 1;
+  itemsPerPage: number = 8;
+  totalItems: number;
+
+
   constructor(private profileService: ProfileService, private router: Router) { }
 
 
@@ -34,6 +39,28 @@ export class SapListComponent {
       .split(' ')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
+  }
+  
+  get paginatedList() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.sapProfile.slice(startIndex, endIndex);
+  }
+
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+  
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+    }
+  }
+  
+  get totalPages() {
+    return Math.ceil(this.sapProfile.length / this.itemsPerPage);
   }
 
 }

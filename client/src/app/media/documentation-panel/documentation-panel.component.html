@@ -1,0 +1,13 @@
+<h2>Documentation Panel</h2>
+<div class="tab-panel">
+  <tabset class="member-tabset">
+    <tab heading="Add Documentation" *appHasRole="['Member']">
+      <app-documentation></app-documentation>
+    </tab>
+    <tab heading="Documentation List" *appHasRole="['Member']">
+           <div class="container">
+               <app-documentation-list></app-documentation-list>
+           </div>
+    </tab>
+  </tabset>
+</div>
