@@ -1,0 +1,14 @@
+  <h2 class="ms-3">Reports</h2>
+
+<div class="tab-panel mb-3 p-3 shadow">
+  <tabset class="member-tabset">
+    <tab heading="Add Excel Data" *appHasRole="['Member']">
+      <app-excel-upload-file ></app-excel-upload-file>
+    </tab>
+    <tab heading="Data List" *appHasRole="['Member']">
+           <div class="container">
+               <app-excel-list></app-excel-list>
+           </div>
+    </tab>
+  </tabset>
+</div>

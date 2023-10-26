@@ -2,6 +2,7 @@ using API.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using static API.Entities.ExcelModels;
 using static API.Entities.MediaModels;
 
 namespace API.Data
@@ -21,6 +22,14 @@ namespace API.Data
            public DbSet<Picture> Pictures { get; set; }
            public DbSet<AppIp> Ips { get; set; }
            public DbSet<AppSap> Saps { get; set; }
+           public DbSet<ExcelData> ExcelData { get; set; }
+           public DbSet<ExcelFile> ExcelFile { get; set; }
+
+        //    public DbSet<AppCourse> Courses { get; set; }
+        //    public DbSet<AppEnrollment> Enrollments { get; set; }
+        //    public DbSet<Attendance> Attendances { get; set; }
+        //    public DbSet<Grade> Grades { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -51,6 +60,12 @@ namespace API.Data
             .HasOne(p => p.AppDocumentation)
             .WithMany(ad => ad.Pictures)
             .HasForeignKey(p => p.AppDocumentationId);
+
+            builder.Entity<ExcelFile>()
+        .HasOne(ef => ef.ExcelData)
+        .WithMany(ed => ed.Files)
+        .HasForeignKey(ef => ef.ExcelDataId);
+
 
         }
         

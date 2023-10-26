@@ -1,0 +1,31 @@
+th.name-header {
+  background-color: #2f2a2a;
+  color: white;
+}
+
+
+.table tbody tr:hover {
+  background-color: #747070 !important; 
+  
+}
+
+.hover-effect:hover {
+  background-color: #767373 !important; 
+
+}
+
+
+tr:hover {
+  background-color: #aeaeae !important; 
+  cursor: pointer;
+}
+
+
+table {
+  width: 100%;
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}

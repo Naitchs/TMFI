@@ -22,6 +22,30 @@ namespace API.Services
         _cloudinary = new Cloudinary(acc);
         
     }
+
+        public async Task<RawUploadResult> AddExcelFileAsync(IFormFile file)
+        {
+              if (file == null || file.Length == 0)
+                {
+                    throw new Exception("Invalid file");
+                }
+
+                using (var stream = file.OpenReadStream())
+                {
+                    var uploadParams = new RawUploadParams
+                    {
+                        File = new FileDescription(file.FileName, stream),
+                        Folder = "readExcel",
+                        UseFilename = true,
+                        AccessMode = "public"
+                    };
+
+                    return await _cloudinary.UploadLargeAsync(uploadParams);
+                }
+        }
+
+        
+
         public async Task<RawUploadResult> AddFileAsync(IFormFile file)
         {
             if (file == null || file.Length == 0)
@@ -91,6 +115,11 @@ namespace API.Services
 
             return await _cloudinary.UploadAsync(uploadParams);
         }
+        }
+
+        public Task<DeletionResult> DeleteExcelFileAsync(string publicId)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<DeletionResult> DeleteFileAsync(string publicId)

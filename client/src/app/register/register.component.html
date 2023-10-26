@@ -1,8 +1,8 @@
 <form [formGroup]="registerForm" (ngSubmit)="register()" autocomplete="off">
-  <h2 class="text-center text-primary">Sign-up</h2>
+  <h2 class="text-center text-primary">Register New Account</h2>
     <hr>
  
-    <div class="mb-3">
+    <!-- <div class="mb-3">
       <div class="col-md-12">
         <select id="gender" formControlName="gender" class="form-select">
           <option value="" disabled selected>Select Gender</option>
@@ -14,7 +14,7 @@
         </div>
       </div>
     </div>
-    
+     -->
 
   <app-text-input [formControl]="$any(registerForm.controls['username'])" 
                   [label]="'Username'">
@@ -24,7 +24,7 @@
                   [label]="'Known As'">
   </app-text-input>
 
-  <app-date-picker [formControl]="$any(registerForm.controls['dateOfBirth'])" 
+  <!-- <app-date-picker [formControl]="$any(registerForm.controls['dateOfBirth'])" 
                   [label]="'Date of Birth'" [maxDate]="maxDate">
   </app-date-picker>
 
@@ -34,16 +34,16 @@
 
   <app-text-input [formControl]="$any(registerForm.controls['country'])" 
                   [label]="'Country'">
-  </app-text-input>
-
+  </app-text-input> -->
+<!-- 
   <app-text-input [formControl]="$any(registerForm.controls['password'])" 
                   [label]="'Password'" 
-                  [type]="'password'">
+                  [type]="'password'" >
   </app-text-input>  
   <app-text-input [formControl]="$any(registerForm.controls['confirmPassword'])" 
                   [label]="'Confirmation Password'"
                   [type]="'password'">
-  </app-text-input>
+  </app-text-input> -->
 
   <div class="row" *ngIf="validationErrors">
     <ul class="text-danger">

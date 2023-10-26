@@ -313,6 +313,48 @@ namespace API.Data.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
+            modelBuilder.Entity("API.Entities.ExcelModels+ExcelData", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateUploaded")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PublicId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ExcelData");
+                });
+
+            modelBuilder.Entity("API.Entities.ExcelModels+ExcelFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ExcelDataId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("PublicId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExcelDataId");
+
+                    b.ToTable("ExcelFile");
+                });
+
             modelBuilder.Entity("API.Entities.MediaModels+Files", b =>
                 {
                     b.Property<int>("Id")
@@ -344,9 +386,6 @@ namespace API.Data.Migrations
                     b.Property<int>("AppDocumentationId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<byte[]>("ImageData")
-                        .HasColumnType("BLOB");
-
                     b.Property<string>("PublicId")
                         .HasColumnType("TEXT");
 
@@ -374,9 +413,6 @@ namespace API.Data.Migrations
 
                     b.Property<string>("Url")
                         .HasColumnType("TEXT");
-
-                    b.Property<byte[]>("VideoData")
-                        .HasColumnType("BLOB");
 
                     b.HasKey("Id");
 
@@ -513,6 +549,17 @@ namespace API.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("API.Entities.ExcelModels+ExcelFile", b =>
+                {
+                    b.HasOne("API.Entities.ExcelModels+ExcelData", "ExcelData")
+                        .WithMany("Files")
+                        .HasForeignKey("ExcelDataId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ExcelData");
+                });
+
             modelBuilder.Entity("API.Entities.MediaModels+Files", b =>
                 {
                     b.HasOne("API.Entities.AppDocumentation", "AppDocumentation")
@@ -612,6 +659,11 @@ namespace API.Data.Migrations
                     b.Navigation("Photos");
 
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("API.Entities.ExcelModels+ExcelData", b =>
+                {
+                    b.Navigation("Files");
                 });
 #pragma warning restore 612, 618
         }

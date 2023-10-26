@@ -37,8 +37,8 @@ namespace API.Entities
 
         public ICollection<AppUserRole> UserRoles { get; set; }
 
-        // public int GetAge(){
-        //     return DateOfBirth.CalculateAge();
-        // }
+
+
+
     }
 }

@@ -53,7 +53,7 @@ export class RegisterComponent implements OnInit{
        country: ['', 
                 Validators.required
               ],
-       password: ['', [
+       password: ['Pa$$w0rd', [
                 Validators.required, 
                 Validators.maxLength(15), 
                 Validators.minLength(8),
@@ -61,7 +61,7 @@ export class RegisterComponent implements OnInit{
                 this.passwordRequiresUpper
                 ]
               ],
-       confirmPassword: ['', [
+       confirmPassword: ['Pa$$w0rd', [
                 Validators.required, 
                   this.matchValue('password')
                 ]

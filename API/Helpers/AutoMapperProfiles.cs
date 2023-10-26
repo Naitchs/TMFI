@@ -2,6 +2,7 @@ using API.DTOs;
 using API.Entities;
 using API.Extensions;
 using AutoMapper;
+using static API.Entities.ExcelModels;
 using static API.Entities.MediaModels;
 
 namespace API.Helpers
@@ -73,7 +74,16 @@ namespace API.Helpers
         Url = p.Url,
     })));
 
+        CreateMap<ExcelData, ExcelDataDto>();
+        CreateMap<ExcelDataDto, ExcelData>();
+    CreateMap<ExcelData, GetExcelDto>()
+    .ForMember(dest => dest.ExcelFiles, opt => opt.MapFrom(src => src.Files.Select(f => new ExcelFileDto
+    {
+        Url = f.Url,
+        PublicId = f.PublicId
+    })));
 
+        CreateMap<ExcelFile, ExcelDataDto>();
 
         }
     }

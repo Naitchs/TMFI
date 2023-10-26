@@ -16,6 +16,7 @@ namespace API.Interfaces
         void Add(AppDocumentation doc);
         void update(AppDocumentation doc);
 
+
         Task<bool> SaveAllAsync();
 
         Task<IEnumerable<AppUser>> GetUsersAsync();
@@ -33,9 +34,21 @@ namespace API.Interfaces
 
         Task<AppUser> GetUsersByUsernameAsync(string username);
  
+ 
         Task<MemberDto> GetMemberAsync(string username);
         void Add(MediaModels.Files fileEntity);
         void Add(MediaModels.Picture pictureEntity);
         void Add(MediaModels.Video videoEntity);
+      
+      //   Task<AppCourse> GetCourseByIdAsync(int id);
+      //   Task<IEnumerable<CourseDto>> GetCoursesAsync();
+      //   Task<AppCourse> GetCourseInfoAsync(int id);
+
+      //   Task<AppIp> GetStudentInfoAsync(int id);
+
+        
+      //  Task<AppUser> GetFacilitatorInfoAsync (string username);
+       
+      //   Task<IEnumerable<FacilitatorDto>> GetFacilitatorsAsync();
     }
 }

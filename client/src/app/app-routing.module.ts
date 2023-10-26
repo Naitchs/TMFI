@@ -16,6 +16,10 @@ import { IpDetailComponent } from "./profiling/ip-detail/ip-detail.component";
 import { SapDetailComponent } from "./profiling/sap-detail/sap-detail.component";
 import { DocumentationPanelComponent } from "./media/documentation-panel/documentation-panel.component";
 import { DocumentationDetailComponent } from "./media/documentation-detail/documentation-detail.component";
+import { SapPanelComponent } from "./profiling/sap-panel/sap-panel.component";
+import { ExcelUploadFileComponent } from "./integration/excel-upload-file/excel-upload-file.component";
+import { ExcelPanelComponent } from "./integration/excel-panel/excel-panel.component";
+import { ExcelDetailComponent } from "./integration/excel-detail/excel-detail.component";
 
 
 const routes : Routes = [
@@ -31,8 +35,11 @@ const routes : Routes = [
       {path: 'ip-detail/:id', component: IpDetailComponent},
       {path: 'sap-detail/:id', component: SapDetailComponent},
       {path: 'documentation-detail/:id', component: DocumentationDetailComponent},
-      {path: 'profiling', component: ProfilingPanelComponent},
+      {path: 'ip-profiling', component: ProfilingPanelComponent},
+      {path: 'sap-profiling', component: SapPanelComponent},
       {path: 'documentation', component: DocumentationPanelComponent},
+      {path: 'integration', component: ExcelPanelComponent},
+      {path: 'excel-detail/:publicId', component: ExcelDetailComponent},
       {path: 'admin', component: AdminPanelComponent, canActivate: [AdminGuard]},
       {path: 'home', component: HomeComponent }
     ]

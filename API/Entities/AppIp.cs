@@ -35,5 +35,7 @@ namespace API.Entities
         public string Ministry { get; set; }
 
         public string Reason { get; set; }
+
+
     }
 }

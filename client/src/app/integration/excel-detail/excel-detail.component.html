@@ -1,0 +1,85 @@
+<div *ngIf="excelDatas" class="card p-3 shadow mb-3">
+  <div class="card-header">
+    <h2>Report Details</h2>
+  </div>
+
+  <div class="card-body"> 
+  <div class="col-md-4">
+    <label class="form-label mt-2" for="publicId"><strong>Public ID</strong></label>
+    <input class="form-control" id="publicId" 
+                                        type="text" 
+                                        [attr.readonly]="true" 
+                                        [value]="excelDatas?.publicId">
+  </div> 
+  
+  <div class="col-md-4">
+    <label class="form-label mt-2" for="title"><strong>Title</strong></label>
+    <input class="form-control" id="title" 
+                                        type="text" 
+                                        [attr.readonly]="true" 
+                                        [value]="caps(excelDatas?.title)">
+  </div>
+  
+  <div class="col-md-4 mb-3">
+    <label class="form-label mt-2" for="dateUploaded"><strong>Date & Time Uploaded</strong></label>
+    <input class="form-control" id="dateUploaded" 
+                                        type="text" 
+                                        [attr.readonly]="true" 
+                                        [value]="excelDatas?.dateUploaded | date:'medium'">
+  </div> 
+  
+
+</div>
+</div>
+
+<div class="card p-3 shadow mb-3">
+
+  <li *ngFor="let file of excelDatas?.excelFiles" class="list-group-item mb-3">
+    <button (click)="downloadFile(file.url, file.publicId)" class="btn btn-primary">Download File</button>
+  </li>
+  
+  <div class="col-md-4 mb-3">
+    <select [(ngModel)]="selectedSheet" class="form-select">
+      <option *ngFor="let sheet of sheetNames" [value]="sheet">{{ sheet }}</option>
+    </select>
+  </div>
+  
+  <div *ngIf="selectedSheet" class="table-container">
+    <table class="table" border="1">
+      <thead>
+        <tr>
+          <th>Row Number</th>
+          <th *ngFor="let column of excelDataMap[selectedSheet][0]?.columnData | keyvalue">{{ column.key }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of excelDataMap[selectedSheet]">
+          <td>{{ row.rowNumber }}</td>
+          <td *ngFor="let cell of row.columnData | keyvalue">{{ cell.value }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  
+</div>
+
+
+
+
+
+<!-- <div *ngIf="excelDatas && excelDatas.excelDataRowList">
+  <table class="table">
+    <thead>
+      <tr>
+        <th *ngFor="let column of excelDatas.excelDataRowList[0].columnData | keyvalue">{{ column.key }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of excelDatas.excelDataRowList">
+        <td *ngFor="let cell of row.columnData | keyvalue">{{ cell.value }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div> -->
+

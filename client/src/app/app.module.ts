@@ -52,6 +52,16 @@ import { DocumentationPanelComponent } from './media/documentation-panel/documen
 import { DocumentationListComponent } from './media/documentation-list/documentation-list.component';
 import { DocumentationComponent } from './media/documentation/documentation.component';
 import { DocumentationDetailComponent } from './media/documentation-detail/documentation-detail.component';
+import { SapPanelComponent } from './profiling/sap-panel/sap-panel.component';
+import { ExcelUploadFileComponent } from './integration/excel-upload-file/excel-upload-file.component';
+import { ExcelListComponent } from './integration/excel-list/excel-list.component';
+import { ExcelPanelComponent } from './integration/excel-panel/excel-panel.component';
+import { ExcelDetailComponent } from './integration/excel-detail/excel-detail.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+
 
 
 
@@ -94,6 +104,12 @@ import { DocumentationDetailComponent } from './media/documentation-detail/docum
     DocumentationListComponent,
     DocumentationComponent,
     DocumentationDetailComponent,
+    SapPanelComponent,
+    ExcelUploadFileComponent,
+    ExcelListComponent,
+    ExcelPanelComponent,
+    ExcelDetailComponent,
+
 
 
 
@@ -112,9 +128,13 @@ import { DocumentationDetailComponent } from './media/documentation-detail/docum
     MatToolbarModule,
     MatMenuModule,
     MatIconModule,
+    MatTableModule,
     MatDividerModule,
     MatListModule,
+    MatPaginatorModule,
     MatExpansionModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     ReactiveFormsModule,
     HttpClientModule,
     SharedModule

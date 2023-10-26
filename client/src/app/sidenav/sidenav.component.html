@@ -20,10 +20,16 @@
           <a class="nav-link" routerLink="/list" routerLinkActive="active">Lists</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " routerLink="/profiling" routerLinkActive="active">Profiling</a>
+          <a class="nav-link " routerLink="/ip-profiling" routerLinkActive="active">Ip Profiling</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " routerLink="/sap-profiling" routerLinkActive="active">SAP Profiling</a>
         </li>
         <li class="nav-item">
           <a class="nav-link " routerLink="/documentation" routerLinkActive="active">Media Uploader</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " routerLink="/integration" routerLinkActive="active">Excel Integration</a>
         </li>
 
         
@@ -39,11 +45,11 @@
      
         
   </ng-container>
-  </ul >
+  </ul > 
 
 
   
-<div class=""> <!-- Use mt-auto to push the dropdown to the bottom -->
+<!-- <div class=""> 
   <hr>
   <div class="dropdown" *ngIf="(accountService.currentUser$ | async) as user" dropdown>
     <img src="{{user.photoUrl || './assets/user.png'}}" alt="user photo" style="margin: 0; padding: 0; max-height: 40px; max-width: 40px; border: 2px solid white; border-radius: 50%;">
@@ -56,3 +62,58 @@
 </div>
   
 </nav>
+
+<!-- <mat-nav-list>
+  <strong class="title" *ngIf="(accountService.currentUser$ | async) as user">Welcome {{user.username | titlecase}}</strong>
+  
+  
+  <a mat-list-item routerLink="/members" routerLinkActive="active">
+    <mat-icon>person</mat-icon> Mission
+  </a>
+  
+  <a mat-list-item routerLink="/members" routerLinkActive="active">
+    <mat-icon>visibility</mat-icon> Vision
+  </a>
+
+  <a mat-list-item routerLink="/list" routerLinkActive="active">
+    <mat-icon>list</mat-icon> Lists
+  </a>
+
+  <a mat-list-item routerLink="/ip-profiling" routerLinkActive="active">
+    <mat-icon>dns</mat-icon> IP Profiling
+  </a>
+
+  <a mat-list-item routerLink="/sap-profiling" routerLinkActive="active">
+    <mat-icon>bar_chart</mat-icon> SAP Profiling
+  </a>
+
+  <a mat-list-item routerLink="/documentation" routerLinkActive="active">
+    <mat-icon>attach_file</mat-icon> Media Uploader
+  </a>
+
+  <a mat-list-item routerLink="/integration" routerLinkActive="active">
+    <mat-icon>attach_file</mat-icon> Excel Integration
+  </a>
+
+  <ng-container *appHasRole="['SuperAdmin', 'Admin']">
+    <mat-divider></mat-divider>
+    <a mat-list-item routerLink="/admin" routerLinkActive="active">
+      <mat-icon>security</mat-icon> Admin
+    </a>
+
+    <a mat-list-item routerLink="/members" routerLinkActive="active">
+      <mat-icon>people</mat-icon> Members
+    </a>
+  </ng-container>
+  
+  <mat-divider></mat-divider>
+
+  <div class="dropdown" *ngIf="(accountService.currentUser$ | async) as user" dropdown>
+    <img src="{{user.photoUrl || './assets/user.png'}}" alt="user photo" class="avatar">
+    <a class="dropdown-toggle text-light text-decoration-none ms-2" dropdownToggle><strong>{{user.username | titlecase}}</strong></a>
+    <div class="dropdown-menu mt-3" *dropdownMenu>
+      <a class="dropdown-item" routerLink="/member/edit">Edit Profile</a>
+      <a class="dropdown-item" (click)="logout()">Logout</a>
+    </div>
+  </div>
+</mat-nav-list> -->

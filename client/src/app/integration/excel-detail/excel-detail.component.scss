@@ -1,0 +1,46 @@
+.table-container {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: auto;
+  max-height: 500px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  font-size: 12px;
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+.table th {
+  background-color: #f5f5f5;
+}
+
+.table th, .table td {
+  text-align: left;
+}
+
+.table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.table tr:hover {
+  background-color: #e0e0e0;
+}
+
+
+th {
+  position: sticky;
+  top: 0;
+  background-color: #f5f5f5; /* Ito ay opsyonal, ito ay upang bigyan ng kulay ang header */
+}
+
+th:nth-child(2), td:nth-child(2) {
+  position: sticky;
+  left: 0;
+  background-color: #f5f5f5; /* Ito ay opsyonal, ito ay upang bigyan ng kulay ang header */
+}

@@ -386,8 +386,6 @@ public async Task<ActionResult<IEnumerable<GetDocsDto>>> GetDocumentations()
         // Retrieve the list of documentations from your repository
         var documentations = await _userRepository.GetDocsDtoAsync(); // Adjust this based on your repository method
 
-        
-
         return Ok(documentations);
     }
     catch (Exception ex)

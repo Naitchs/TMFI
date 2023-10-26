@@ -12,5 +12,9 @@ namespace API.Interfaces
 
         Task<VideoUploadResult> AddVideoAsync(IFormFile file);
         Task<DeletionResult> DeleteVideoAsync(string publicId);
+
+
+         Task<RawUploadResult> AddExcelFileAsync(IFormFile file);
+        Task<DeletionResult> DeleteExcelFileAsync(string publicId);
     }
 }

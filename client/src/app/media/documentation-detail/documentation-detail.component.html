@@ -1,6 +1,6 @@
 <div class="row" *ngIf="documentations">
   <div class="col-md-4">
-    <div class="card">   
+    <div class="card p-3 shadow">   
              <div class="card-body">
 
                  <div>
@@ -36,13 +36,14 @@
   <div class="col-md-8">
     <tabset class="member-tabset">
       <ng-container *ngIf="documentations">
-        <ng-container *ngIf="documentations.pictures && documentations.pictures.length > 0" class="col-md-12">
+        <ng-container *ngIf="documentations.pictures && documentations.pictures.length > 0" class="col-md-8">
           <tab heading="Pictures">
             <ngx-gallery [options]="galleryOptions" [images]="galleryImages" class="ngx-gallery"></ngx-gallery>
           </tab>
         </ng-container>
     
-        <ng-container *ngIf="documentations && documentations.videos && documentations.videos.length > 0 ">
+        <ng-container *ngIf="documentations && documentations.videos && documentations.videos.length > 0 "
+          class="col-md-8">
           <tab heading="Audio/Video">
             <div *ngFor="let media of documentations.videos">
 
@@ -71,16 +72,30 @@
           </tab>
         </ng-container>
         
-    
-        <ng-container *ngIf="documentations.files && documentations.files.length > 0">
+        
+        <ng-container *ngIf="documentations.files && documentations.files.length > 0"
+          class="col-md-8">
           <tab heading="Files">
-            <ul>
-              <li *ngFor="let file of documentations.files">
-                <a [href]="file.url" download="{{ file.publicId }}">{{ file.publicId }}</a>
-              </li>
-            </ul>
-          </tab>
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <div class="card">
+                  <div class="card-header">
+                    Files
+                  </div>
+                  <ul class="list-group list-group-flush">
+                    <li *ngFor="let file of documentations.files" class="list-group-item">
+                      <a [href]="file.url" download="{{ file.publicId }}">{{ file.publicId }}</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </tab>
         </ng-container>
+        
+        
       </ng-container>
     </tabset>
     

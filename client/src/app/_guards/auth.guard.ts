@@ -16,7 +16,7 @@ export class AuthGuard implements CanActivate {
       map(user => {
         if (user) return true;
         else {
-          this.toastr.error('Cannot do that');
+          this.toastr.error('Cannot do that, log Out First');
           return false;
         }
       })

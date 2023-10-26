@@ -50,6 +50,54 @@ namespace API.Data
         }
 
 
+        // public void Add(AppCourse course)
+        // {
+        //     _context.Courses.Add(course);
+        // }
+
+        // public async Task<AttendanceDto> GetAttendanceByIdAsync(int attendanceId)
+        // {
+        //      return await _context.Attendances
+        // .Include(a => a.Course)
+        // .Include(a => a.Student)
+        // .ProjectTo<AttendanceDto>(_mapper.ConfigurationProvider)
+        // .FirstOrDefaultAsync(a => a.Id == attendanceId);
+        // }
+
+        // public async Task<IEnumerable<AttendanceDto>> GetAttendancesAsync()
+        // {
+        //         return await _context.Attendances
+        // .Include(a => a.Course)
+        // .Include(a => a.Student)
+        // .ProjectTo<AttendanceDto>(_mapper.ConfigurationProvider)
+        // .ToListAsync();
+        // }
+
+        // public async Task<AppCourse> GetCourseByIdAsync(int id)
+        // {
+        //                 return await _context.Courses
+        //             .Where(course => course.Id == id)
+        //             .ProjectTo<AppCourse>(_mapper.ConfigurationProvider)
+        //             .FirstOrDefaultAsync();
+        // }
+
+        // public async Task<AppCourse> GetCourseInfoAsync(int id)
+        // {
+        //      return await _context.Courses
+        //      .Where(c => c.Id == id)
+        //      .ProjectTo<AppCourse>(_mapper.ConfigurationProvider)
+        //      .FirstOrDefaultAsync();
+
+
+        // }
+
+        // public async Task<IEnumerable<CourseDto>> GetCoursesAsync()
+        // {
+        //                 return await _context.Courses
+        //                 .Include(d => d.Enrollments)
+        //       .ProjectTo<CourseDto>(_mapper.ConfigurationProvider)
+        //       .ToListAsync();
+        // }
 
         public async Task<IEnumerable<GetDocsDto>> GetDocsDtoAsync()
         {
@@ -68,6 +116,41 @@ namespace API.Data
                     .ProjectTo<GetDocsDto>(_mapper.ConfigurationProvider)
                     .FirstOrDefaultAsync();
         }
+
+        // public Task<EnrollmentDto> GetEnrollmentByIdAsync(int enrollmentId)
+        // {
+        //     throw new NotImplementedException();
+        // }
+
+        // public Task<IEnumerable<EnrollmentDto>> GetEnrollmentsAsync()
+        // {
+        //     throw new NotImplementedException();
+        // }
+
+
+        // public async Task<AppUser> GetFacilitatorInfoAsync(string username)
+        // {
+        //     return await _context.Users
+        //         .Include(p => p.Photos)
+        //         .SingleOrDefaultAsync(x => x.UserName == username);
+        // }
+
+        // public async Task<IEnumerable<FacilitatorDto>> GetFacilitatorsAsync()
+        // {
+        //        return await _context.Users
+        //       .ProjectTo<FacilitatorDto>(_mapper.ConfigurationProvider)
+        //       .ToListAsync();
+        // }
+
+        // public Task<GradeDto> GetGradeByIdAsync(int gradeId)
+        // {
+        //     throw new NotImplementedException();
+        // }
+
+        // public Task<IEnumerable<GradeDto>> GetGradesAsync()
+        // {
+        //     throw new NotImplementedException();
+        // }
 
         public async Task<IEnumerable<IpDto>> GetIpsAsync()
         {
@@ -114,6 +197,20 @@ namespace API.Data
                     .FirstOrDefaultAsync();
         }
 
+ 
+        public async Task<AppIp> GetStudentInfoAsync(int id)
+        {
+              return await _context.Ips
+        .Where(s => s.Id == id)
+        .ProjectTo<AppIp>(_mapper.ConfigurationProvider)
+        .FirstOrDefaultAsync();
+        }
+
+        // public Task<IEnumerable<StudentDto>> GetStudentsAsync()
+        // {
+        //     throw new NotImplementedException();
+        // }
+
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
     {
       return await _context.Users
@@ -131,6 +228,7 @@ namespace API.Data
       return await _context.Users
                 .Include(p => p.Photos)
                 .SingleOrDefaultAsync(x => x.UserName == username);
+
     }
 
     public async Task<bool> SaveAllAsync()

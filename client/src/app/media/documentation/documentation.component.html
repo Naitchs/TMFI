@@ -1,7 +1,12 @@
 
+<div class="alert alert-dismissible alert-primary" *ngIf="errorMessage">
+  <!-- <button type="button" class="btn-close" data-bs-dismiss="alert"></button> -->
+  <strong>Oh snap!</strong> <p>{{ errorMessage }}</p> 
+</div>
+
   <form [formGroup]="documentationForm" (ngSubmit)="registerDocumentation()" autocomplete="off">
 <div class="row">
-    <div class="card col-md-4">
+    <div class="card col-md-4 p-3 shadow">
       <div class="card-body">
     <div class="form-group ">
       <legend>Media Upload</legend>
@@ -21,32 +26,6 @@
         placeholder="Description"></textarea>
     </div>
    
-<hr>
-
-<div class="form-group mb-3">
-  <label for="files">Files</label>
-  <input type="file" id="files" (change)="onFileChange($event)" multiple />
-</div>
-
-    <hr>
-
-
-    
-    <div class="form-group mb-3">
-      <label for="pictures">Pictures</label>
-      <input type="file" id="pictures" (change)="onPictureChange($event)" multiple /> 
-    </div>
-   
-  
-  
-    <hr>
-
-    <div class="form-group mb-3">
-      <label for="videos">Videos/Audio</label>
-      <input type="file" id="videos" (change)="onVideoChange($event)" multiple />
-    </div>
-
-    <hr>
 
     <div class="row" *ngIf="validationErrors">
       <ul class="text-danger">
@@ -67,74 +46,134 @@
 </div>
 
     <div class="col-md-8">
+
+      <div class="accordion" id="fileInputAccordion">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="fileInputHeading">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#fileInputCollapse" aria-expanded="true" aria-controls="fileInputCollapse">
+              Files
+            </button>
+          </h2>
+          <div id="fileInputCollapse" class="accordion-collapse collapse show" aria-labelledby="fileInputHeading" data-bs-parent="#fileInputAccordion">
+            <div class="accordion-body">
+              <div class="form-group mb-3">
+                <label for="files">Files</label>
+                <input type="file" id="files" (change)="onFileChange($event)" multiple /> 
+                <hr>
+                <div class="col-md-9" style="margin-bottom: 40px" *ngIf="files && files.length">
+                  <h3>Upload File</h3>
+                  <p>Queue Length: {{files.length}} files</p>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th width="50%">Name</th>
+                        <th>Size</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let file of files; let i = index">
+                        <td><strong>{{ file.name }}</strong></td>
+                        <td>{{ (file.size / 1024 / 1024).toFixed(2) }} MB</td>
+                        <td>
+                          <button (click)="removeFile(i)" class="btn btn-danger">Remove</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       
-      <div class="col-md-9" style="margin-bottom: 40px" *ngIf="files && files.length">
-        <h3>Upload File</h3>
-        <p>Queue Length: {{files.length}} files</p>
-        <table class="table">
-          <thead>
-            <tr>
-              <th width="50%">Name</th>
-              <th>Size</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let file of files; let i = index">
-              <td><strong>{{ file.name }}</strong></td>
-              <td>{{ (file.size / 1024 / 1024).toFixed(2) }} MB</td>
-              <td>
-                <button (click)="removeFile(i)" class="btn btn-danger">Remove</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <hr>
+   
+      <div class="accordion" id="pictureInputAccordion">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="pictureInputHeading">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#pictureInputCollapse" aria-expanded="true" aria-controls="pictureInputCollapse">
+              Pictures
+            </button>
+          </h2>
+          <div id="pictureInputCollapse" class="accordion-collapse collapse show" aria-labelledby="pictureInputHeading" data-bs-parent="#pictureInputAccordion">
+            <div class="accordion-body">
+              <div class="form-group mb-3">
+                <label for="pictures">Pictures</label>
+                <input type="file" id="pictures" (change)="onPictureChange($event)" multiple /> 
+                <hr>
+                <div class="col-md-9" style="margin-bottom: 40px" *ngIf="pictures && pictures.length">
+                  <h3>Upload Picture </h3>
+                  <p>Queue Length: {{pictures.length}} pictures</p>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th width="50%">Name</th>
+                        <th>Size</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let picture of pictures; let i = index">
+                        <td><strong>{{ picture.name }}</strong></td>
+                        <td>{{ (picture.size / 1024 / 1024).toFixed(1) }} MB</td>
+                        <td>
+                               <button (click)="removePicture(i)" class="btn btn-danger">Remove</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    
+      
+      <hr>
 
-      <div class="col-md-9" style="margin-bottom: 40px" *ngIf="pictures && pictures.length">
-        <h3>Upload Picture </h3>
-        <p>Queue Length: {{pictures.length}} pictures</p>
-        <table class="table">
-          <thead>
-            <tr>
-              <th width="50%">Name</th>
-              <th>Size</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let picture of pictures; let i = index">
-              <td><strong>{{ picture.name }}</strong></td>
-              <td>{{ (picture.size / 1024 / 1024).toFixed(1) }} MB</td>
-              <td>
-                     <button (click)="removePicture(i)" class="btn btn-danger">Remove</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+     
+      <div class="accordion" id="videoInputAccordion">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="videoInputHeading">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#videoInputCollapse" aria-expanded="true" aria-controls="videoInputCollapse">
+              Videos/Audio
+            </button>
+          </h2>
+          <div id="videoInputCollapse" class="accordion-collapse collapse show" aria-labelledby="videoInputHeading" data-bs-parent="#videoInputAccordion">
+            <div class="accordion-body">
+              <div class="form-group mb-3">
+                <label for="videos">Videos/Audio</label>
+                <input type="file" id="videos" (change)="onVideoChange($event)" multiple />
+                <hr>
+                <div class="col-md-9" style="margin-bottom: 40px" *ngIf="videos && videos.length">
+                  <h3>Upload Videos</h3>
+                  <p>Queue Length: {{videos.length}} videos</p>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th width="50%">Name</th>
+                        <th>Size</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let video of videos; let i = index">
+                        <td><strong>{{ video.name }}</strong></td>
+                        <td>{{ (video.size / 1024 / 1024).toFixed(1) }} MB</td>
+                        <td>
+                          <button (click)="removeVideo(i)" class="btn btn-danger">Remove</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="col-md-9" style="margin-bottom: 40px" *ngIf="videos && videos.length">
-        <h3>Upload Videos</h3>
-        <p>Queue Length: {{videos.length}} videos</p>
-        <table class="table">
-          <thead>
-            <tr>
-              <th width="50%">Name</th>
-              <th>Size</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let video of videos; let i = index">
-              <td><strong>{{ video.name }}</strong></td>
-              <td>{{ (video.size / 1024 / 1024).toFixed(1) }} MB</td>
-              <td>
-                <button (click)="removeVideo(i)" class="btn btn-danger">Remove</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+   
     
     </div>
 </div>

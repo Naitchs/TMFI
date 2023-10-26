@@ -22,6 +22,9 @@ namespace API.Extensions
             services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
             services.AddScoped<IPhotoService, PhotoService>();
             services.AddScoped<IMediaService, MediaService>();
+            services.AddScoped<IExcelService, ExcelService>();
+
+
 
             return services;
         }

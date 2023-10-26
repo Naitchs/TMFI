@@ -1,0 +1,16 @@
+<h2>SAP Profiling Panel</h2>
+<div class="tab-panel">
+  <tabset class="member-tabset">
+    <tab heading="Add Sap Profile" *appHasRole="['Member']">
+      <div class="container">
+          <app-sap-profile-register></app-sap-profile-register>
+      </div>
+    </tab>
+    <tab heading="Sap list" *appHasRole="['Member']">
+      <div class="container">
+          <app-sap-list></app-sap-list>
+      </div>
+    </tab>
+    
+  </tabset>
+</div>

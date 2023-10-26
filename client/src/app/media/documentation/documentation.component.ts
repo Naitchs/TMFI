@@ -16,7 +16,7 @@ export class DocumentationComponent implements OnInit{
 
   documentationForm: FormGroup = new FormGroup({});
   validationErrors: any;
-
+  errorMessage: string | null = null;
 
 
   files: File[] = [];
@@ -50,7 +50,11 @@ export class DocumentationComponent implements OnInit{
   
       // Convert to Philippine Time (UTC+8)
       const addedDateTime = new Date(now.getTime() + (8 * 60 * 60 * 1000)).toISOString();
-  
+     
+      if (this.documentationForm.invalid) {
+        this.errorMessage = "Please enter a title";
+        return;
+      }
 
       this.documentationService.uploadMedia(
         values.title, values.description, 
