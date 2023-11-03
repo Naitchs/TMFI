@@ -1,10 +1,13 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { ProfileService } from 'src/app/_services/profile.service';
 import { Location } from '@angular/common';
-declare const M: any;
+declare var $: any;
+
+
+
 
 @Component({
   selector: 'app-ip-profile',
@@ -13,12 +16,18 @@ declare const M: any;
 })
 export class IpProfileComponent {
 
+  @ViewChild('successAlert') successAlert!: ElementRef;
   ipForm: FormGroup = new FormGroup({});
   maxDate: Date = new Date();
   validationErrors: string [] | undefined;
+  confirmationMessage: string | null = null;
+  successMessage: string | null = null;
+  errorMessage: string | null = null;
+
 
   constructor(private profileService: ProfileService, private toastr: ToastrService,
-    private fb: FormBuilder, private router: Router, private location: Location){ }
+    private fb: FormBuilder, private router: Router, private location: Location, 
+    private elementRef: ElementRef, private renderer: Renderer2){ }
 
   
 
@@ -34,11 +43,13 @@ export class IpProfileComponent {
     this.maxDate.setFullYear(this.maxDate.getFullYear() - 12);
   }
 
+
   initializeForm(){
     this.ipForm = this.fb.group({
       firstname: ['', Validators.required],
       middlename: [''],
       lastname: ['', Validators.required],
+      suffix: [''],
       dateOfBirth: ['', Validators.required],
       gender: ['', Validators.required],
       status: ['', Validators.required],
@@ -56,23 +67,73 @@ export class IpProfileComponent {
   }
 
   registerIp(){
+    $('#proceedModal').modal('hide');
     const dob = this.getDateOnly(this.ipForm.controls['dateOfBirth'].value);
-    const values = {...this.ipForm.value, dateOfBirth: dob};
+    const publicId = '';
+    const values = {...this.ipForm.value, dateOfBirth: dob, publicId: publicId};
     this.profileService.registerProfile(values).subscribe(
       () => {
         // window.location.reload();
-        this.toastr.success('Profile registered successfully', 'Success');
-        this.ipForm.reset(); // This will reset all the form fields
+        // this.toastr.success('Profile registered successfully', 'Success');
+        this.ipForm.reset(); 
+        this.successMessage = 'Ip registered successfully';
+        this.scrollToSuccess();
+        this.scrollToTop();
       },
       (error) => {
         this.validationErrors = error; // Set the validationErrors array with the error messages
-        this.toastr.error('Error registering profile', 'Error');
-        
+        if (error.status === 400) {
+          if (error.error === "An existing record with the same details was found. Do you want to proceed?") {
+            this.confirmationMessage = 'An existing record with the same details was found. Do you want to proceed?';
+            $('#confirmationModal').modal('show');
+          }
+
+        // this.toastr.error('Error registering profile', 'Error');
+        }
       }
     );
   }
+
+  modalHide(){
+    $('#confirmationModal').modal('hide');
+    $('#proceedModal').modal('hide');
+  }
+
+  scrollToSuccess() {
+    console.log('Success Alert:', this.successAlert);
+    this.successAlert.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+  }
   
+
+  scrollToTop() {
+    const element = document.getElementById('top');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
   
+  proceedRegister(){
+    const dob = this.getDateOnly(this.ipForm.controls['dateOfBirth'].value);
+    const publicId = '';
+    const values = {...this.ipForm.value, dateOfBirth: dob, publicId: publicId};
+    this.profileService.proceedRegister(values).subscribe(
+      () => {
+        // window.location.reload();
+        // this.toastr.success('Profile registered successfully', 'Success');
+        this.ipForm.reset(); 
+        this.confirmationMessage = null;
+        this.successMessage = 'Sap registered successfully';
+        this.scrollToSuccess();
+        this.scrollToTop();
+
+      },
+      (error) => {
+        this.validationErrors = error; 
+        // this.toastr.error('Error registering profile', 'Error');
+        this.errorMessage = 'Error registering profile';
+        }
+    );
+  }
 
   
 

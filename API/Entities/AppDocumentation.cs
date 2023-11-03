@@ -6,6 +6,7 @@ namespace API.Entities
     public class AppDocumentation
     {
             public int Id { get; set; }
+            public string PublicId { get; set; } 
             public string Title { get; set; }
             public string Description {get; set;}
             public DateTime AddedDateTime { get; set; } = DateTime.UtcNow; // Initialize with current UTC time

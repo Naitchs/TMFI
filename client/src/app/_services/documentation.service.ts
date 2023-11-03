@@ -105,6 +105,7 @@ export class DocumentationService {
 
 
       uploadMedia(
+        publicId: string,
         title: string, 
         description: string, 
         addedDateTime: string, 
@@ -113,6 +114,7 @@ export class DocumentationService {
         videos: File[]
       ) {
         const formData = new FormData();
+        formData.append('publicId', publicId);
         formData.append('title', title);
         formData.append('description', description);
         formData.append('addedDateTime', addedDateTime);
@@ -148,9 +150,9 @@ export class DocumentationService {
         )
       }
 
-      getDocumentation(id: number){
-        const doc= this.documentation.find(x => x.id === id);
+      getDocumentation(publicId: string){
+        const doc= this.documentation.find(x => x.publicId === publicId);
         if (doc) return of (doc);
-        return this.http.get<Documentation>(this.baseUrl + 'documentation/get-documentation/' + id);
+        return this.http.get<Documentation>(this.baseUrl + 'documentation/get-documentation/' + publicId);
       }
 }

@@ -25,6 +25,14 @@ namespace API.Data
            public DbSet<ExcelData> ExcelData { get; set; }
            public DbSet<ExcelFile> ExcelFile { get; set; }
 
+           public DbSet<AppCourse> Courses { get; set; }
+
+           public DbSet<AppEnroll> Enrolls { get; set; }
+
+           public DbSet<AppSubject> Subjects { get; set; }
+
+           public DbSet<CourseSubject> CourseSubjects { get; set; }
+
         //    public DbSet<AppCourse> Courses { get; set; }
         //    public DbSet<AppEnrollment> Enrollments { get; set; }
         //    public DbSet<Attendance> Attendances { get; set; }
@@ -65,6 +73,19 @@ namespace API.Data
         .HasOne(ef => ef.ExcelData)
         .WithMany(ed => ed.Files)
         .HasForeignKey(ef => ef.ExcelDataId);
+
+          builder.Entity<CourseSubject>()
+        .HasKey(cs => new { cs.CourseId, cs.SubjectId });
+
+        builder.Entity<CourseSubject>()
+        .HasOne(cs => cs.Course)
+        .WithMany(c => c.CourseSubjects)
+        .HasForeignKey(cs => cs.CourseId);
+
+        builder.Entity<CourseSubject>()
+        .HasOne(cs => cs.Subject)
+        .WithMany(s => s.CourseSubjects)
+        .HasForeignKey(cs => cs.SubjectId);
 
 
         }

@@ -1,0 +1,43 @@
+<div class="row col-md-12">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Duration</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let course of course">
+        <td>{{ course.id }}</td>
+        <td>{{ caps(course.title) }}</td>
+        <td>{{ course.durationInHours }} Hour/s</td>
+        <td><button class="btn btn-info"  >Edit</button></td>
+        <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#proceedModal"
+          (click)="deleteClick(course.id)">Delete</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<div class="modal fade border-info" id="proceedModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><strong>Heads up!</strong></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to Delete Course?</p>
+      </div>
+      <div class="modal-footer" *ngIf="course">
+        <button type="button" class="btn btn-success me-2" (click)="deleteCourse(course.id)">Yes</button>
+        <button type="button" class="btn btn-danger me-2"(click)="modalHide()">No</button>
+      </div>
+    </div>
+  </div>
+</div>

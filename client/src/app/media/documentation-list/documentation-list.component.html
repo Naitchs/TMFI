@@ -2,6 +2,7 @@
   <table class="table">
     <thead>
       <tr>
+        <th>ID</th>
         <th>Title</th>
         <th>Date/Time</th>
         <th>Action</th>
@@ -9,9 +10,10 @@
     </thead>
     <tbody>
       <tr *ngFor="let documentation of paginatedList" 
-                          (click)="redirectToDetail(documentation.id)" 
+                          (click)="redirectToDetail(documentation.publicId)" 
                           (mouseenter)="onRowMouseEnter($event)"
                           (mouseleave)="onRowMouseLeave($event)">
+        <td>{{ documentation.publicId }}</td>
         <td>{{ caps(documentation.title) }}</td>
         <td>{{ documentation.addedDateTime | date:'medium' }}</td>
         <td><button class="btn btn-info"  routerLink="">Edit</button></td>

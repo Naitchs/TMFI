@@ -21,11 +21,48 @@ tr:hover {
 }
 
 
-table {
-  width: 100%;
-}
+// table {
+//   width: 100%;
+// }
 
 .mat-mdc-form-field {
   font-size: 14px;
-  width: 100%;
+  // width: 100%;
+}
+
+
+/* ID Column */
+.name-header.mat-header-cell.mat-header-cell {
+  width: 10%;
+}
+
+.mat-cell.mat-cell {
+  width: 10%;
+}
+
+/* Title Column */
+.name-header.mat-header-cell.mat-header-cell {
+  width: 40%;
+}
+
+.mat-cell.mat-cell {
+  width: 40%;
+}
+
+/* Date/Time Column */
+.name-header.mat-header-cell.mat-header-cell {
+  width: 40%;
+}
+
+.mat-cell.mat-cell {
+  width: 40%;
+}
+
+/* Action Column */
+.name-header.mat-header-cell.mat-header-cell {
+  width: 10%;
+}
+
+.mat-cell.mat-cell {
+  width: 10%;
 }

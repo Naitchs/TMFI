@@ -27,8 +27,8 @@ export class SapListComponent {
     });
   }
 
-  redirectToDetail(id: number) {
-    this.router.navigate(['/sap-detail', id]);
+  redirectToDetail(publicId: string) {
+    this.router.navigate(['/sap-detail', publicId]);
   }
 
   caps(str: string): string {

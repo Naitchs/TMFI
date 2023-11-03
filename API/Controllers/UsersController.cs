@@ -17,9 +17,11 @@ namespace API.Controllers
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
     private readonly IPhotoService _photoService;
+    private readonly ITokenService _tokenService;
 
     public UsersController(IUserRepository userRepository, IMapper mapper, 
-              IPhotoService photoService){
+              IPhotoService photoService, ITokenService tokenService){
+      _tokenService = tokenService;
      
       _photoService = photoService;
       _mapper = mapper;
@@ -163,6 +165,46 @@ public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
 
           return BadRequest("Problem deleting photo");
       }
+
+[HttpPut("change-password")]
+public async Task<ActionResult> ChangePassword(ChangePasswordDto changePasswordDto)
+{
+    try
+    {
+        var user = await _userRepository.GetUsersByUsernameAsync(User.GetUsername());
+
+        if (user == null)
+        {
+            return NotFound("User not found");
+        }
+
+        // Validate the current password
+        if (!await _userRepository.VerifyPasswordAsync(user.UserName, changePasswordDto.CurrentPassword))
+        {
+            return BadRequest("Current password is incorrect");
+        }
+
+        if (await _userRepository.VerifyPasswordAsync(user.UserName, changePasswordDto.NewPassword))
+        {
+            return BadRequest("New password cannot be the same as the current password");
+        }
+
+        // Change the password
+        await _userRepository.ChangePasswordAsync(user, changePasswordDto.NewPassword);
+
+        // Create a new token after changing the password
+        var newToken = await _tokenService.CreateToken(user);
+
+        // return Ok(new { message = "Change Password successfully", newToken });
+        return Ok(new { message = "Change Password successfully" });
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, $"Internal server error: {ex.Message}");
+    }
+}
+
+
 
     }
     

@@ -14,7 +14,7 @@ export class DocumentationDetailComponent implements OnInit{
 
 
   documentations: Documentation | undefined;
-  id: number | undefined;
+  publicId: string | undefined;
   galleryOptions: NgxGalleryOptions[] = [];
   galleryImages: NgxGalleryImage[] = [];
   videoUrl?: string;
@@ -24,9 +24,10 @@ export class DocumentationDetailComponent implements OnInit{
 
   ngOnInit(): void{
     this.route.params.subscribe(params => {
-      this.id = +params['id'];
-      if (this.id) {
-        this.loadDoc(this.id);
+      this.publicId = params['publicId'];;
+      if (this.publicId) {
+        this.loadDoc(this.publicId);
+        console.log(this.loadDoc);
       }
     });
     
@@ -79,8 +80,8 @@ export class DocumentationDetailComponent implements OnInit{
     return imageUrls;
   }
 
-  loadDoc(id: number) {
-    this.documentationService.getDocumentation(id).subscribe({
+  loadDoc(publicId: string) {
+    this.documentationService.getDocumentation(publicId).subscribe({
       next: documentation => {
         this.documentations = documentation; // Assign to documentationList
         this.galleryImages = this.getImages();

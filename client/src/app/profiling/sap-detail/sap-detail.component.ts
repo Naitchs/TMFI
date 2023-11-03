@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Sap } from 'src/app/_models/sap';
 import { ProfileService } from 'src/app/_services/profile.service';
 
@@ -12,23 +12,27 @@ export class SapDetailComponent {
 
 
   sapProfile: Sap | undefined;
-  id: number | undefined;
+  publicId: string | undefined;
 
-  constructor(private profileService: ProfileService, private route: ActivatedRoute) {}
+  constructor(private profileService: ProfileService, private route: ActivatedRoute,
+    private router: Router) {}
 
  
   ngOnInit(): void{
     this.route.params.subscribe(params => {
-      this.id = +params['id'];
-      if (this.id) {
-        this.loadSap(this.id);
+      this.publicId = params['publicId'];
+      if (this.publicId) {
+        this.loadSap(this.publicId);
       }
     });
   }
 
-
-  loadSap(id: number) {
-    this.profileService.getSap(id).subscribe({
+  redirectToDetail(publicId: string) {
+    this.router.navigate(['/sap-edit', publicId]);
+  } 
+  
+  loadSap(publicId) {
+    this.profileService.getSap(publicId).subscribe({
       next: sapProfile => {
         // console.log(ipProfile);
         this.sapProfile = sapProfile;

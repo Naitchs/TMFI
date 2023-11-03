@@ -2,6 +2,7 @@
   <table class="table">
     <thead>
       <tr>
+        <th>ID</th>
         <th>First Name</th>
         <th>Last Name</th>
         <th>Age</th>
@@ -12,7 +13,8 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let sapProfile of paginatedList" (click)="redirectToDetail(sapProfile.id)">
+      <tr *ngFor="let sapProfile of paginatedList" (click)="redirectToDetail(sapProfile.publicId)">
+        <td>{{ sapProfile.publicId}}</td>
         <td>{{ caps(sapProfile.firstname) }}</td>
         <td>{{ caps(sapProfile.lastname) }}</td>
         <td>{{ sapProfile.age }}</td>

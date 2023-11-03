@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ProfileService } from 'src/app/_services/profile.service';
+declare var $: any;
 
 @Component({
   selector: 'app-sap-profile-register',
@@ -14,6 +15,8 @@ export class SapProfileRegisterComponent {
   sapForm: FormGroup = new FormGroup({});
   maxDate: Date = new Date();
   validationErrors: string [] | undefined;
+  confirmationMessage: string | null = null;
+  successMessage: string | null = null;
 
   constructor(private profileService: ProfileService, private toastr: ToastrService,
     private fb: FormBuilder, private router: Router){ }
@@ -38,10 +41,11 @@ export class SapProfileRegisterComponent {
         firstname: ['', Validators.required],
         middlename: [''],
         lastname: ['', Validators.required],
+        suffix: [''],
         gender: ['', Validators.required],
         dateOfBirth: ['', Validators.required],
         tribe: ['', Validators.required],
-        // birthOfPlaceBrgy: ['', Validators.required],
+        birthPlaceBrgy: ['', Validators.required],
         birthPlaceCity: ['', Validators.required],
         street: ['', Validators.required],
         city: ['', Validators.required],
@@ -63,17 +67,50 @@ export class SapProfileRegisterComponent {
 
     registerSap(){
       const dob = this.getDateOnly(this.sapForm.controls['dateOfBirth'].value);
-      const values = {...this.sapForm.value, dateOfBirth: dob};
+      const publicId = '';
+      const values = {...this.sapForm.value, dateOfBirth: dob, publicId: publicId};
       this.profileService.registerSap(values).subscribe(
         () => {
           // window.location.reload();
-          this.toastr.success('Sap registered successfully', 'Success');
-          this.sapForm.reset(); // This will reset all the form fields
+          // this.toastr.success('Sap registered successfully', 'Success');
+          this.sapForm.reset(); 
+          this.successMessage = 'Sap registered successfully';
+          $('#proceedModal').modal('hide');
         },
         (error) => {
-          this.validationErrors = error;
-          this.toastr.error('Error registering profile', 'Error');
+          this.validationErrors = error;if (error.status === 400) {
+            if (error.error === "An existing record with the same details was found. Do you want to proceed?") {
+              this.confirmationMessage = 'An existing record with the same details was found. Do you want to proceed?';
+              $('#confirmationModal').modal('show');
+              
+            }
+          // this.toastr.error('Error registering profile', 'Error');
         }
+      }
+      );
+    }
+
+    modalHide(){
+      $('#confirmationModal').modal('hide');
+      $('#proceedModal').modal('hide');
+    }
+
+    proceedRegister(){
+      const dob = this.getDateOnly(this.sapForm.controls['dateOfBirth'].value);
+      const publicId = '';
+      const values = {...this.sapForm.value, dateOfBirth: dob, publicId: publicId};
+      this.profileService.proceedRegisterSap(values).subscribe(
+        () => {
+          // window.location.reload();
+          // this.toastr.success('Profile registered successfully', 'Success');
+          this.sapForm.reset(); 
+          this.confirmationMessage = null;
+          this.successMessage = 'Sap registered successfully';
+        },
+        (error) => {
+          this.validationErrors = error; 
+          // this.toastr.error('Error registering profile', 'Error');
+          }
       );
     }
 }

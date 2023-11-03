@@ -8,7 +8,7 @@ import { AuthGuard } from "./_guards/auth.guard";
 import { NotFoundComponent } from "./errors/not-found/not-found.component";
 import { ServerErrorComponent } from "./errors/server-error/server-error.component";
 import { MemberEditComponent } from "./members/member-edit/member-edit.component";
-import { PreventUnsavedChangesGuard } from "./_guards/prevent-unsaved-changes.guard";
+import { IpPreventUnsavedChangesGuard, PreventUnsavedChangesGuard, SapPreventUnsavedChangesGuard } from "./_guards/prevent-unsaved-changes.guard";
 import { AdminPanelComponent } from "./admin/admin-panel/admin-panel.component";
 import { AdminGuard } from "./_guards/admin.guard";
 import { ProfilingPanelComponent } from "./profiling/profiling-panel/profiling-panel.component";
@@ -20,6 +20,11 @@ import { SapPanelComponent } from "./profiling/sap-panel/sap-panel.component";
 import { ExcelUploadFileComponent } from "./integration/excel-upload-file/excel-upload-file.component";
 import { ExcelPanelComponent } from "./integration/excel-panel/excel-panel.component";
 import { ExcelDetailComponent } from "./integration/excel-detail/excel-detail.component";
+import { IpEditComponent } from "./profiling/ip-edit/ip-edit.component";
+import { SapEditComponent } from "./profiling/sap-edit/sap-edit.component";
+import { AddCourseComponent } from "./course/add-course/add-course.component";
+import { CoursePanelComponent } from "./course/course-panel/course-panel.component";
+import { SubjectPanelComponent } from "./course/subject-panel/subject-panel.component";
 
 
 const routes : Routes = [
@@ -32,14 +37,18 @@ const routes : Routes = [
       {path: 'members/:username', component: MembersDetailComponent},
       {path: 'member/edit', component: MemberEditComponent, canDeactivate: [PreventUnsavedChangesGuard]},
       {path: 'list', component: ListsComponent},
-      {path: 'ip-detail/:id', component: IpDetailComponent},
-      {path: 'sap-detail/:id', component: SapDetailComponent},
-      {path: 'documentation-detail/:id', component: DocumentationDetailComponent},
+      {path: 'ip-detail/:publicId', component: IpDetailComponent},
+      {path: 'ip-edit/:publicId', component: IpEditComponent, canDeactivate: [IpPreventUnsavedChangesGuard]},
+      {path: 'sap-detail/:publicId', component: SapDetailComponent},
+      {path: 'sap-edit/:publicId', component: SapEditComponent, canDeactivate: [SapPreventUnsavedChangesGuard]},
+      {path: 'documentation-detail/:publicId', component: DocumentationDetailComponent},
       {path: 'ip-profiling', component: ProfilingPanelComponent},
       {path: 'sap-profiling', component: SapPanelComponent},
       {path: 'documentation', component: DocumentationPanelComponent},
       {path: 'integration', component: ExcelPanelComponent},
       {path: 'excel-detail/:publicId', component: ExcelDetailComponent},
+      {path: 'subject', component: SubjectPanelComponent},
+      {path: 'course', component: CoursePanelComponent},
       {path: 'admin', component: AdminPanelComponent, canActivate: [AdminGuard]},
       {path: 'home', component: HomeComponent }
     ]

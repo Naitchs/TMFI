@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Member } from '../_models/member';
 import { environment } from 'src/environments/environment';
-import { map, of } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 
 
 @Injectable({
@@ -49,5 +49,10 @@ export class MembersService {
   deletePhoto(photoId: number){
     return this.http.delete(this.baseUrl + 'users/delete-photo/' + photoId);
   }
+  
 
+  changePassword(data: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}users/change-password`, data);
+  }
+  
 }

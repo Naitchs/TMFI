@@ -1,4 +1,50 @@
-<form [formGroup]="sapForm" (ngSubmit)="registerSap()"autocomplete="off">
+<div class="alert alert-dismissible alert-success" *ngIf="successMessage">
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  <strong>Well done!</strong> <p>{{ successMessage }}</p>
+</div>
+
+
+<form [formGroup]="sapForm" autocomplete="off">
+
+  <div class="modal fade border-info" id="confirmationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><strong>Oh snap!</strong></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>{{ confirmationMessage }}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success me-2" (click)="proceedRegister()">Yes</button>
+          <button type="button" class="btn btn-danger me-2"(click)="modalHide()">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade border-info" id="proceedModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><strong>Heads up!</strong></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to save Sap?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success me-2" (click)="registerSap()">Yes</button>
+          <button type="button" class="btn btn-danger me-2"(click)="modalHide()">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="formGroup">
 
@@ -22,6 +68,12 @@
       <div class="col-md-4 mb-3">
         <app-text-input [formControl]="$any(sapForm.controls['lastname'])" 
                   [label]="'Last Name'">
+          </app-text-input>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(sapForm.controls['suffix'])" 
+                  [label]="'Suffix'">
           </app-text-input>
       </div>
   
@@ -71,6 +123,12 @@
 
       <div class="col-md-4 mb-3">
         <app-text-input [formControl]="$any(sapForm.controls['street'])" 
+                  [label]="'Barangay'">
+        </app-text-input>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <app-text-input [formControl]="$any(sapForm.controls['birthPlaceBrgy'])" 
                   [label]="'Barangay'">
         </app-text-input>
       </div>
@@ -202,7 +260,7 @@
     </div>
   
     <div class="text-center">
-      <button class="btn btn-success me-2" type="submit">submit</button>
+      <button class="btn btn-success me-2"  data-bs-toggle="modal" data-bs-target="#proceedModal">submit</button>
       <!-- <button class="btn btn-default" type="button" (click)="cancel()">cancel</button> -->
     </div>
 

@@ -5,16 +5,17 @@ namespace API.Interfaces
 {
   public interface IUserRepository
     {
+      
         void Update(AppUser user);
 
-        void Update(AppIp ip);
+        void UpdateIp(AppIp ip);
         void Add(AppIp ip);
 
-        void Update(AppSap sap);
+        void UpdateSap(AppSap sap);
         void Add(AppSap sap);
 
         void Add(AppDocumentation doc);
-        void update(AppDocumentation doc);
+        void updateDoc(AppDocumentation doc);
 
 
         Task<bool> SaveAllAsync();
@@ -28,9 +29,11 @@ namespace API.Interfaces
     
 
         Task<AppUser> GetUsersByIdAsync(int id);
-        Task<IpDto> GetIpsByIdAsync(int id);
-        Task<SapDto> GetSapsByIdAsync(int id);
-        Task<GetDocsDto> GetDocsDtoByIdAsync(int id);
+        Task<IpDto> GetIpsByIdAsync(string publicId);
+        Task<AppIp> GetIpsByPublicIdAsync(string publicId);
+        Task<AppSap> GetSapByPublicIdAsync(string publicId);
+        Task<SapDto> GetSapsByIdAsync(string publicId);
+        Task<GetDocsDto> GetDocsDtoByIdAsync(string publicId);
 
         Task<AppUser> GetUsersByUsernameAsync(string username);
  
@@ -39,16 +42,29 @@ namespace API.Interfaces
         void Add(MediaModels.Files fileEntity);
         void Add(MediaModels.Picture pictureEntity);
         void Add(MediaModels.Video videoEntity);
-      
-      //   Task<AppCourse> GetCourseByIdAsync(int id);
-      //   Task<IEnumerable<CourseDto>> GetCoursesAsync();
-      //   Task<AppCourse> GetCourseInfoAsync(int id);
 
-      //   Task<AppIp> GetStudentInfoAsync(int id);
+        Task<bool> VerifyPasswordAsync(string username, string password);
+        Task ChangePasswordAsync(AppUser user, string newPassword);
+        // Task<AppIp> GetAppIpByDetails(RegisterIpDto registerIpDto);
+         Task<bool> IsDuplicateIpDetailsAsync(RegisterIpDto registerIpDto);
+         Task<bool> IsDuplicateSapDetailsAsync(RegisterSapDto registerSapDto);
 
+        int IpGetNextPublicId();
+        string IpGeneratePublicId();
+
+        int SapGetNextPublicId();
+        string SapGeneratePublicId();
         
-      //  Task<AppUser> GetFacilitatorInfoAsync (string username);
-       
-      //   Task<IEnumerable<FacilitatorDto>> GetFacilitatorsAsync();
+
+        //   Task<AppCourse> GetCourseByIdAsync(int id);
+        //   Task<IEnumerable<CourseDto>> GetCoursesAsync();
+        //   Task<AppCourse> GetCourseInfoAsync(int id);
+
+        //   Task<AppIp> GetStudentInfoAsync(int id);
+
+
+        //  Task<AppUser> GetFacilitatorInfoAsync (string username);
+
+        //   Task<IEnumerable<FacilitatorDto>> GetFacilitatorsAsync();
     }
 }

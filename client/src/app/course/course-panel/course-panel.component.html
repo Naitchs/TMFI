@@ -1,0 +1,15 @@
+<h2>Course Panel</h2>
+<div class="tab-panel">
+  <tabset class="member-tabset">
+    <tab heading="Add Ip Profile" *appHasRole="['Member']">
+      <app-add-course></app-add-course>
+    </tab>
+    <tab heading="Ip List" *appHasRole="['Member']">
+           <div class="container">
+               <app-course-list></app-course-list>
+           </div>
+    </tab>
+
+    
+  </tabset>
+</div>

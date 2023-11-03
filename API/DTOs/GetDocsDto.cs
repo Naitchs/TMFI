@@ -3,7 +3,8 @@ namespace API.DTOs
     public class GetDocsDto
     {
 
-            public int Id { get; set; }
+     
+            public string PublicId { get; set; }
             public string Title { get; set; }
             public string Description { get; set; }
             public DateTime AddedDateTime { get; set; }

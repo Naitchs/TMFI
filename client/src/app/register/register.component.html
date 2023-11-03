@@ -15,48 +15,39 @@
       </div>
     </div>
      -->
-
-  <app-text-input [formControl]="$any(registerForm.controls['username'])" 
-                  [label]="'Username'">
-  </app-text-input>
-
-  <app-text-input [formControl]="$any(registerForm.controls['knownAs'])" 
-                  [label]="'Known As'">
-  </app-text-input>
-
-  <!-- <app-date-picker [formControl]="$any(registerForm.controls['dateOfBirth'])" 
-                  [label]="'Date of Birth'" [maxDate]="maxDate">
-  </app-date-picker>
-
-  <app-text-input [formControl]="$any(registerForm.controls['city'])" 
-                  [label]="'City'">
-  </app-text-input>
-
-  <app-text-input [formControl]="$any(registerForm.controls['country'])" 
-                  [label]="'Country'">
-  </app-text-input> -->
-<!-- 
-  <app-text-input [formControl]="$any(registerForm.controls['password'])" 
-                  [label]="'Password'" 
-                  [type]="'password'" >
-  </app-text-input>  
-  <app-text-input [formControl]="$any(registerForm.controls['confirmPassword'])" 
-                  [label]="'Confirmation Password'"
-                  [type]="'password'">
-  </app-text-input> -->
-
-  <div class="row" *ngIf="validationErrors">
-    <ul class="text-danger">
-        <li *ngFor="let error of validationErrors">
-          {{error}}
-        </li>
-    </ul>
-  </div>
-
-  <div class="text-center">
-    <button class="btn btn-success me-2" type="submit">Register</button>
-    <!-- <button class="btn btn-default" type="button" (click)="cancel()">cancel</button> -->
-  </div>
+     <div class="row justify-content-center"> <!-- Added a row with center alignment -->
+      <div class="col-md-4 mb-3 max-auto">
+        <label for="username">Username</label>
+        <app-text-input [formControl]="$any(registerForm.controls['username'])" 
+                        [label]="'Username'" id="username">
+        </app-text-input>
+      
+     
+        <label for="knownAs">Known As</label>
+        <app-text-input [formControl]="$any(registerForm.controls['knownAs'])" 
+                        [label]="'Known As'" id="knownAs">
+        </app-text-input>
+      </div>
+    </div>
+    
+    <div class="row justify-content-center"> <!-- Center alignment for the error messages -->
+      <div class="col-md-6"> <!-- Adjusted the column size -->
+        <div class="row" *ngIf="validationErrors">
+          <ul class="text-danger">
+            <li *ngFor="let error of validationErrors">
+              {{error}}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row justify-content-center"> <!-- Center alignment for the button -->
+      <div class="col-md-6 text-center">
+        <button class="btn btn-success" type="submit">Register</button>
+      </div>
+    </div>
+    
 
 </form>
 

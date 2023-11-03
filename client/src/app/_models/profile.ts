@@ -1,9 +1,11 @@
 export interface Profile {
 
-  id: number;
+
+  publicId: string;
   firstname: string;
   middlename: string;
   lastname: string;
+  suffix: string;
   age: number;
   dateOfBirth: string;
   gender: string;

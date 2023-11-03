@@ -4,7 +4,7 @@ namespace API.DTOs
 {
     public class DocumentationDto
     {
-
+        public string PublicId { get; set; } 
         [Required]public string Title { get; set; }
         public string Description { get; set; }
         public DateTime AddedDateTime { get; set; }

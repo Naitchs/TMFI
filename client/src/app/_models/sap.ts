@@ -1,15 +1,16 @@
 export interface Sap {
 
-  id: number;
+  publicId: string;
   firstname: string;
   middlename: string;
   lastname: string;
+  suffix: string;
   gender: string;
   age: number;
   dateOfBirth: string;
-  birthPlaceBrgy: string;
   birthPlaceCity: string;
   street: string;
+  birthPlaceBrgy: string;
   city: string;
   tribe: string;
   fatherName: string;

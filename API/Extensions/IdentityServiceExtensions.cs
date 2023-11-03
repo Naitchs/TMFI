@@ -17,7 +17,8 @@ namespace API.Extensions
                 })
                   .AddRoles<AppRole>()
                   .AddRoleManager<RoleManager<AppRole>>()
-                  .AddEntityFrameworkStores<DataContext>();
+                  .AddEntityFrameworkStores<DataContext>()
+                  .AddDefaultTokenProviders();
 
                 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {

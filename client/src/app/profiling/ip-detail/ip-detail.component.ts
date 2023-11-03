@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Profile } from 'src/app/_models/profile';
 import { ProfileService } from 'src/app/_services/profile.service';
 
@@ -11,23 +11,27 @@ import { ProfileService } from 'src/app/_services/profile.service';
 export class IpDetailComponent implements OnInit{
 
   ipProfile: Profile | undefined;
-  id: number | undefined;
+  publicId: string | undefined;
 
-  constructor(private profileService: ProfileService, private route: ActivatedRoute) {}
+  constructor(private profileService: ProfileService, private route: ActivatedRoute,
+    private router: Router) {}
 
  
   ngOnInit(): void{
     this.route.params.subscribe(params => {
-      this.id = +params['id'];
-      if (this.id) {
-        this.loadIp(this.id);
+      this.publicId = params['publicId'];
+      if (this.publicId) {
+        this.loadIp(this.publicId);
       }
     });
   }
 
+  redirectToDetail(publicId: string) {
+    this.router.navigate(['/ip-edit', publicId]);
+  }
 
-  loadIp(id: number) {
-    this.profileService.getIp(id).subscribe({
+  loadIp(publicId: string) {
+    this.profileService.getIp(publicId).subscribe({
       next: ipProfile => {
         // console.log(ipProfile);
         this.ipProfile = ipProfile;

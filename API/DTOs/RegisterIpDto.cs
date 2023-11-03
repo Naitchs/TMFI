@@ -6,11 +6,15 @@ namespace API.DTOs
     {
         // public int Id { get; set; }
 
+        public string PublicId { get; set; }
+
         [Required] public string Firstname { get; set; }
         
         public string Middlename { get; set; }
 
         [Required] public string Lastname { get; set; }
+
+        public string Suffix { get; set; }
 
         [Required] public DateOnly? DateOfBirth { get; set; }
 

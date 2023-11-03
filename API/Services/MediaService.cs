@@ -10,9 +10,11 @@ namespace API.Services
     {
 
        private readonly Cloudinary _cloudinary;
+    private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public MediaService(IOptions<CloudinarySettings> config)
+        public MediaService(IOptions<CloudinarySettings> config, IWebHostEnvironment webHostEnvironment)
     {
+      _webHostEnvironment = webHostEnvironment;
         var acc = new Account(
             config.Value.CloudName,
             config.Value.ApiKey,
@@ -43,6 +45,32 @@ namespace API.Services
                     return await _cloudinary.UploadLargeAsync(uploadParams);
                 }
         }
+
+//         public async Task<string> AddExcelFileAsync(IFormFile file)
+// {
+//     if (file == null || file.Length == 0)
+//     {
+//         throw new Exception("Invalid file");
+//     }
+
+//     var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+
+//     if (!Directory.Exists(uploadsFolder))
+//     {
+//         Directory.CreateDirectory(uploadsFolder);
+//     }
+
+//     var uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+//     var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+//     using (var stream = new FileStream(filePath, FileMode.Create))
+//     {
+//         await file.CopyToAsync(stream);
+//     }
+
+//     return Path.Combine("uploads", uniqueFileName); // Return relative path to the saved file
+// }
+
 
         
 

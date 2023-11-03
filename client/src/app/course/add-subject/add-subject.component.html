@@ -1,0 +1,23 @@
+<h1 mat-dialog-title>Add Subject</h1>
+
+<mat-dialog-content class="mat-typography">
+  <form  #subjectForm="ngForm" id="subjectForm">
+  <label for="code">Subject Code:</label>
+  <input type="text" [(ngModel)]="subjectCode" name="subjectCode" id="code" class="form-control mb-3">
+  <label for="name">Name:</label>
+  <input type="text" [(ngModel)]="name" name="name" id="name" class="form-control mb-3">
+  <label for="desc">Description:</label>
+  <input type="text" [(ngModel)]="description" name="description" id="desc" class="form-control mb-3">
+  <label for="phase">Phase:</label>
+  <input type="number" [(ngModel)]="phase" name="phase" id="phase" class="form-control mb-3">
+
+</form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close >Cancel</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="createSubject()">Submit</button>
+
+  
+</mat-dialog-actions>

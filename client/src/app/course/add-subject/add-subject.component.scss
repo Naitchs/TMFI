@@ -1,0 +1,11 @@
+.mat-dialog-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+.mat-dialog-content {
+  max-height: 80vh; /* Adjust the max height as per your requirement */
+}

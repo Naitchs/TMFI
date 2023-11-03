@@ -45,14 +45,14 @@ export class RegisterComponent implements OnInit{
 
   initializeForm(){
     this.registerForm = this.fb.group({
-      gender: ['', Validators.required],
       username: ['', Validators.required],
       knownAs: ['', Validators.required],
-      dateOfBirth: ['', Validators.required],
-      city: ['', Validators.required],
-       country: ['', 
-                Validators.required
-              ],
+      activeStatus: ['active', Validators.required],
+      // dateOfBirth: ['', Validators.required],
+      // city: ['', Validators.required],
+      //  country: ['', 
+      //           Validators.required
+      //         ],
        password: ['Pa$$w0rd', [
                 Validators.required, 
                 Validators.maxLength(15), 
@@ -83,8 +83,8 @@ export class RegisterComponent implements OnInit{
 
   register(){
     // console.log(this.registerForm?.value);
-    const dob = this.getDateOnly(this.registerForm.controls['dateOfBirth'].value);
-    const values = {...this.registerForm.value, dateOfBirth: dob};
+    // const dob = this.getDateOnly(this.registerForm.controls['dateOfBirth'].value);, dateOfBirth: dob
+    const values = {...this.registerForm.value};
     this.accountService.register(values).subscribe({
       next: () => {
         this.router.navigateByUrl('/home')

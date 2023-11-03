@@ -9,13 +9,6 @@ import { HomeComponent } from './home/home.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatListModule } from '@angular/material/list';
-import { MatExpansionModule } from '@angular/material/expansion';
 import { LoginComponent } from './login/login.component';
 import { HeroesComponent } from './heroes/heroes.component';
 import { RegisterComponent } from './register/register.component';
@@ -57,10 +50,17 @@ import { ExcelUploadFileComponent } from './integration/excel-upload-file/excel-
 import { ExcelListComponent } from './integration/excel-list/excel-list.component';
 import { ExcelPanelComponent } from './integration/excel-panel/excel-panel.component';
 import { ExcelDetailComponent } from './integration/excel-detail/excel-detail.component';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { ChangePasswordComponent } from './members/change-password/change-password.component';
+import { IpEditComponent } from './profiling/ip-edit/ip-edit.component';
+import { IpPreventUnsavedChangesGuard, SapPreventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.guard';
+import { SapEditComponent } from './profiling/sap-edit/sap-edit.component';
+import { AddCourseComponent } from './course/add-course/add-course.component';
+import { CoursePanelComponent } from './course/course-panel/course-panel.component';
+import { CourseListComponent } from './course/course-list/course-list.component';
+import { AddSubjectComponent } from './course/add-subject/add-subject.component';
+import { SubjectPanelComponent } from './course/subject-panel/subject-panel.component';
+import { SubjectListComponent } from './course/subject-list/subject-list.component';
+import { MaterialModule } from './material.module';
 
 
 
@@ -109,14 +109,15 @@ import { MatNativeDateModule } from '@angular/material/core';
     ExcelListComponent,
     ExcelPanelComponent,
     ExcelDetailComponent,
-
-
-
-
-    
-    
-
-
+    ChangePasswordComponent,
+    IpEditComponent,
+    SapEditComponent,
+    AddCourseComponent,
+    CoursePanelComponent,
+    CourseListComponent,
+    AddSubjectComponent,
+    SubjectPanelComponent,
+    SubjectListComponent,
 
   ],
   imports: [
@@ -124,25 +125,16 @@ import { MatNativeDateModule } from '@angular/material/core';
     AppRoutingModule,
     ReactiveFormsModule,
     // * MATERIAL IMPORTS
-    MatSidenavModule,
-    MatToolbarModule,
-    MatMenuModule,
-    MatIconModule,
-    MatTableModule,
-    MatDividerModule,
-    MatListModule,
-    MatPaginatorModule,
-    MatExpansionModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    ReactiveFormsModule,
     HttpClientModule,
+    MaterialModule,
     SharedModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
+    IpPreventUnsavedChangesGuard,
+    SapPreventUnsavedChangesGuard,
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

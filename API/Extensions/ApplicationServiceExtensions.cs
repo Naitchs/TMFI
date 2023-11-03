@@ -23,6 +23,7 @@ namespace API.Extensions
             services.AddScoped<IPhotoService, PhotoService>();
             services.AddScoped<IMediaService, MediaService>();
             services.AddScoped<IExcelService, ExcelService>();
+            services.AddScoped<ICourseService, CourseService>();
 
 
 

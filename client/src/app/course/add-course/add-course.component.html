@@ -1,0 +1,39 @@
+<div class="alert alert-dismissible alert-success" *ngIf="successMessage" #successAlert>
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  <strong>Well done!</strong> <p>{{ successMessage }}</p>
+</div>
+
+
+
+<form [formGroup]="courseForm" autocomplete="off">
+
+  <div class="card-body shadow">
+    <H2>Add Course</H2>
+ 
+
+    <div class="col-md-4 mb-3">
+      <app-text-input [formControl]="$any(courseForm.controls['title'])" 
+              [label]="'Title'">
+      </app-text-input>
+  </div>
+  <div class="col-md-4 mb-3">
+    <app-text-input [formControl]="$any(courseForm.controls['description'])" 
+            [label]="'Description'">
+    </app-text-input>
+</div>
+<div class="col-md-4 mb-3">
+  <app-text-input [formControl]="$any(courseForm.controls['durationInHours'])" 
+          [label]="'Duration In Hours'">
+  </app-text-input>
+  </div>
+  <div class="col-md-4 mb-3">
+    <app-text-input [formControl]="$any(courseForm.controls['tags'])" 
+            [label]="'Tags'">
+    </app-text-input>
+  </div>
+
+    <button class="btn btn-success me-2" (click)="createCourse()">Create</button>
+
+
+</div>
+</form>

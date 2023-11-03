@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, NgForm, ValidatorFn, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs';
 import { Member } from 'src/app/_models/member';
@@ -15,6 +15,7 @@ import { MembersService } from 'src/app/_services/members.service';
 export class MemberEditComponent implements OnInit{
 
   @ViewChild('editForm') editForm: NgForm |undefined;
+  @ViewChild('passwordForm') passwordForm: NgForm | undefined;
   @HostListener('window:beforeunload', ['$event']) unloadNotification($event:any){
     if (this.editForm?.dirty){
       $event.returnValue = true;
@@ -24,7 +25,7 @@ export class MemberEditComponent implements OnInit{
   user: User | null = null;
 
   constructor (private accountService: AccountService, private memberService: MembersService,
-            private toastr: ToastrService) {
+            private toastr: ToastrService, private fb: FormBuilder) {
     this.accountService.currentUser$.pipe(take(1)).subscribe({
       next: user => this.user = user
     })
@@ -49,4 +50,23 @@ export class MemberEditComponent implements OnInit{
       }
     })
   }
+
+  // changePassword() {
+  //   if (this.passwordForm && this.passwordForm.valid) {
+  //     const currentPassword = this.passwordForm.controls['currentPassword'].value;
+  //     const newPassword = this.passwordForm.controls['newPassword'].value;
+
+  //     this.memberService.changePassword(currentPassword, newPassword).subscribe({
+  //       next: _ => {
+  //         this.toastr.success('Password updated successfully');
+  //         this.passwordForm?.reset();
+  //       },
+  //       error: err => {
+  //         this.toastr.error(err);
+  //       }
+  //     });
+  //   }
+  // }
+
+ 
 }

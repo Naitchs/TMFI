@@ -1,11 +1,16 @@
 <div class="row" *ngIf="ipProfile">
-  <div class="col-md-4">
-    <div class="card">   
+  <div class="col-md-4 mb-3">
+    <div class="card shadow">   
              <div class="card-body">
+
+              <div>
+                <strong>ID:</strong>
+                <p>{{ipProfile?.publicId}}</p>
+              </div>  
 
                  <div>
                       <strong>Name:</strong>
-                      <p>{{caps(ipProfile?.firstname)}} {{caps(ipProfile?.middlename)}} {{caps(ipProfile?.lastname)}}</p>
+                      <p>{{caps(ipProfile?.firstname)}} {{caps(ipProfile?.middlename)}} {{caps(ipProfile?.lastname)}} {{caps(ipProfile?.suffix)}}</p>
                 </div>  
 
                  <div>
@@ -46,7 +51,7 @@
                 <div class="card-footer">
                   <div class="btn-group d-flex">
     
-                      <button class="btn btn-success">Edit</button>
+                      <button class="btn btn-success" (click)="redirectToDetail(ipProfile.publicId)">Edit</button>
     
                   </div>
                 </div>
@@ -60,6 +65,8 @@
             <h4>Social Media</h4>
             <p>Email: {{ipProfile?.email}}</p>
             <p>Facebook: {{ipProfile?.facebook}}</p>
+            <h4>Church Name</h4>
+            <p>{{caps(ipProfile?.churchName)}}</p>
             <h4>Ministry</h4>
             <p>{{caps(ipProfile?.ministry)}}</p>
             <h4>Reason</h4>

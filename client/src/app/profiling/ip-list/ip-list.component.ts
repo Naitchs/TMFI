@@ -26,8 +26,8 @@ export class IpListComponent implements OnInit{
     });
   }
 
-  redirectToDetail(id: number) {
-    this.router.navigate(['/ip-detail', id]);
+  redirectToDetail(publicId: string) {
+    this.router.navigate(['/ip-detail', publicId]);
   }
 
   caps(str: string): string {

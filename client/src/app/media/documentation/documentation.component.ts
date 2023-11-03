@@ -50,13 +50,15 @@ export class DocumentationComponent implements OnInit{
   
       // Convert to Philippine Time (UTC+8)
       const addedDateTime = new Date(now.getTime() + (8 * 60 * 60 * 1000)).toISOString();
-     
+      const publicId = '';
+
       if (this.documentationForm.invalid) {
         this.errorMessage = "Please enter a title";
         return;
       }
 
       this.documentationService.uploadMedia(
+        publicId,
         values.title, values.description, 
         addedDateTime, this.files, this.pictures, 
         this.videos).subscribe(

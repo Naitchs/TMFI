@@ -17,6 +17,29 @@ namespace API.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.3");
 
+            modelBuilder.Entity("API.Entities.AppCourse", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("DurationInHours")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Tags")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Courses");
+                });
+
             modelBuilder.Entity("API.Entities.AppDocumentation", b =>
                 {
                     b.Property<int>("Id")
@@ -29,6 +52,9 @@ namespace API.Data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("PublicId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Title")
                         .HasColumnType("TEXT");
 
@@ -37,10 +63,35 @@ namespace API.Data.Migrations
                     b.ToTable("AppDocumentations");
                 });
 
+            modelBuilder.Entity("API.Entities.AppEnroll", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("EnrollmentDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("Enrolls");
+                });
+
             modelBuilder.Entity("API.Entities.AppIp", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("AppEnrollId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Barangay")
@@ -79,6 +130,9 @@ namespace API.Data.Migrations
                     b.Property<string>("PhoneNum")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("PublicId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Reason")
                         .HasColumnType("TEXT");
 
@@ -88,10 +142,15 @@ namespace API.Data.Migrations
                     b.Property<string>("Street")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Suffix")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Tribe")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AppEnrollId");
 
                     b.ToTable("Ips");
                 });
@@ -180,6 +239,9 @@ namespace API.Data.Migrations
                     b.Property<string>("ParentOccupation")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("PublicId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("SchoolName")
                         .HasColumnType("TEXT");
 
@@ -187,6 +249,9 @@ namespace API.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Street")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Suffix")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Talent")
@@ -203,6 +268,29 @@ namespace API.Data.Migrations
                     b.ToTable("Saps");
                 });
 
+            modelBuilder.Entity("API.Entities.AppSubject", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Phase")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("SubjectCode")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Subjects");
+                });
+
             modelBuilder.Entity("API.Entities.AppUser", b =>
                 {
                     b.Property<int>("Id")
@@ -211,6 +299,9 @@ namespace API.Data.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("ActiveStatus")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("City")
                         .HasColumnType("TEXT");
@@ -254,9 +345,6 @@ namespace API.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("LookingFor")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("NormalizedEmail")
@@ -311,6 +399,21 @@ namespace API.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("API.Entities.CourseSubject", b =>
+                {
+                    b.Property<int>("CourseId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("SubjectId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("CourseId", "SubjectId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("CourseSubjects");
                 });
 
             modelBuilder.Entity("API.Entities.ExcelModels+ExcelData", b =>
@@ -530,6 +633,24 @@ namespace API.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("API.Entities.AppEnroll", b =>
+                {
+                    b.HasOne("API.Entities.AppCourse", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("API.Entities.AppIp", b =>
+                {
+                    b.HasOne("API.Entities.AppEnroll", null)
+                        .WithMany("Student")
+                        .HasForeignKey("AppEnrollId");
+                });
+
             modelBuilder.Entity("API.Entities.AppUserRole", b =>
                 {
                     b.HasOne("API.Entities.AppRole", "Role")
@@ -547,6 +668,25 @@ namespace API.Data.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("API.Entities.CourseSubject", b =>
+                {
+                    b.HasOne("API.Entities.AppCourse", "Course")
+                        .WithMany("CourseSubjects")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.AppSubject", "Subject")
+                        .WithMany("CourseSubjects")
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Subject");
                 });
 
             modelBuilder.Entity("API.Entities.ExcelModels+ExcelFile", b =>
@@ -640,6 +780,11 @@ namespace API.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("API.Entities.AppCourse", b =>
+                {
+                    b.Navigation("CourseSubjects");
+                });
+
             modelBuilder.Entity("API.Entities.AppDocumentation", b =>
                 {
                     b.Navigation("Files");
@@ -649,9 +794,19 @@ namespace API.Data.Migrations
                     b.Navigation("Videos");
                 });
 
+            modelBuilder.Entity("API.Entities.AppEnroll", b =>
+                {
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("API.Entities.AppRole", b =>
                 {
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("API.Entities.AppSubject", b =>
+                {
+                    b.Navigation("CourseSubjects");
                 });
 
             modelBuilder.Entity("API.Entities.AppUser", b =>

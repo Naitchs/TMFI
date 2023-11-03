@@ -59,5 +59,27 @@ namespace API.Controllers
         // public ActionResult GetPhotosForModerations(){
         //     return Ok("super admin or admin can see this");
         // }
+//        [Authorize(Policy = "RequireSuperAdminRole")]
+// [HttpPost("edit-active-status/{username}")]
+// public async Task<ActionResult> EditActiveStatus(string username, [FromBody]string activeStatus)
+// {
+//     var user = await _userManager.FindByNameAsync(username);
+
+//     if (user == null) return NotFound();
+
+
+//     user.ActiveStatus = activeStatus; // Assuming the property name is ActiveStatus in your AppUser class
+
+//     var result = await _userManager.UpdateAsync(user);
+
+//     if (result.Succeeded)
+//     {
+//         return Ok(user.ActiveStatus);
+//     }
+
+//     return BadRequest("Failed to update active status");
+// }
+
+
     }
 }

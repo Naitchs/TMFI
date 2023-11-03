@@ -4,11 +4,16 @@ namespace API.DTOs
 {
     public class RegisterSapDto
     {
+
+        public string PublicId { get; set; }
+        
         [Required] public string Firstname { get; set; }
         
         public string Middlename { get; set; }
 
         [Required] public string Lastname { get; set; }
+
+        public string Suffix { get; set; }
 
         [Required] public string Gender { get; set; }
 

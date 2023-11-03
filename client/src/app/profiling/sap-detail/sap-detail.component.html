@@ -3,9 +3,14 @@
     <div class="card">   
              <div class="card-body">
 
+
+                 <div>
+                      <strong>ID:</strong>
+                      <p>{{sapProfile?.publicId}}</p>
+                 </div>  
                  <div>
                       <strong>Name:</strong>
-                      <p>{{caps(sapProfile?.firstname)}} {{caps(sapProfile?.middlename)}} {{caps(sapProfile?.lastname)}}</p>
+                      <p>{{caps(sapProfile?.firstname)}} {{caps(sapProfile?.middlename)}} {{caps(sapProfile?.lastname)}} {{caps(sapProfile?.suffix)}}</p>
                 </div>  
 
                  <div>
@@ -31,8 +36,8 @@
                   <p>{{caps(sapProfile?.tribe)}}</p>
                 </div>
                 <div>
-                      <strong>Location:</strong>
-                      <p>{{caps(sapProfile?.street)}} , {{caps(sapProfile?.city)}}</p>
+                      <strong>Address:</strong>
+                      <p>{{caps(sapProfile?.street)}} {{caps(sapProfile?.birthPlaceBrgy)}}, {{caps(sapProfile?.city)}}</p>
                 </div>
                 
                 <div>
@@ -46,7 +51,7 @@
                 <div class="card-footer">
                   <div class="btn-group d-flex">
     
-                      <button class="btn btn-success">Edit</button>
+                      <button class="btn btn-success" (click)="redirectToDetail(sapProfile.publicId)">Edit</button>
     
                   </div>
                 </div>

@@ -2,15 +2,22 @@
   <table class="table">
     <thead>
       <tr>
-        <th style="width: 30%;">Username</th>
+        <th style="width: 20%;">Username</th>
         <th style="width: 40%;">Active Roles</th>
-        <th style="width: 30%;">Action</th>
+        <!-- <th style="width: 30%;">Active Status</th> -->
+        <th style="width: 10%;">Action</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let user of users">
         <td>{{user.username}}</td>
         <td>{{user.roles}}</td>
+        <!-- <td>
+          <select [(ngModel)]="user.activeStatus" (change)="updateActiveStatus(user)">
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </td> -->
         <td><button (click)="openRolesModal(user)" class="btn btn-info">Edit</button></td>
       </tr>
     </tbody>

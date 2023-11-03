@@ -21,14 +21,15 @@ export class DocumentationListComponent {
   constructor(private documentationService: DocumentationService, private router: Router,
     private renderer: Renderer2) { }
 
-  redirectToDetail(id: number) {
-    this.router.navigate(['/documentation-detail', id]);
-  }
 
+  redirectToDetail(publicId: string) {
+    this.router.navigate(['/documentation-detail', publicId]);
+  }
 
   ngOnInit(): void {
     this.documentationService.getDocumentations().subscribe(documentation => { // Subscribe to the observable here
       this.documentation = documentation;
+      console.log(this.documentation);
     });
   }
 

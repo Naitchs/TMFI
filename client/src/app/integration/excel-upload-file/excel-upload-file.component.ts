@@ -6,7 +6,7 @@ import { Exceldata } from 'src/app/_models/exceldata';
 import { Exceldatarow } from 'src/app/_models/exceldatarow';
 import { IntegrationService } from 'src/app/_services/integration.service';
 import { environment } from 'src/environments/environment';
-
+declare var $: any;
 
 @Component({
   selector: 'app-excel-upload-file',
@@ -25,6 +25,7 @@ export class ExcelUploadFileComponent {
   showSaveButton: boolean = false;
   integrationForm: FormGroup = new FormGroup({});
   validationErrors: any = null; 
+  successMessage: string | null = null;
   errorMessage: string | null = null;
   publicId: string;
   showUploadButton: boolean = false;
@@ -108,7 +109,13 @@ uploadFileToBackend() {
     })
   }
 
+  modalHide(){
+    $('#confirmationModal').modal('hide');
+    $('#proceedModal').modal('hide');
+  }
+
   saveExcelData() {
+    $('#proceedModal').modal('hide');
     if (!this.fileToUpload) {
       console.error("No file selected");
       return;
@@ -132,14 +139,13 @@ uploadFileToBackend() {
     this.http.post(`${this.baseUrl}integrate/save-excel-data`, formData)
       .subscribe(
         response => {
-          console.log(response);
-          // Dito pwede mo i-handle ang successful response
-          this.toastr.success('Excel uploaded successfully', 'Success');
+          // this.toastr.success('Excel uploaded successfully', 'Success');
+          this.successMessage = 'Excel uploaded successfully'
         },
         error => {
-          console.error(error);
           this.validationErrors = error;
-          this.toastr.error('Error uploading Excel', 'Error');
+          // this.toastr.error('Error uploading Excel', 'Error');
+          this.errorMessage = 'Error uploading Excel';
         }
       );
   }
