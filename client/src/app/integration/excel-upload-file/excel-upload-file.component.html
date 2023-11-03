@@ -1,12 +1,13 @@
-
 <div class="alert alert-dismissible alert-primary" *ngIf="errorMessage">
   <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-  <strong>Oh snap!</strong> <p>{{ errorMessage }}</p> 
+  <strong>Oh snap!</strong>
+  <p>{{ errorMessage }}</p>
 </div>
 
 <div class="alert alert-dismissible alert-success" *ngIf="successMessage">
   <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-  <strong>Well done!</strong> <p>{{ successMessage }}</p>
+  <strong>Well done!</strong>
+  <p>{{ successMessage }}</p>
 </div>
 
 <div class="d-flex justify-content-center align-items-center" *ngIf="!showUploadButton">
@@ -25,80 +26,79 @@
 
 <div *ngIf="showSaveButton">
 
-<form [formGroup]="integrationForm"  autocomplete="off">
+  <form [formGroup]="integrationForm" autocomplete="off">
 
-  <div class="modal fade border-info" id="proceedModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title"><strong>Heads up!</strong></h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true"></span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>Are you sure you want to save report?</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-success me-2" (click)="saveExcelData()">Yes</button>
-          <button type="button" class="btn btn-danger me-2"(click)="modalHide()">No</button>
+    <div class="modal fade border-info" id="proceedModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title"><strong>Heads up!</strong></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true"></span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to save report?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success me-2" (click)="saveExcelData()">Yes</button>
+            <button type="button" class="btn btn-danger me-2" (click)="modalHide()">No</button>
+          </div>
         </div>
       </div>
     </div>
+
+
+      <div class="col-md-4 mb-3">
+        <label for="title">Title</label>
+        <app-text-input [formControl]="$any(integrationForm.controls['title'])" [label]="'Title'" required>
+        </app-text-input>
+      </div>
+
+
+  </form>
+
+  <div class="col-md-4 mt-3 mb-3" *ngIf="showSaveButton">
+    <select [(ngModel)]="selectedSheet" class="form-select">
+      <option *ngFor="let sheet of sheetNames" [value]="sheet">{{ sheet }}</option>
+    </select>
   </div>
 
-  <div class="col-md-4 mb-3">
-  <label for="title">Title</label>
-  <app-text-input [formControl]="$any(integrationForm.controls['title'])" 
-       [label]="'Title'" required >
-  </app-text-input>
+
+  <div *ngIf="selectedSheet" class="table-container">
+    <table class="table" border="1">
+      <thead>
+        <tr>
+          <th>Row Number</th>
+          <th *ngFor="let column of excelDataMap[selectedSheet][0]?.columnData | keyvalue">{{ column.key }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of excelDataMap[selectedSheet]">
+          <td>{{ row.rowNumber }}</td>
+          <td *ngFor="let cell of row.columnData | keyvalue">{{ cell.value }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
-</form>
-
-<div class="col-md-4 mt-3 mb-3" *ngIf="showSaveButton">
-  <select [(ngModel)]="selectedSheet" class="form-select">
-    <option *ngFor="let sheet of sheetNames" [value]="sheet">{{ sheet }}</option>
-  </select>
-</div>
-
-
-<div *ngIf="selectedSheet" class="table-container">
-  <table class="table" border="1">
-    <thead>
-      <tr>
-        <th>Row Number</th>
-        <th *ngFor="let column of excelDataMap[selectedSheet][0]?.columnData | keyvalue">{{ column.key }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let row of excelDataMap[selectedSheet]">
-        <td>{{ row.rowNumber }}</td>
-        <td *ngFor="let cell of row.columnData | keyvalue">{{ cell.value }}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<div class="btn-group d-flex justify-content-end col-md-4 mt-3">
-  <!-- <button (click)="saveExcelData()" 
+  <div class="btn-group d-flex justify-content-end col-md-4 mt-3">
+    <!-- <button (click)="saveExcelData()" 
           [disabled]="!integrationForm.dirty"
           class="btn btn-success mb-3 mt-3">Submit</button> -->
-  <button class="btn btn-success mb-3 mt-3" 
-          [disabled]="!integrationForm.dirty"
-          data-bs-toggle="modal" 
-          data-bs-target="#proceedModal">submit</button>
-  <button (click)="saveExcelData()" 
-          class="btn btn-light mb-3 mt-3 ml-2">Cancel</button>
-</div>
+    <button class="btn btn-success mb-3 mt-3" [disabled]="!integrationForm.dirty" data-bs-toggle="modal"
+      data-bs-target="#proceedModal">submit</button>
+    <button (click)="saveExcelData()" class="btn btn-light mb-3 mt-3 ml-2">Cancel</button>
+  </div>
 
 </div>
 
 
 <div class="row" *ngIf="validationErrors">
   <ul class="text-danger">
-      <li *ngFor="let error of validationErrors">
-        {{error}}
-      </li>
+    <li *ngFor="let error of validationErrors">
+      {{error}}
+    </li>
   </ul>
 </div>
