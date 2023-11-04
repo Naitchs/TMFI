@@ -1,18 +1,18 @@
-<div class="row col-md-12">
+<div class="row col-md-12 table-responsive" >
   <table class="table">
     <thead>
       <tr>
-        <th>Title</th>
-        <th>Duration</th>
-        <th>Action</th>
+        <th style="width: 50%;">Title</th>
+        <th style="width: 20%;">Duration</th>
+        <th style="width: 30%;">Action</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let course of course" (click)="redirectToDetail(course.id)">
         <td>{{ caps(course.title) }}</td>
         <td>{{ course.durationInHours }} Hour/s</td>
-        <td><button class="btn btn-info"  (click)="redirectToEdit(course.id)">Edit</button></td>
-        <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#proceedModal"
+        <td><button class="btn btn-info"  (click)="redirectToEdit(course.id)">Edit</button>
+        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#proceedModal"
           (click)="deleteClick(course.id)">Delete</button></td>
       </tr>
     </tbody>

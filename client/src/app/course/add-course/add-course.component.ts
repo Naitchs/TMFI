@@ -36,8 +36,9 @@ export class AddCourseComponent {
     this.course.addCourse(values).subscribe(
       () => {
            this.successMessage = 'Course Added Successfully!';
+           this.courseForm.reset();
       },(error) =>{
-           this.errorMessage = 'Error';
+           this.errorMessage = 'Error! Please Try Again!';
       }
     )
   }
