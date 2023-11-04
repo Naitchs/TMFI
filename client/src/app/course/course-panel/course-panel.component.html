@@ -1,15 +1,28 @@
-<h2>Course Panel</h2>
-<div class="tab-panel">
-  <tabset class="member-tabset">
-    <tab heading="Add Ip Profile" *appHasRole="['Member']">
-      <app-add-course></app-add-course>
-    </tab>
-    <tab heading="Ip List" *appHasRole="['Member']">
-           <div class="container">
-               <app-course-list></app-course-list>
-           </div>
-    </tab>
 
-    
-  </tabset>
+
+
+<div class="card shadow">
+  <div class="card-header">
+    <h2>Course Panel</h2>
+  </div>
+  <div class="card-body ">
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addCourseModal">Add Course</button>
+    <app-course-list class="mb-3"></app-course-list>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="addCourseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add course</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <app-add-course></app-add-course>
+      </div>
+    </div>
+  </div>
 </div>

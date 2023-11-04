@@ -13,8 +13,8 @@
         <td>{{ caps(subject.subjectCode) }}</td>
         <td>{{ subject.name }} </td>
         <td>{{ subject.phase }} </td>
-        <td><button class="btn btn-info">Edit</button></td>
-        <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#proceedModal"
+        <td><button class="btn btn-info">Edit</button>
+        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#proceedModal"
           (click)="deleteClick(subject.id)">Delete</button></td>
       </tr>
     </tbody>
