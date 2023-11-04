@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Course } from 'src/app/_models/course';
 import { CourseService } from 'src/app/_services/course.service';
@@ -9,7 +9,7 @@ declare var $: any;
   templateUrl: './course-list.component.html',
   styleUrls: ['./course-list.component.scss']
 })
-export class CourseListComponent {
+export class CourseListComponent implements OnInit{
 
   course: Course [] = [];
   courseId:number;
@@ -19,16 +19,14 @@ export class CourseListComponent {
   constructor(private courseService: CourseService, private router: Router) { }
 
   ngOnInit(): void { 
-    this.courseId = 0;
-    this.getCourse();
-  }
-
-  getCourse(){
     this.courseService.getCourses().subscribe(course => { // Subscribe to the observable here
       this.course = course;
-      console.log(this.course);
+      // console.log(this.course);
     });
+    this.courseId = 0;
   }
+
+
 
   caps(str: string): string {
     if (!str) return str;
@@ -43,9 +41,20 @@ export class CourseListComponent {
   // redirectToDetail(publicId: string) {
   //   this.router.navigate(['/ip-detail', publicId]);
   // }
+  updateClick(id:number){
+    this.courseId = id;
+  }
 
   deleteClick(id:number){
     this.courseId = id;
+  }
+
+  redirectToDetail(id: number) {
+    this.router.navigate(['/course-detail', id]);
+  }
+
+  redirectToEdit(id: number) {
+    this.router.navigate(['/course-edit', id]);
   }
 
   deleteCourse(){

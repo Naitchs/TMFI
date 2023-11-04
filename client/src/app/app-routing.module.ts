@@ -25,6 +25,8 @@ import { SapEditComponent } from "./profiling/sap-edit/sap-edit.component";
 import { AddCourseComponent } from "./course/add-course/add-course.component";
 import { CoursePanelComponent } from "./course/course-panel/course-panel.component";
 import { SubjectPanelComponent } from "./course/subject-panel/subject-panel.component";
+import { UpdateCourseComponent } from "./course/update-course/update-course.component";
+import { CourseDetailComponent } from "./course/course-detail/course-detail.component";
 
 
 const routes : Routes = [
@@ -49,6 +51,8 @@ const routes : Routes = [
       {path: 'excel-detail/:publicId', component: ExcelDetailComponent},
       {path: 'subject', component: SubjectPanelComponent},
       {path: 'course', component: CoursePanelComponent},
+      {path: 'course-detail/:id', component: CourseDetailComponent},
+      {path: 'course-edit/:id', component: UpdateCourseComponent},
       {path: 'admin', component: AdminPanelComponent, canActivate: [AdminGuard]},
       {path: 'home', component: HomeComponent }
     ]

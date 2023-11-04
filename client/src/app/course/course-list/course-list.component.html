@@ -2,18 +2,16 @@
   <table class="table">
     <thead>
       <tr>
-        <th>ID</th>
         <th>Title</th>
         <th>Duration</th>
         <th>Action</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let course of course">
-        <td>{{ course.id }}</td>
+      <tr *ngFor="let course of course" (click)="redirectToDetail(course.id)">
         <td>{{ caps(course.title) }}</td>
         <td>{{ course.durationInHours }} Hour/s</td>
-        <td><button class="btn btn-info"  >Edit</button></td>
+        <td><button class="btn btn-info"  (click)="redirectToEdit(course.id)">Edit</button></td>
         <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#proceedModal"
           (click)="deleteClick(course.id)">Delete</button></td>
       </tr>

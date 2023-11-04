@@ -90,6 +90,7 @@ namespace API.Helpers
             CreateMap<AppSap, AppSap>();
             CreateMap<AppCourse, CourseDto>().ReverseMap();
             CreateMap<AppSubject, SubjectDto>().ReverseMap();
+            CreateMap<AppCourse, AppCourse>();
 
         }
 

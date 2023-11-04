@@ -26,7 +26,7 @@ export class IpDetailComponent implements OnInit{
     });
   }
 
-  redirectToDetail(publicId: string) {
+  redirectToEdit(publicId: string) {
     this.router.navigate(['/ip-edit', publicId]);
   }
 
@@ -55,26 +55,5 @@ export class IpDetailComponent implements OnInit{
   }
   
   
-  
-
-
-  // loadIp(){
-  //   const id = this.route.snapshot.paramMap.get('id');
-  //   if (!id) return;
-  
-  //   // Convert the id from string to number
-  //   const idNumber = Number(id);
-  
-  //   if (isNaN(idNumber)) {
-  //     console.error('Invalid ID:', id);
-  //     return;
-  //   }
-  
-  //   this.profileService.getIp(idNumber).subscribe({
-  //     next: ipProfile => {
-  //       this.ipProfile = ipProfile;
-  //     }
-  //   });
-  // }
   
 }

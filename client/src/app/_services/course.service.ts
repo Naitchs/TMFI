@@ -22,8 +22,19 @@ export class CourseService {
     return this.http.post<Course>(this.baseUrl + 'course/add-course', model);
   }
 
-  updateCourse(){
+  updateCourse(course: Course, id: number){
+    return this.http.put(this.baseUrl + 'course/edit-course/' + id, course).pipe(
+      map(() => {
+        const index = this.course.indexOf(course);
+        this.course[index] = {...this.course[index], ...course}
+      })
+    )
+  }
 
+  getCourse(id: number){
+    const course = this.course.find(x => x.id === id);
+    if (course) return of (course);
+    return this.http.get<Course>(this.baseUrl + 'course/get-course/' + id);
   }
 
   getCourses(){
