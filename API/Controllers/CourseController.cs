@@ -163,7 +163,7 @@ namespace API.Controllers
         //     }
 
         [HttpPost("add-course")]
-        public IActionResult CreateCourse([FromBody] CourseDto courseDto)
+        public IActionResult CreateCourse(CourseDto courseDto)
         {
 
             var appCourse = _mapper.Map<AppCourse>(courseDto);
