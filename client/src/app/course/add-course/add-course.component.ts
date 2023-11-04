@@ -16,29 +16,30 @@ export class AddCourseComponent {
   errorMessage: string | null = null;
   courseForm: FormGroup = new FormGroup({});
   
+ 
+  ngOnInit(): void {
+    this.initializeForm();
+  }
+
+
   initializeForm(){
     this.courseForm = this.fb.group({
       title: ['', Validators.required],
       description: [''],
-      durationInHours: [''],
+      durationInHours: ['', Validators.required],
       tags: [''],
     });
   }
 
   createCourse(){
-    // console.log(this.courseForm);
-    this.course.addCourse(this.courseForm.value).subscribe(
+    const values = {...this.courseForm.value};
+    this.course.addCourse(values).subscribe(
       () => {
-           console.log(this.courseForm);
            this.successMessage = 'Course Added Successfully!';
       },(error) =>{
            this.errorMessage = 'Error';
       }
     )
-  }
-
-  ngOnInit(): void {
-    this.initializeForm();
   }
 
 
