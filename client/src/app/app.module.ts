@@ -61,6 +61,8 @@ import { AddSubjectComponent } from './course/add-subject/add-subject.component'
 import { SubjectPanelComponent } from './course/subject-panel/subject-panel.component';
 import { SubjectListComponent } from './course/subject-list/subject-list.component';
 import { MaterialModule } from './material.module';
+import { UpdateCourseComponent } from './course/update-course/update-course.component';
+import { CourseDetailComponent } from './course/course-detail/course-detail.component';
 
 
 
@@ -118,6 +120,8 @@ import { MaterialModule } from './material.module';
     AddSubjectComponent,
     SubjectPanelComponent,
     SubjectListComponent,
+    UpdateCourseComponent,
+    CourseDetailComponent,
 
   ],
   imports: [

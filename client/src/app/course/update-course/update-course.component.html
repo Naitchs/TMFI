@@ -1,0 +1,94 @@
+<div class="row" *ngIf="course">
+  <div class="col-md-4">
+    <h1>Update Course</h1>
+  </div>
+  <!-- Alert messages -->
+  <div class="col-md-8">
+    <div class="alert alert-dismissible alert-info" *ngIf="editForm.dirty">
+      <p><strong>Information: </strong>Your have made changes. Any unsaved changes will be lost</p>
+    </div>
+    <div class="alert alert-dismissible alert-success" *ngIf="successMessage && !editForm.dirty" #successAlert>
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      <strong>Well done!</strong>
+      <p>{{ successMessage }}</p>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade border-info" id="proceedModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><strong>Heads up!</strong></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to save?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success me-2" (click)="updateCourse()">Yes</button>
+          <button type="button" class="btn btn-danger me-2" (click)="modalHide()">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Course Details -->
+  <div class="col-md-4">
+    <div class="card shadow">
+      <div class="card-body">
+        <div>
+          <strong>Title:</strong>
+          <p>{{caps(course.title)}} </p>
+        </div>
+        <div>
+          <strong>Description:</strong>
+          <p>{{course.description}}</p>
+        </div>
+        <div>
+          <strong>Duration In Hours:</strong>
+          <p>{{course.durationInHours}} Hour/s</p>
+        </div>
+        <div>
+          <strong>Tags:</strong>
+          <p>{{course.tags}}</p>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <button data-bs-toggle="modal" data-bs-target="#proceedModal" [disabled]="!editForm.dirty" form="editForm"
+          class="btn btn-success col-md-12"> Save changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Update Form -->
+  <div class="col-md-8">
+    <tabset class="member-tabset">
+      <form #editForm="ngForm" id="editForm">
+        <tab heading="Update {{course?.title}}">
+          <div class="card shadow mb-3">
+            <div class="card-body">
+              <h4 class="mt-2">Address</h4>
+              <div class="col-md-6 mb-5">
+                <label for="title">Title:</label>
+                <input type="text" [(ngModel)]="course.title" name="title" id="title" class="form-control mb-3">
+                <label for="description">Description:</label>
+                <input type="text" [(ngModel)]="course.description" name="description" id="description"
+                  class="form-control mb-3">
+                <label for="durationInHours">Duration In Hours:</label>
+                <input type="number" [(ngModel)]="course.durationInHours" name="durationInHours" id="durationInHours"
+                  class="form-control mb-3">
+                <label for="tags">Tags:</label>
+                <input type="text" [(ngModel)]="course.tags" name="tags" id="tags" class="form-control mb-3">
+              </div>
+            </div>
+          </div>
+        </tab>
+      </form>
+    </tabset>
+  </div>
+</div>

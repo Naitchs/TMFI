@@ -62,9 +62,17 @@ namespace API.Services
             return await _context.Courses.FindAsync(id);
         }
 
-        public Task<AppCourse> GetCourseByIdAsync()
+        public async Task<AppCourse> GetCourseByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Courses.FindAsync(id);
+        }
+
+        public async Task<AppCourse> GetCourseId(int id)
+        {
+              return await _context.Courses
+                    .Where(c => c.Id == id)
+                    .ProjectTo<AppCourse>(_mapper.ConfigurationProvider)
+                    .FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<AppCourse>> GetCoursesAsync()

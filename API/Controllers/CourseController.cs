@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-
+    [Authorize]
     public class CourseController : BaseApiController
     {
         private readonly DataContext _context;
@@ -177,7 +177,7 @@ namespace API.Controllers
         [HttpPut("edit-course/{id}")]
         public async Task<IActionResult> UpdateCourse(int id, [FromBody] CourseDto courseDto)
         {
-            var course = await _courseService.GetCourseById(id);
+            var course = await _courseService.GetCourseId(id);
 
             if (course == null)
             {
@@ -195,10 +195,19 @@ namespace API.Controllers
 
 
         [HttpGet("get-courses")]
-        public async Task<ActionResult<IEnumerable<IpDto>>> GetCourses()
+        public async Task<ActionResult<IEnumerable<CourseDto>>> GetCourses()
         {
 
             var course = await _courseService.GetCoursesAsync();
+
+            return Ok(course);
+        }
+
+         [HttpGet("get-course/{id}")]
+        public async Task<ActionResult<CourseDto>> GetCourse(int id)
+        {
+
+            var course = await _courseService.GetCourseId(id);
 
             return Ok(course);
         }

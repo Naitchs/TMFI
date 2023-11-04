@@ -1,0 +1,54 @@
+<div class="row" *ngIf="course">
+  <div class="col-md-4 mb-3">
+    <div class="card shadow">   
+             <div class="card-body">
+
+              <div>
+                <strong>Title:</strong>
+                <p>{{caps(course.title)}} </p>
+              </div>
+              <div>
+                <strong>Description:</strong>
+                <p>{{course.description}}</p>
+              </div>
+              <div>
+                <strong>Duration In Hours:</strong>
+                <p>{{course.durationInHours}} Hour/s</p>
+              </div>
+              <div>
+                <strong>Tags:</strong>
+                <p>{{course.tags}}</p>
+              </div>
+              
+              
+              </div>
+
+                <div class="card-footer">
+                  <div class="btn-group d-flex">
+    
+                      <button class="btn btn-success" (click)="redirectToEdit(course.id)">Edit</button>
+    
+                  </div>
+                </div>
+           
+    </div>
+  </div>
+
+  <!-- <div class="col-md-4">
+      <tabset class="member-tabset">
+        <tab heading="About {{caps(ipProfile?.lastname)}}">
+            <h4>Social Media</h4>
+            <p>Email: {{ipProfile?.email}}</p>
+            <p>Facebook: {{ipProfile?.facebook}}</p>
+            <h4>Church Name</h4>
+            <p>{{caps(ipProfile?.churchName)}}</p>
+            <h4>Ministry</h4>
+            <p>{{caps(ipProfile?.ministry)}}</p>
+            <h4>Reason</h4>
+            <p>{{caps(ipProfile?.reason)}}</p>
+        </tab> 
+        <tab heading="Tren">
+            <app-tren></app-tren>
+      </tab> 
+      </tabset>
+  </div> -->

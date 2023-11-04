@@ -13,11 +13,11 @@ namespace API.Interfaces
 
         void DeleteCourse(int id);
 
-        Task<AppCourse> GetCourseById(int id);
-
         Task<IEnumerable<AppCourse>> GetCoursesAsync();
         Task<IEnumerable<AppSubject>> GetSubjectsAsync();
-        Task<AppCourse> GetCourseByIdAsync();
+        Task<AppCourse> GetCourseByIdAsync(int id);
+
+        Task<AppCourse> GetCourseId (int id);
 
 
         void AddSubject(AppSubject subject);
