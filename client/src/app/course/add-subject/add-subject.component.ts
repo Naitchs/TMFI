@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CourseService } from 'src/app/_services/course.service';
+declare var $: any;
 
 @Component({
   selector: 'app-add-subject',
@@ -19,7 +20,7 @@ export class AddSubjectComponent implements OnInit {
   description: string = '';
   phase: number;
 
-  constructor(public dialogRef: MatDialogRef<AddSubjectComponent>,
+  constructor(
     private course: CourseService) { }
 
   ngOnInit(): void {
@@ -29,17 +30,14 @@ export class AddSubjectComponent implements OnInit {
     this.course.addSubject(this.subjectForm.value).subscribe(
       () => {
         this.successMessage = 'Course Added Successfully!';
-        console.log(this.subjectForm);
-        this.dialogRef.close();
+        this.subjectForm.reset();
+
       }, (error) => {
         this.errorMessage = 'Error';
       }
     )
   }
 
-  closeDialog(): void {
-    this.dialogRef.close();
-  }
 
 
 }

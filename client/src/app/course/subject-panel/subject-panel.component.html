@@ -1,2 +1,28 @@
-<button mat-raised-button (click)="openAddSubjectDialog()">Add Subject</button>
-<app-subject-list></app-subject-list>
+<!-- <button mat-raised-button (click)="openAddSubjectDialog()">Add Subject</button>
+<app-subject-list></app-subject-list> -->
+
+<div class="card shadow">
+  <div class="card-header">
+    Subject Panel
+  </div>
+  <div class="card-body">
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSubjectModal">Add Subject</button>
+    <app-subject-list></app-subject-list>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="addSubjectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Subject</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <app-add-subject></app-add-subject>
+      </div>
+    </div>
+  </div>
+</div>

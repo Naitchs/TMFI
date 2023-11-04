@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Add Subject</h1>
+<!-- <h1 mat-dialog-title>Add Subject</h1>
 
 <mat-dialog-content class="mat-typography">
   <form  #subjectForm="ngForm" id="subjectForm">
@@ -20,4 +20,34 @@
   <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="createSubject()">Submit</button>
 
   
-</mat-dialog-actions>
+</mat-dialog-actions> -->
+<div class="alert alert-dismissible alert-success" *ngIf="successMessage" #successAlert>
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  <strong>Well done!</strong> <p>{{ successMessage }}</p>
+</div>
+
+        <form #subjectForm="ngForm" id="subjectForm">
+          <div class="mb-3">
+            <label for="code" class="form-label">Subject Code:</label>
+            <input type="text" [(ngModel)]="subjectCode" name="subjectCode" id="code" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="name" class="form-label">Name:</label>
+            <input type="text" [(ngModel)]="name" name="name" id="name" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="desc" class="form-label">Description:</label>
+            <input type="text" [(ngModel)]="description" name="description" id="desc" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="phase" class="form-label">Phase:</label>
+            <input type="number" [(ngModel)]="phase" name="phase" id="phase" class="form-control">
+          </div>
+        </form>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="createSubject()">Submit</button>
+      </div>
+ 
+

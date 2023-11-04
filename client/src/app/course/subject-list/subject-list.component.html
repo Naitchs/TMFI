@@ -1,8 +1,7 @@
-<div class="row col-md-12">
+<div class="row col-md-12 table-responsive">
   <table class="table">
     <thead>
       <tr>
-        <th>ID</th>
         <th>Subject Code</th>
         <th>Name</th>
         <th>Phase</th>
@@ -11,11 +10,10 @@
     </thead>
     <tbody>
       <tr *ngFor="let subject of subject">
-        <td>{{ subject.id }}</td>
         <td>{{ caps(subject.subjectCode) }}</td>
         <td>{{ subject.name }} </td>
         <td>{{ subject.phase }} </td>
-        <td><button class="btn btn-info"  >Edit</button></td>
+        <td><button class="btn btn-info">Edit</button></td>
         <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#proceedModal"
           (click)="deleteClick(subject.id)">Delete</button></td>
       </tr>
@@ -23,15 +21,12 @@
   </table>
 </div>
 
-
 <div class="modal fade border-info" id="proceedModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title"><strong>Heads up!</strong></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true"></span>
-        </button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <p>Are you sure you want to Delete Course?</p>
