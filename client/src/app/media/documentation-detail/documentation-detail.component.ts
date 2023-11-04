@@ -38,12 +38,11 @@ export class DocumentationDetailComponent implements OnInit{
         thumbnailsColumns: 4,
         imageAnimation: NgxGalleryAnimation.Slide,
         preview: false,
-        lazyLoading: true
       },
       { 
         "imageSize": "contain",
         "previewCloseOnEsc": true,
-        "imageAnimation": "zoom",
+        "imageAnimation": "slide",
         "previewZoom": true, 
         "previewRotate": true
       },
