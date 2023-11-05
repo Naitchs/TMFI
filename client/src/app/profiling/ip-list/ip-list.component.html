@@ -1,27 +1,35 @@
-<div class="row col-md-12">
+<div class="row col-md-12 table-responsive" *ngIf="ipProfile">
   <table class="table">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Age</th>
-        <th>Gender</th>
-        <th>Tribe</th>
-        <th>City</th>
-        <th>Action</th>
+        <th style="width: 5%;">ID</th>
+        <th style="width: 40%;">Name</th>
+        <th style="width: 5%;">Age</th>
+        <th style="width: 5%;">Gender</th>
+        <th style="width: 10%;">Tribe</th>
+        <th style="width: 10%;">City</th>
+        <th style="width: 10%;">Action</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let ipProfile of paginatedList" (click)="redirectToDetail(ipProfile.publicId)">
-        <td>{{ ipProfile.publicId }}</td>
-        <td>{{ caps(ipProfile.firstname) }}</td>
-        <td>{{ caps(ipProfile.lastname) }}</td>
+        <td >{{ ipProfile.publicId }}</td>
+        <td>{{ caps(ipProfile.firstname) }} 
+            {{ caps(ipProfile.middlename) }}
+            {{ caps(ipProfile.lastname) }}
+            {{ caps(ipProfile.suffix) }}
+        </td>
         <td>{{ ipProfile.age }}</td>
         <td>{{ caps(ipProfile.gender) }}</td>
         <td>{{ caps(ipProfile.tribe) }}</td>
         <td>{{ caps(ipProfile.city) }}</td>
-        <td><button class="btn btn-info"  routerLink="">Edit</button></td>
+        <td>
+          <button class="btn btn-info"  (click)="redirectToEdit(ipProfile.publicId)">
+            <i class="bi bi-pencil"></i></button>
+            &nbsp; 
+          <button class="btn btn-danger" >
+            <i class="bi bi-trash"></i> </button>
+        </td>
       </tr>
     </tbody>
   </table>
