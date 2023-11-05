@@ -18,7 +18,7 @@ export class DocumentationComponent implements OnInit {
   validationErrors: any;
   errorMessage: string | null = null;
   successMessage: string | null = null;
-  maxFileSize = 5 * 1024 * 1024; // 25 MB
+  maxFileSize = 25 * 1024 * 1024; // 25 MB
 
   files: File[] = [];
   pictures: File[] = [];
