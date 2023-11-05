@@ -29,7 +29,10 @@ export class IpListComponent implements OnInit{
   redirectToDetail(publicId: string) {
     this.router.navigate(['/ip-detail', publicId]);
   }
-
+  redirectToEdit(publicId: string) {
+    this.router.navigate(['/ip-edit', publicId]);
+  }
+  
   caps(str: string): string {
     if (!str) return str;
   

@@ -8,13 +8,15 @@
     </div>
     <div class="alert alert-dismissible alert-success" *ngIf="successMessage && !editForm.dirty" #successAlert>
       <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-      <strong>Well done!</strong> <p>{{ successMessage }}</p>
+      <strong>Well done!</strong>
+      <p>{{ successMessage }}</p>
     </div>
   </div>
 
 
 
-  <div class="modal fade border-info" id="proceedModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade border-info" id="proceedModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -28,7 +30,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-success me-2" (click)="updateIp()">Yes</button>
-          <button type="button" class="btn btn-danger me-2"(click)="modalHide()">No</button>
+          <button type="button" class="btn btn-danger me-2" (click)="modalHide()">No</button>
         </div>
       </div>
     </div>
@@ -41,119 +43,163 @@
       <div class="card-body">
 
 
-                <div>
-                    <strong>Name:</strong>
-                    <p>{{caps(ipProfile.firstname)}} {{caps(ipProfile.middlename)}} {{caps(ipProfile.lastname)}} {{caps(ipProfile.suffix)}}</p>
-                </div>
-                <div>
-                    <strong>Birthday:</strong>
-                    <p>{{getFormattedDate(ipProfile?.dateOfBirth)}}</p>
-                </div>
+        <div>
+          <strong>Name:</strong>
+          <p>{{caps(ipProfile.firstname)}} {{caps(ipProfile.middlename)}} {{caps(ipProfile.lastname)}}
+            {{caps(ipProfile.suffix)}}</p>
+        </div>
+        <div>
+          <strong>Birthday:</strong>
+          <p>{{getFormattedDate(ipProfile?.dateOfBirth)}}</p>
+        </div>
 
-                <div>
-                    <strong>Age:</strong>
-                    <p>{{ipProfile.age}}</p>
-                </div>
+        <div>
+          <strong>Age:</strong>
+          <p>{{ipProfile.age}}</p>
+        </div>
 
-                <div>
-                  <strong>Gender:</strong>
-                  <p>{{caps(ipProfile.gender)}}</p>
-                </div>
+        <div>
+          <strong>Gender:</strong>
+          <p>{{caps(ipProfile.gender)}}</p>
+        </div>
 
-                <div>
-                  <strong>Status:</strong>
-                  <p>{{caps(ipProfile.status)}}</p>
-                </div>
+        <div>
+          <strong>Status:</strong>
+          <p>{{caps(ipProfile.status)}}</p>
+        </div>
 
-                <div>
-                  <strong>Tribe:</strong>
-                  <p>{{caps(ipProfile.tribe)}}</p>
-                </div>
+        <div>
+          <strong>Tribe:</strong>
+          <p>{{caps(ipProfile.tribe)}}</p>
+        </div>
 
-                <div>
-                  <strong>Address:</strong>
-                  <p>{{caps(ipProfile.street)}}, {{caps(ipProfile.barangay)}}, {{caps(ipProfile.city)}}</p>
-               </div>
-           
-              </div>
-            
-            <div class="card-footer">
-              <button data-bs-toggle="modal" data-bs-target="#proceedModal" 
-                      [disabled]="!editForm.dirty" 
-                      form="editForm" 
-                      class="btn btn-success col-md-12 "
-                      > Save changes</button>
-            </div>
-          </div>
+        <div>
+          <strong>Address:</strong>
+          <p>{{caps(ipProfile.street)}}, {{caps(ipProfile.barangay)}}, {{caps(ipProfile.city)}}</p>
+        </div>
+
+      </div>
+
+      <div class="card-footer">
+        <button data-bs-toggle="modal" data-bs-target="#proceedModal" [disabled]="!editForm.dirty" form="editForm"
+          class="btn btn-success col-md-12 "> Save changes</button>
+      </div>
+    </div>
   </div>
- 
+
   <div class="col-md-8">
-      <tabset class="member-tabset">
-        <form #editForm="ngForm" id="editForm" >
+    <tabset class="member-tabset">
+      <form #editForm="ngForm" id="editForm">
         <tab heading="About {{ipProfile?.lastname}}">
-          <div class="card shadow mb-3">
-            <div class="card-body">
 
-            <!-- <div class="col-md-6 mb-3">
-              <label for="status">Status: {{ ipProfile?.status }}</label>
-              <select id="status" formControlName="status" class="form-select" [(ngModel)]="ipProfile.status" >
-                <option value="" disabled selected>{{ ipProfile?.status }}</option>
-                <option *ngFor="let option of statusOptions" [value]="option.value" [selected]="ipProfile.status === option.value">{{ option.label }}</option>
-              </select>
-            </div>
-            
-            <div class="col-md-6 mb-3">
-              <label for="tribe">Tribe: {{ ipProfile?.tribe }}</label>
-              <select id="tribe" formControlName="tribe" class="form-select" [(ngModel)]="ipProfile.tribe" >
-                <option value="" disabled selected>{{ ipProfile?.tribe }}</option>
-                <option *ngFor="let option of tribeOptions" [value]="option.value" [selected]="ipProfile.tribe === option.value">{{ option.label }}</option>
-              </select>
-            </div>
-
-            <div class="col-md-6 mb-3">
-              <label for="churchname">Church Name: {{ ipProfile?.churchName }} </label>
-              <select id="churchname" formControlName="churchname" class="form-select" [(ngModel)]="ipProfile.churchName" >
-                <option value="" disabled selected>{{ ipProfile?.churchName }}</option>
-                <option *ngFor="let option of churchOptions" [value]="option.value" [selected]="ipProfile.churchName === option.value">{{ option.label }}</option>
-              </select>
-            </div> -->
-
-
-          </div>
-          </div>
-
-          <div class="card shadow mb-3">
-            <div class="card-body">
-            <h4 class="mt-2">Address</h4>
-            <div class="col-md-6 mb-5">
-                  <label for="street">Street:</label>
-                  <input type="text" [(ngModel)]="ipProfile.street" name="street" id="street" class="form-control mb-3">
-                  <label for="barangay">Barangay:</label>
-                  <input type="text" [(ngModel)]="ipProfile.barangay" name="barangay" id="barangay" class="form-control mb-3">
-                  <label for="city">City:</label>
-                  <input type="text" [(ngModel)]="ipProfile.city" name="city" id="city" class="form-control mb-3">
-            </div>
-            </div>
-          </div>
 
           <div class="card shadow mb-3">
             <div class="card-body">
 
-            <h4 class="mt-2">Contacts</h4>
-            <div class="col-md-6 mb-3">
-                  <label for="street">Phone Number:</label>
-                  <input type="phoneNum" [(ngModel)]="ipProfile.phoneNum" name="phoneNum" id="phoneNum" class="form-control mb-3">
-                  <label for="facebook">Facebook:</label>
-                  <input type="text" [(ngModel)]="ipProfile.facebook" name="facebook" id="facebook" class="form-control mb-3">
-                  <label for="email">email:</label>
-                  <input type="text" [(ngModel)]="ipProfile.email" name="email" id="email" class="form-control mb-3">
+              <div class="col-md-6 mb-5">
+                <label for="firstname">First Name:</label>
+                <input type="text" [(ngModel)]="ipProfile.firstname" name="firstname" id="firstname"
+                  class="form-control mb-3">
+                <label for="middlename">Middle Name:</label>
+                <input type="text" [(ngModel)]="ipProfile.middlename" name="middlename" id="middlename"
+                  class="form-control mb-3">
+                <label for="lastname">Last Name:</label>
+                <input type="text" [(ngModel)]="ipProfile.lastname" name="lastname" id="lastname"
+                  class="form-control mb-3">
+                <label for="suffix">Suffix:</label>
+                <input type="text" [(ngModel)]="ipProfile.suffix" name="suffix" id="suffix" class="form-control mb-3">
+              </div>
+
+
             </div>
           </div>
+
+
+
+          <div class="card shadow mb-3">
+            <div class="card-body">
+
+              <div class="col-md-6 mb-3">
+                <label for="status">Status: </label>
+                <select id="status" name="status" class="form-select" [(ngModel)]="ipProfile.status">
+                  <option value="" disabled selected>{{ ipProfile?.status }}</option>
+                  <option *ngFor="let option of statusOptions" [value]="option.value"
+                    [selected]="ipProfile.status === option.value">{{ option.label }}</option>
+                </select>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="tribe">Tribe: </label>
+                <select id="tribe" name="tribe" class="form-select" [(ngModel)]="ipProfile.tribe">
+                  <option value="" disabled selected>{{ ipProfile?.tribe }}</option>
+                  <option *ngFor="let option of tribeOptions" [value]="option.value"
+                    [selected]="ipProfile.tribe === option.value">{{ option.label }}</option>
+                </select>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="churchname">Church: </label>
+                <select id="churchname" name="churchName" class="form-select" [(ngModel)]="ipProfile.churchName">
+                  <option value="" disabled selected>{{ ipProfile?.churchName }}</option>
+                  <option *ngFor="let option of churchOptions" [value]="option.value"
+                    [selected]="ipProfile.churchName === option.value">{{ option.label }}</option>
+                </select>
+              </div>
+
+
+            </div>
           </div>
-  
+
+          <div class="card shadow mb-3">
+            <div class="card-body">
+              <h4 class="mt-2">Address</h4>
+              <div class="col-md-6 mb-5">
+                <label for="street">Street:</label>
+                <input type="text" [(ngModel)]="ipProfile.street" name="street" id="street" class="form-control mb-3">
+                <label for="barangay">Barangay:</label>
+                <input type="text" [(ngModel)]="ipProfile.barangay" name="barangay" id="barangay"
+                  class="form-control mb-3">
+                <label for="city">City:</label>
+                <input type="text" [(ngModel)]="ipProfile.city" name="city" id="city" class="form-control mb-3">
+              </div>
+            </div>
+          </div>
+
+          <div class="card shadow mb-3">
+            <div class="card-body">
+
+              <h4 class="mt-2">Contacts</h4>
+              <div class="col-md-6 mb-3">
+                <label for="street">Phone Number:</label>
+                <input type="phoneNum" [(ngModel)]="ipProfile.phoneNum" name="phoneNum" id="phoneNum"
+                  class="form-control mb-3">
+                <label for="facebook">Facebook:</label>
+                <input type="text" [(ngModel)]="ipProfile.facebook" name="facebook" id="facebook"
+                  class="form-control mb-3">
+                <label for="email">email:</label>
+                <input type="text" [(ngModel)]="ipProfile.email" name="email" id="email" class="form-control mb-3">
+              </div>
+            </div>
+          </div>
+
+          <div class="card shadow mb-3">
+            <div class="card-body">
+
+              <h4 class="mt-2">Others</h4>
+                <div class="col-md-12 mb-3">
+                <label for="ministry">Ministry:</label>
+                <textarea class="form-control" [(ngModel)]="ipProfile.ministry" name="ministry" rows="6">
+                </textarea>
+                <label for="reason">Reason:</label>
+                <textarea class="form-control" [(ngModel)]="ipProfile.reason" name="reason" rows="6">
+                </textarea>
+              </div>
+            </div>
+          </div>
+
         </tab>
       </form>
-   
-      </tabset>
+
+    </tabset>
   </div>
 </div>
