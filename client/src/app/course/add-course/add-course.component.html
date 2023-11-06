@@ -1,6 +1,7 @@
 <div class="alert alert-dismissible alert-success" *ngIf="successMessage" #successAlert>
   <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-  <strong>Well done!</strong> <p>{{ successMessage }}</p>
+  <strong>Well done!</strong>
+  <p>{{ successMessage }}</p>
 </div>
 
 <div class="alert alert-dismissible alert-primary" *ngIf="errorMessage">
@@ -14,35 +15,32 @@
 <form [formGroup]="courseForm" autocomplete="off">
 
 
-    <div class="col-md-12 mb-3">
-      <label for="title">Title</label>
-      <app-text-input [formControl]="$any(courseForm.controls['title'])" 
-              [label]="'Title'" id="title">
-      </app-text-input>
+  <div class="col-md-12 mb-3">
+    <label for="title">Title</label>
+    <app-text-input [formControl]="$any(courseForm.controls['title'])" [label]="'Title'" id="title">
+    </app-text-input>
   </div>
   <div class="col-md-12 mb-3">
     <label for="desc">Description</label>
-    <app-text-input [formControl]="$any(courseForm.controls['description'])" 
-            [label]="'Description'" id="desc">
+    <app-text-input [formControl]="$any(courseForm.controls['description'])" [label]="'Description'" id="desc">
     </app-text-input>
-</div>
-<div class="col-md-12 mb-3">
-  <label for="duration">Duration In Hours</label>
-  <app-text-input [formControl]="$any(courseForm.controls['durationInHours'])" 
-          [label]="'Duration In Hours'" [type]="'number'" id="duration">
-  </app-text-input>
+  </div>
+  <div class="col-md-12 mb-3">
+    <label for="duration">Duration In Hours</label>
+    <app-text-input [formControl]="$any(courseForm.controls['durationInHours'])" [label]="'Duration In Hours'"
+      [type]="'number'" id="duration">
+    </app-text-input>
   </div>
   <div class="col-md-12 mb-3">
     <label for="tags">Tags</label>
-    <app-text-input [formControl]="$any(courseForm.controls['tags'])" 
-            [label]="'Tags'" id="tags">
+    <app-text-input [formControl]="$any(courseForm.controls['tags'])" [label]="'Tags'" id="tags">
     </app-text-input>
   </div>
 
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-      <button type="button" class="btn btn-primary" (click)="createCourse()">Submit</button>
-    </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="createCourse()">Submit</button>
+  </div>
 
 
 </form>

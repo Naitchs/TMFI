@@ -221,14 +221,13 @@ namespace API.Controllers
         }
 
         [HttpPost("add-subject")]
-        public IActionResult CreateSubject([FromBody] SubjectDto subjectDto)
+        public IActionResult CreateSubject(SubjectDto subjectDto)
         {
 
             var appSubject = _mapper.Map<AppSubject>(subjectDto);
+            var addedSubject = _courseService.AddSubject(appSubject);
 
-            _courseService.AddSubject(appSubject);
-
-            return Ok();
+            return Ok(addedSubject);
 
         }
 
@@ -265,7 +264,7 @@ namespace API.Controllers
         {
             _courseService.DeleteSubject(id);
 
-            return Ok(_courseService.GetCoursesAsync());
+            return Ok();
         }
         
 

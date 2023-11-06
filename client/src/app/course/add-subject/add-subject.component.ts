@@ -31,9 +31,11 @@ export class AddSubjectComponent implements OnInit {
       () => {
         this.successMessage = 'Course Added Successfully!';
         this.subjectForm.reset();
+        this.errorMessage = null;
 
       }, (error) => {
         this.errorMessage = 'Error';
+        this.successMessage = null;
       }
     )
   }
