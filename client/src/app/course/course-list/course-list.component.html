@@ -12,6 +12,7 @@
         <td>{{ caps(course.title) }}</td>
         <td>{{ course.durationInHours }} Hour/s</td>
         <td><button class="btn btn-info"  (click)="redirectToEdit(course.id)">Edit</button>
+          &nbsp; 
         <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#proceedModal"
           (click)="deleteClick(course.id)">Delete</button></td>
       </tr>

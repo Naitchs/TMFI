@@ -20,7 +20,7 @@ namespace API.Interfaces
         Task<AppCourse> GetCourseId (int id);
 
 
-        void AddSubject(AppSubject subject);
+        AppSubject AddSubject(AppSubject subject);
         void UpdateSubject(AppSubject subject);
         void DeleteSubject(int id);
         Task<AppSubject> GetSubjectById(int id);

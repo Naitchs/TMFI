@@ -3,7 +3,7 @@ import { environment } from 'src/environments/environment';
 import { Course } from '../_models/course';
 import { HttpClient } from '@angular/common/http';
 import { map, of } from 'rxjs';
-import { Subject } from '../_models/subject';
+import { Subjects } from '../_models/subject';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class CourseService {
 
   baseUrl = environment.apiUrl;
   course: Course [] = [];
-  subject: Subject [] = [];
+  subject: Subjects [] = [];
   deletedCourse: any;
   deletedSubject: any;
 
@@ -57,12 +57,12 @@ export class CourseService {
   };
 
   addSubject(model: any){
-    return this.http.post<Subject>(this.baseUrl + 'course/add-subject', model);
+    return this.http.post<Subjects>(this.baseUrl + 'course/add-subject', model);
   };
 
   getSubjects(){
     if (this.subject.length > 0) return of (this.subject);
-    return this.http.get<Subject[]>(this.baseUrl + 'course/get-subjects').pipe(
+    return this.http.get<Subjects[]>(this.baseUrl + 'course/get-subjects').pipe(
       map(subject => {
         this.subject = subject;
         return subject;

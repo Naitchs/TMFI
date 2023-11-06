@@ -26,10 +26,13 @@ namespace API.Services
             _context.SaveChanges();
         }
 
-        public void AddSubject(AppSubject subject)
+        public AppSubject AddSubject(AppSubject subject)
         {
             _context.Subjects.Add(subject);
             _context.SaveChanges();
+
+            return subject;
+
         }
 
         public void DeleteCourse(int id)
