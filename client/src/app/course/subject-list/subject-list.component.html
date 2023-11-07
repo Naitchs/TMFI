@@ -78,7 +78,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let subject of paginatedList">
+      <tr *ngFor="let subject of paginatedList" (click)="redirectToDetail(subject.id)">
         <td>{{ subject.subjectCode}}</td>
         <td>{{ subject.name }} </td>
         <td>{{ subject.phase }} </td>

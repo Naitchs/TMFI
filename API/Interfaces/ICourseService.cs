@@ -7,7 +7,7 @@ namespace API.Interfaces
     public interface ICourseService
     {
 
-        void AddCourse(AppCourse course);
+        AppCourse AddCourse(AppCourse course);
 
         void UpdateCourse(AppCourse course);
 

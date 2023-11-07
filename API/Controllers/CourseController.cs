@@ -168,9 +168,9 @@ namespace API.Controllers
 
             var appCourse = _mapper.Map<AppCourse>(courseDto);
 
-            _courseService.AddCourse(appCourse);
+            var addedCourse = _courseService.AddCourse(appCourse);
 
-            return Ok();
+            return Ok(addedCourse);
 
         }
 
