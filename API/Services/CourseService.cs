@@ -41,6 +41,7 @@ namespace API.Services
         {
             var course = _context.Courses.Where(c => c.Id == id)
                                          .FirstOrDefault();
+            // var course = _context.Courses.SingleOrDefault(c => c.Id == id);
             course.CourseSubjects = null;
             if (course != null)
             {

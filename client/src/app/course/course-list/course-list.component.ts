@@ -24,14 +24,11 @@ export class CourseListComponent implements OnInit {
   currentPage: number = 1;
   itemsPerPage: number = 8;
   totalItems: number;
-  
+
   constructor(private courseService: CourseService, private router: Router, private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    this.courseService.getCourses().subscribe(course => { // Subscribe to the observable here
-      this.course = course;
-      // console.log(this.course);
-    });
+    this.getCourses();
     this.courseId = 0;
     this.initializeForm();
   }
@@ -55,7 +52,6 @@ export class CourseListComponent implements OnInit {
         this.errorMessage = null;
         this.errorMessageModal = null;
         this.course.push(course);
-        console.log("------", course);
         $('#addCourseModal').modal('hide');
       }, (error) => {
         this.errorMessageModal = 'Error! Please Try Again!';
@@ -64,6 +60,12 @@ export class CourseListComponent implements OnInit {
     )
   }
 
+  getCourses() {
+    this.courseService.getCourses().subscribe(course => { // Subscribe to the observable here
+      this.course = course;
+      // console.log(this.course);
+    });
+  }
 
   caps(str: string): string {
     if (!str) return str;
@@ -96,17 +98,19 @@ export class CourseListComponent implements OnInit {
 
   deleteCourse() {
     $('#proceedModal').modal('hide');
-    console.log(this.courseId);
+    console.log(this.courseId); // Tiyakin na tama ang this.courseId
+
+    const index = this.course.findIndex(c => c.id === this.courseId);
+    console.log("Index ng tinanggal na course:", index);
+
     if (this.courseId == 0) return;
+
     this.courseService.deleteCourse(this.courseId).subscribe(
       course => {
         this.successMessage = 'Deleted Successfully!';
         this.courseId = 0;
-        // Find the index of the deleted course in the array
-        const index = this.course.findIndex(c => c.id === this.courseId);
 
         if (index !== -1) {
-          // Remove the deleted course from the array
           this.course.splice(index, 1);
         }
       }, (error) => {
@@ -115,6 +119,7 @@ export class CourseListComponent implements OnInit {
       }
     )
   }
+
 
   modalHide() {
     $('#proceedModal').modal('hide');
