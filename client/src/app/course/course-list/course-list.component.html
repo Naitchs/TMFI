@@ -1,4 +1,74 @@
-<div class="row col-md-12 table-responsive" >
+<div class="alert alert-dismissible alert-success" *ngIf="successMessage" #successAlert>
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  <strong>Well done!</strong>
+  <p>{{ successMessage }}</p>
+</div>
+
+<div class="alert alert-dismissible alert-primary" *ngIf="errorMessage">
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  <strong>Oh snap!</strong>
+  <p>{{ errorMessage }}</p>
+</div>
+
+<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCourseModal">
+  Add Course
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="addCourseModal" tabindex="-1" aria-labelledby="exampleModalLabels" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabels">Add Course</h5>
+        <button class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="alert alert-dismissible alert-primary" *ngIf="errorMessageModal">
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          <strong>Oh snap!</strong>
+          <p>{{ errorMessageModal }}</p>
+        </div>
+
+
+        <form [formGroup]="courseForm" autocomplete="off">
+
+
+          <div class="col-md-12 mb-3">
+            <label for="title">Title<span class="text-danger">*</span></label>
+            <app-text-input [formControl]="$any(courseForm.controls['title'])" [label]="'Title'" id="title">
+            </app-text-input>
+          </div>
+          <div class="col-md-12 mb-3">
+            <label for="desc">Description</label>
+            <app-text-input [formControl]="$any(courseForm.controls['description'])" [label]="'Description'" id="desc">
+            </app-text-input>
+          </div>
+          <div class="col-md-12 mb-3">
+            <label for="duration">Duration In Hours<span class="text-danger">*</span></label>
+            <app-text-input [formControl]="$any(courseForm.controls['durationInHours'])" [label]="'Duration In Hours'"
+              [type]="'number'" id="duration">
+            </app-text-input>
+          </div>
+          <div class="col-md-12 mb-3">
+            <label for="tags">Tags</label>
+            <app-text-input [formControl]="$any(courseForm.controls['tags'])" [label]="'Tags'" id="tags">
+            </app-text-input>
+          </div>
+
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="createCourse()">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row col-md-12 table-responsive">
   <table class="table">
     <thead>
       <tr>
@@ -8,20 +78,27 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let course of course" (click)="redirectToDetail(course.id)">
-        <td>{{ caps(course.title) }}</td>
-        <td>{{ course.durationInHours }} Hour/s</td>
-        <td><button class="btn btn-info"  (click)="redirectToEdit(course.id)">Edit</button>
-          &nbsp; 
-        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#proceedModal"
-          (click)="deleteClick(course.id)">Delete</button></td>
+      <tr *ngFor="let course of paginatedList" >
+        <td (click)="redirectToDetail(course.id)">{{ caps(course?.title) }}</td>
+        <td (click)="redirectToDetail(course.id)">{{ course.durationInHours }} Hour/s</td>
+        <td><button class="btn btn-info" (click)="redirectToEdit(course.id)">Edit</button>
+          &nbsp;
+          <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#proceedModal"
+            (click)="deleteClick(course.id)">Delete</button>
+        </td>
       </tr>
     </tbody>
   </table>
+  <div class="pagination">
+    <button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+    <span> Page {{ currentPage }} of {{ totalPages }} </span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+  </div>
 </div>
 
 
-<div class="modal fade border-info" id="proceedModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade border-info" id="proceedModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -35,7 +112,7 @@
       </div>
       <div class="modal-footer" *ngIf="course">
         <button type="button" class="btn btn-success me-2" (click)="deleteCourse(course.id)">Yes</button>
-        <button type="button" class="btn btn-danger me-2"(click)="modalHide()">No</button>
+        <button type="button" class="btn btn-danger me-2" (click)="modalHide()">No</button>
       </div>
     </div>
   </div>

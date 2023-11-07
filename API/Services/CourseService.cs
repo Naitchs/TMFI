@@ -20,10 +20,12 @@ namespace API.Services
         }
 
 
-        public void AddCourse(AppCourse course)
+        public AppCourse AddCourse(AppCourse course)
         {
             _context.Courses.Add(course);
             _context.SaveChanges();
+            
+            return course;
         }
 
         public AppSubject AddSubject(AppSubject subject)

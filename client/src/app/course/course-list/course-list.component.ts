@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Course } from 'src/app/_models/course';
 import { CourseService } from 'src/app/_services/course.service';
@@ -9,28 +10,64 @@ declare var $: any;
   templateUrl: './course-list.component.html',
   styleUrls: ['./course-list.component.scss']
 })
-export class CourseListComponent implements OnInit{
+export class CourseListComponent implements OnInit {
 
-  course: Course [] = [];
-  courseId:number;
+  course: Course[] = [];
+  courseId: number;
+
+  courseForm: FormGroup = new FormGroup({});
 
   successMessage: string | null = null;
   errorMessage: string | null = null;
-  constructor(private courseService: CourseService, private router: Router) { }
+  errorMessageModal: string | null = null;
 
-  ngOnInit(): void { 
+  currentPage: number = 1;
+  itemsPerPage: number = 8;
+  totalItems: number;
+  
+  constructor(private courseService: CourseService, private router: Router, private fb: FormBuilder) { }
+
+  ngOnInit(): void {
     this.courseService.getCourses().subscribe(course => { // Subscribe to the observable here
       this.course = course;
       // console.log(this.course);
     });
     this.courseId = 0;
+    this.initializeForm();
   }
 
+
+  initializeForm() {
+    this.courseForm = this.fb.group({
+      title: ['', Validators.required],
+      description: [''],
+      durationInHours: ['', Validators.required],
+      tags: [''],
+    });
+  }
+
+  createCourse() {
+    const values = { ...this.courseForm.value };
+    this.courseService.addCourse(values).subscribe(
+      (course) => {
+        this.successMessage = 'Course Added Successfully!';
+        this.courseForm.reset();
+        this.errorMessage = null;
+        this.errorMessageModal = null;
+        this.course.push(course);
+        console.log("------", course);
+        $('#addCourseModal').modal('hide');
+      }, (error) => {
+        this.errorMessageModal = 'Error! Please Try Again!';
+        this.successMessage = null;
+      }
+    )
+  }
 
 
   caps(str: string): string {
     if (!str) return str;
-  
+
     return str
       .toLowerCase()
       .split(' ')
@@ -41,11 +78,11 @@ export class CourseListComponent implements OnInit{
   // redirectToDetail(publicId: string) {
   //   this.router.navigate(['/ip-detail', publicId]);
   // }
-  updateClick(id:number){
+  updateClick(id: number) {
     this.courseId = id;
   }
 
-  deleteClick(id:number){
+  deleteClick(id: number) {
     this.courseId = id;
   }
 
@@ -57,33 +94,52 @@ export class CourseListComponent implements OnInit{
     this.router.navigate(['/course-edit', id]);
   }
 
-  deleteCourse(){
+  deleteCourse() {
     $('#proceedModal').modal('hide');
     console.log(this.courseId);
-    if(this.courseId == 0) return ;
-     this.courseService.deleteCourse(this.courseId).subscribe(
+    if (this.courseId == 0) return;
+    this.courseService.deleteCourse(this.courseId).subscribe(
       course => {
         this.successMessage = 'Deleted Successfully!';
         this.courseId = 0;
-      // Find the index of the deleted course in the array
-      const index = this.course.findIndex(c => c.id === this.courseId);
+        // Find the index of the deleted course in the array
+        const index = this.course.findIndex(c => c.id === this.courseId);
 
-      if (index !== -1) {
-        // Remove the deleted course from the array
-        this.course.splice(index, 1);
-      }
-      },(error) => {
+        if (index !== -1) {
+          // Remove the deleted course from the array
+          this.course.splice(index, 1);
+        }
+      }, (error) => {
         this.errorMessage = 'Failed to delete';
         this.courseId = 0;
       }
-     )
+    )
   }
 
-
-
-
-  modalHide(){
+  modalHide() {
     $('#proceedModal').modal('hide');
+  }
+
+  get paginatedList() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.course.slice(startIndex, endIndex);
+  }
+
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+    }
+  }
+
+  get totalPages() {
+    return Math.ceil(this.course.length / this.itemsPerPage);
   }
 
 }
