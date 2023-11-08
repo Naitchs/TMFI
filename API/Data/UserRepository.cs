@@ -21,9 +21,11 @@ namespace API.Data
         
     }
 
-        public void Add(AppIp ip)
+        public AppIp Add(AppIp ip)
         {
              _context.Ips.Add(ip);
+             
+             return ip;
         }
 
         public void Add(AppSap sap)

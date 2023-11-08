@@ -12,17 +12,17 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let ipProfile of paginatedList" (click)="redirectToDetail(ipProfile.publicId)">
-        <td >{{ ipProfile.publicId }}</td>
-        <td>{{ caps(ipProfile.firstname) }} 
-            {{ caps(ipProfile.middlename) }}
-            {{ caps(ipProfile.lastname) }}
-            {{ caps(ipProfile.suffix) }}
+      <tr *ngFor="let ipProfile of paginatedList" >
+        <td (click)="redirectToDetail(ipProfile.publicId)">{{ ipProfile?.publicId }}</td>
+        <td (click)="redirectToDetail(ipProfile.publicId)">{{ caps(ipProfile?.firstname) }} 
+            {{ caps(ipProfile?.middlename) }}
+            {{ caps(ipProfile?.lastname) }}
+            {{ caps(ipProfile?.suffix) }}
         </td>
-        <td>{{ ipProfile.age }}</td>
-        <td>{{ caps(ipProfile.gender) }}</td>
-        <td>{{ caps(ipProfile.tribe) }}</td>
-        <td>{{ caps(ipProfile.city) }}</td>
+        <td (click)="redirectToDetail(ipProfile.publicId)">{{ ipProfile?.age }}</td>
+        <td (click)="redirectToDetail(ipProfile.publicId)">{{ caps(ipProfile?.gender) }}</td>
+        <td (click)="redirectToDetail(ipProfile.publicId)">{{ caps(ipProfile?.tribe) }}</td>
+        <td (click)="redirectToDetail(ipProfile.publicId)">{{ caps(ipProfile?.city) }}</td>
         <td>
           <button class="btn btn-info"  (click)="redirectToEdit(ipProfile.publicId)">
             <i class="bi bi-pencil"></i></button>

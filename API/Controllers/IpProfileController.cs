@@ -47,13 +47,13 @@ public async Task<ActionResult> RegisterIp(RegisterIpDto registerIpDto)
         appIp.PublicId = publicId;
 
         // Add the newly created AppIp to your repository or database context
-        _userRepository.Add(appIp);
+        var addedIp = _userRepository.Add(appIp);
 
         // Save changes to the database
         if (await _userRepository.SaveAllAsync())
         {
             // Return a successful response
-            return Ok(new { message = "IP profiling added successfully" });
+            return Ok(addedIp);
         }
         else
         {
@@ -84,13 +84,13 @@ public async Task<ActionResult> ProceedRegisterIp(RegisterIpDto registerIpDto)
         appIp.PublicId = publicId;
 
         // Add the newly created AppIp to your repository or database context
-        _userRepository.Add(appIp);
+        var addedIp = _userRepository.Add(appIp);
 
         // Save changes to the database
         if (await _userRepository.SaveAllAsync())
         {
             // Return a successful response
-            return Ok(new { message = "IP profiling added successfully" });
+            return Ok(addedIp);
         }
         else
         {
