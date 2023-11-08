@@ -9,7 +9,7 @@ namespace API.Interfaces
         void Update(AppUser user);
 
         void UpdateIp(AppIp ip);
-        void Add(AppIp ip);
+        AppIp Add(AppIp ip);
 
         void UpdateSap(AppSap sap);
         void Add(AppSap sap);

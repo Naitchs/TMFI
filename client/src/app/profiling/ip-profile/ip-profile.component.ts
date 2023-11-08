@@ -1,9 +1,10 @@
-import { Component, AfterViewInit, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, Renderer2, ViewChild, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { ProfileService } from 'src/app/_services/profile.service';
 import { Location } from '@angular/common';
+import { Profile } from 'src/app/_models/profile';
 declare var $: any;
 
 
@@ -16,13 +17,15 @@ declare var $: any;
 })
 export class IpProfileComponent {
 
-  @ViewChild('successAlert') successAlert!: ElementRef;
+  @Output() ipRegistered: EventEmitter<Profile> = new EventEmitter<Profile>();
   ipForm: FormGroup = new FormGroup({});
   maxDate: Date = new Date();
   validationErrors: string [] | undefined;
   confirmationMessage: string | null = null;
   successMessage: string | null = null;
   errorMessage: string | null = null;
+
+  ip: Profile [] = [];
 
 
   constructor(private profileService: ProfileService, private toastr: ToastrService,
@@ -72,13 +75,15 @@ export class IpProfileComponent {
     const publicId = '';
     const values = {...this.ipForm.value, dateOfBirth: dob, publicId: publicId};
     this.profileService.registerProfile(values).subscribe(
-      () => {
+      (ip) => {
         // window.location.reload();
         // this.toastr.success('Profile registered successfully', 'Success');
         this.ipForm.reset(); 
         this.successMessage = 'Ip registered successfully';
-        this.scrollToSuccess();
-        this.scrollToTop();
+        // this.ip.push(ip);
+        // console.log(ip);
+        // this.ipRegistered.emit(ip);
+        // this.profileService.registerProfile(ip);
       },
       (error) => {
         this.validationErrors = error; // Set the validationErrors array with the error messages
@@ -99,38 +104,28 @@ export class IpProfileComponent {
     $('#proceedModal').modal('hide');
   }
 
-  scrollToSuccess() {
-    console.log('Success Alert:', this.successAlert);
-    this.successAlert.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
-  }
-  
 
-  scrollToTop() {
-    const element = document.getElementById('top');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  }
   
   proceedRegister(){
     const dob = this.getDateOnly(this.ipForm.controls['dateOfBirth'].value);
     const publicId = '';
     const values = {...this.ipForm.value, dateOfBirth: dob, publicId: publicId};
     this.profileService.proceedRegister(values).subscribe(
-      () => {
+      (ip) => {
         // window.location.reload();
         // this.toastr.success('Profile registered successfully', 'Success');
         this.ipForm.reset(); 
         this.confirmationMessage = null;
-        this.successMessage = 'Sap registered successfully';
-        this.scrollToSuccess();
-        this.scrollToTop();
-
+        $('#confirmationModal').modal('hide');
+        this.successMessage = 'Ip registered successfully';
+        // this.ip.push(ip);
+        // this.ipRegistered.emit(ip);
       },
       (error) => {
         this.validationErrors = error; 
         // this.toastr.error('Error registering profile', 'Error');
         this.errorMessage = 'Error registering profile';
+        console.log(error);
         }
     );
   }

@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 import { Profile } from 'src/app/_models/profile';
 import { ProfileService } from 'src/app/_services/profile.service';
 
@@ -18,11 +17,17 @@ export class IpListComponent implements OnInit{
   itemsPerPage: number = 8;
   totalItems: number;
 
-  constructor(private profileService: ProfileService, private router: Router) { }
+  constructor(private profileService: ProfileService, private router: Router) {
+
+   }
 
   ngOnInit(): void {
+    this.profileService.ipRegistered$.subscribe(ip => {
+      this.ipProfile.push(ip);
+    });
     this.profileService.getIps().subscribe(ipProfile => { // Subscribe to the observable here
-      this.ipProfile = ipProfile;
+      // this.ipProfile = ipProfile;
+      this.ipProfile = Object.values(ipProfile);
     });
   }
 
