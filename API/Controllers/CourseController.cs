@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-    [Authorize]
+
     public class CourseController : BaseApiController
     {
         private readonly DataContext _context;
@@ -203,7 +203,7 @@ namespace API.Controllers
             return Ok(course);
         }
 
-         [HttpGet("get-course/{id}")]
+        [HttpGet("get-course/{id}")]
         public async Task<ActionResult<CourseDto>> GetCourse(int id)
         {
 
@@ -266,7 +266,48 @@ namespace API.Controllers
 
             return Ok();
         }
-        
+
+        [HttpPost("add-subjects-to-course")]
+        public IActionResult AddSubjectsToCourse(AddSubjectsToCourseDto dto)
+        {
+            try
+            {
+                _courseService.AddSubjectsToCourse(dto.CourseId, dto.SubjectIds);
+                return Ok("Subjects added to course successfully.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
+
+        // [HttpPost("add-subjects-to-course")]
+        // public IActionResult AddSubjectsToCourse([FromBody] AddSubjectsToCourseDto addSubjectsToCourse)
+        // {
+        //     var course = _courseService.GetCourseId(addSubjectsToCourse.CourseId);
+
+        //     if (course == null)
+        //     {
+        //         return NotFound("Course not found");
+        //     }
+        //     if (addSubjectsToCourse.SubjectIds != null)
+        //     {
+        //         foreach (var subjectId in addSubjectsToCourse.SubjectIds)
+        //         {
+        //             var subject = _courseService.GetSubjectById(subjectId);
+
+        //             if (subject == null)
+        //             {
+        //                 return NotFound($"Subject with ID {subjectId} not found");
+        //             }
+
+        //             _courseService.AddSubjectToCourse(addSubjectsToCourse.CourseId, subjectId);
+        //         }
+        //     }
+        //     return Ok("Subjects added to course successfully");
+        // }
+
 
     }
 }

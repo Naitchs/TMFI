@@ -18,5 +18,6 @@ namespace API.Entities
     public PhaseEnum Phase {get; set;}
 
      public ICollection<CourseSubject> CourseSubjects { get; set; }
+     public List<AppCourse> Courses { get; set; }
     }
 }
