@@ -24,5 +24,8 @@ namespace API.Interfaces
         void UpdateSubject(AppSubject subject);
         void DeleteSubject(int id);
         Task<AppSubject> GetSubjectById(int id);
+
+        // void AddSubjectsToCourse(int subjectId, List<int> courseIds);
+         void AddSubjectsToCourse(int courseId, List<int> subjectIds);
     }
 }

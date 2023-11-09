@@ -13,6 +13,7 @@ namespace API.Entities
     public string Tags { get; set; }
 
     public ICollection<CourseSubject> CourseSubjects { get; set; }
+    public List<AppSubject> Subjects { get; set; }
 
     }
 }

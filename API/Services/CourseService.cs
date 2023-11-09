@@ -24,7 +24,7 @@ namespace API.Services
         {
             _context.Courses.Add(course);
             _context.SaveChanges();
-            
+
             return course;
         }
 
@@ -75,10 +75,10 @@ namespace API.Services
 
         public async Task<AppCourse> GetCourseId(int id)
         {
-              return await _context.Courses
-                    .Where(c => c.Id == id)
-                    .ProjectTo<AppCourse>(_mapper.ConfigurationProvider)
-                    .FirstOrDefaultAsync();
+            return await _context.Courses
+                  .Where(c => c.Id == id)
+                  .ProjectTo<AppCourse>(_mapper.ConfigurationProvider)
+                  .FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<AppCourse>> GetCoursesAsync()
@@ -123,5 +123,60 @@ namespace API.Services
                 _context.SaveChanges();
             }
         }
+
+        public void AddSubjectsToCourse(int courseId, List<int> subjectIds)
+        {
+            var course = _context.Courses.FirstOrDefault(c => c.Id == courseId);
+
+            if (course == null)
+            {
+                throw new InvalidOperationException($"Course with ID {courseId} not found");
+            }
+
+            foreach (var subjectId in subjectIds)
+            {
+                var subject = _context.Subjects.FirstOrDefault(s => s.Id == subjectId);
+
+                if (subject == null)
+                {
+                    throw new InvalidOperationException($"Subject with ID {subjectId} not found");
+                }
+
+                if (subject.Courses == null)
+                {
+                    subject.Courses = new List<AppCourse>();
+                }
+
+                subject.Courses.Add(course);
+            }
+
+            _context.SaveChanges();
+        }
+
+        // public void AddSubjectsToCourse(int courseId, List<int> subjectIds)
+        // {
+        //     var course = _context.Courses
+        //         .Include(c => c.Subjects)
+        //         .FirstOrDefault(c => c.Id == courseId);
+
+        //     if (course == null)
+        //     {
+        //         throw new Exception("Course not found");
+        //     }
+
+        //     foreach (var subjectId in subjectIds)
+        //     {
+        //         var subject = _context.Subjects.FirstOrDefault(s => s.Id == subjectId);
+
+        //         if (subject != null)
+        //         {
+        //             course.Subjects.Add(subject);
+        //         }
+        //     }
+
+        //     _context.SaveChanges();
+        // }
+
+
     }
 }
