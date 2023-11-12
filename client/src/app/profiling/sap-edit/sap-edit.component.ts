@@ -50,7 +50,7 @@ ngOnInit(): void{
 loadSap(publicId: string) {
   this.profileService.getSap(publicId).subscribe({
     next: sapProfile => {
-      // console.log(ipProfile);
+      console.log(sapProfile);
       this.sapProfile = sapProfile;
     }
   });
@@ -97,5 +97,18 @@ modalHide(){
 }
 
 
+tribeOptions = [
+  { label: 'Ata', value: 'ata' },
+  { label: 'Maranaw', value: 'maranaw' },
+  { label: 'soso', value: 'soso' },
+  { label: 'On', value: 'on' }
+];
+
+churchOptions = [
+  { label: 'San Juan', value: 'San Juan' },
+  { label: 'sample', value: 'sample' },
+  { label: 'sample1', value: 'ssample' },
+  { label: 'sample2', value: 'sample' }
+];
 
 }

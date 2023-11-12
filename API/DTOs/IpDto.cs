@@ -2,6 +2,7 @@ namespace API.DTOs
 {
     public class IpDto
     {
+        public int Id {get; set;}
 
         public string PublicId { get; set; }
 

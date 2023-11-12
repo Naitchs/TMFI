@@ -81,10 +81,10 @@
       <tr *ngFor="let course of paginatedList" >
         <td (click)="redirectToDetail(course.id)">{{ caps(course?.title) }}</td>
         <td (click)="redirectToDetail(course.id)">{{ course.durationInHours }} Hour/s</td>
-        <td><button class="btn btn-info" (click)="redirectToEdit(course.id)">Edit</button>
+        <td><button class="btn btn-info" (click)="redirectToEdit(course.id)"><i class="bi bi-pencil"></i></button>
           &nbsp;
           <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#proceedModal"
-            (click)="deleteClick(course.id)">Delete</button>
+            (click)="deleteClick(subject.id)"><i class="bi bi-trash"></i></button>
         </td>
       </tr>
     </tbody>
@@ -97,7 +97,7 @@
 </div>
 
 
-<div class="modal fade border-info" id="proceedModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+<div class="modal fade border-info" id="proceedModal" tabindex="-1" aria-labelledby="exampleModalLabels"
   aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">

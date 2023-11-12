@@ -53,7 +53,7 @@ export class SapProfileRegisterComponent {
         fathername: ['', Validators.required],
         mothername: ['', Validators.required],
         parentOccupation: ['', Validators.required],
-        numberOfSibling: [''],
+        numberOfSibling: [0],
         yearSapStarted: ['', Validators.required],
         gradeLevel: ['', Validators.required],
         schoolName: ['', Validators.required],
@@ -66,6 +66,7 @@ export class SapProfileRegisterComponent {
     }
 
     registerSap(){
+      $('#proceedModal').modal('hide');
       const dob = this.getDateOnly(this.sapForm.controls['dateOfBirth'].value);
       const publicId = '';
       const values = {...this.sapForm.value, dateOfBirth: dob, publicId: publicId};
@@ -75,7 +76,7 @@ export class SapProfileRegisterComponent {
           // this.toastr.success('Sap registered successfully', 'Success');
           this.sapForm.reset(); 
           this.successMessage = 'Sap registered successfully';
-          $('#proceedModal').modal('hide');
+          this.validationErrors = null;
         },
         (error) => {
           this.validationErrors = error;if (error.status === 400) {
@@ -96,6 +97,7 @@ export class SapProfileRegisterComponent {
     }
 
     proceedRegister(){
+      $('#confirmationModal').modal('hide');
       const dob = this.getDateOnly(this.sapForm.controls['dateOfBirth'].value);
       const publicId = '';
       const values = {...this.sapForm.value, dateOfBirth: dob, publicId: publicId};
@@ -106,6 +108,7 @@ export class SapProfileRegisterComponent {
           this.sapForm.reset(); 
           this.confirmationMessage = null;
           this.successMessage = 'Sap registered successfully';
+          this.validationErrors = null;
         },
         (error) => {
           this.validationErrors = error; 

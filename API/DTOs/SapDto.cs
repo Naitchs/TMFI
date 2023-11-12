@@ -3,6 +3,7 @@ namespace API.DTOs
     public class SapDto
     {
 
+        public int Id { get; set; }
         public string PublicId { get; set; }
 
         public string Firstname { get; set; }

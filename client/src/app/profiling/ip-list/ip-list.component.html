@@ -1,3 +1,16 @@
+<div class="alert alert-dismissible alert-success" *ngIf="successMessage" #successAlert>
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  <strong>Well done!</strong>
+  <p>{{ successMessage }}</p>
+</div>
+
+<div class="alert alert-dismissible alert-primary" *ngIf="errorMessage">
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  <strong>Oh snap!</strong>
+  <p>{{ errorMessage }}</p>
+</div>
+
+
 <div class="row col-md-12 table-responsive" *ngIf="ipProfile">
   <table class="table">
     <thead>
@@ -12,23 +25,23 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let ipProfile of paginatedList" >
+      <tr *ngFor="let ipProfile of paginatedList">
         <td (click)="redirectToDetail(ipProfile.publicId)">{{ ipProfile?.publicId }}</td>
-        <td (click)="redirectToDetail(ipProfile.publicId)">{{ caps(ipProfile?.firstname) }} 
-            {{ caps(ipProfile?.middlename) }}
-            {{ caps(ipProfile?.lastname) }}
-            {{ caps(ipProfile?.suffix) }}
+        <td (click)="redirectToDetail(ipProfile.publicId)">{{ caps(ipProfile?.firstname) }}
+          {{ caps(ipProfile?.middlename) }}
+          {{ caps(ipProfile?.lastname) }}
+          {{ caps(ipProfile?.suffix) }}
         </td>
         <td (click)="redirectToDetail(ipProfile.publicId)">{{ ipProfile?.age }}</td>
         <td (click)="redirectToDetail(ipProfile.publicId)">{{ caps(ipProfile?.gender) }}</td>
         <td (click)="redirectToDetail(ipProfile.publicId)">{{ caps(ipProfile?.tribe) }}</td>
         <td (click)="redirectToDetail(ipProfile.publicId)">{{ caps(ipProfile?.city) }}</td>
         <td>
-          <button class="btn btn-info"  (click)="redirectToEdit(ipProfile.publicId)">
+          <button class="btn btn-info" (click)="redirectToEdit(ipProfile.publicId)">
             <i class="bi bi-pencil"></i></button>
-            &nbsp; 
-          <button class="btn btn-danger" >
-            <i class="bi bi-trash"></i> </button>
+          &nbsp;
+          <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#proceedModals"
+          (click)="deleteClick(ipProfile.id)"><i class="bi bi-trash"></i></button>
         </td>
       </tr>
     </tbody>
@@ -37,5 +50,25 @@
     <button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
     <span> Page {{ currentPage }} of {{ totalPages }} </span>
     <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+  </div>
+</div>
+
+
+<div class="modal fade border-info" id="proceedModals" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><strong>Heads up!</strong></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to Delete Ip?</p>
+      </div>
+      <div class="modal-footer" *ngIf="ipProfile">
+        <button type="button" class="btn btn-success me-2" (click)="deleteIp(ipProfile.id)">Yes</button>
+        <button type="button" class="btn btn-danger me-2" (click)="modalHide()">No</button>
+      </div>
+    </div>
   </div>
 </div>
