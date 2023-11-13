@@ -3,11 +3,11 @@ namespace API.Entities
     public class AppIp
     {
         public int Id { get; set; }
-        
-        public string PublicId { get; set; } 
+
+        public string PublicId { get; set; }
 
         public string Firstname { get; set; }
-        
+
         public string Middlename { get; set; }
 
         public string Lastname { get; set; }
@@ -39,6 +39,9 @@ namespace API.Entities
         public string Ministry { get; set; }
 
         public string Reason { get; set; }
+
+        public virtual ICollection<CourseStudent> CourseStudents { get; set; }
+        public virtual ICollection<Attendance> Attendances { get; set; }
 
 
     }

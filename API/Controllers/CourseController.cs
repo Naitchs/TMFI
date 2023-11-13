@@ -1,4 +1,6 @@
 using System.Security.Claims;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using API.Data;
 using API.DTOs;
 using API.Entities;
@@ -268,7 +270,7 @@ namespace API.Controllers
         }
 
         [HttpPost("add-subjects-to-course")]
-        public IActionResult AddSubjectsToCourse(AddSubjectsToCourseDto dto)
+        public IActionResult AddSubjectsToTheCourse(AddSubjectsToCourseDto dto)
         {
             try
             {
@@ -280,6 +282,78 @@ namespace API.Controllers
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
+
+
+        [HttpGet("get-subjects-in-course/{courseId}")]
+        public IActionResult GetSubjectsInCourse(int courseId)
+        {
+            try
+            {
+                var subjectsInCourse = _courseService.GetSubjectsInCourse(courseId);
+
+                // Use JsonSerializerOptions to configure reference handling
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.Preserve,
+                    MaxDepth = 32  // You can adjust this depth based on your needs
+                };
+
+                var json = JsonSerializer.Serialize(subjectsInCourse, options);
+
+                // Return JSON result
+                return Content(json, "application/json");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+
+        }
+
+        [HttpGet("get-subjects-not-in-course/{courseId}")]
+        public IActionResult GetSubjectsNotInCourse(int courseId)
+        {
+            try
+            {
+                var subjectsNotInCourse = _courseService.GetSubjectsNotInCourse(courseId);
+                return Ok(subjectsNotInCourse);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
+
+        [HttpPost("update-add-subjects-to-course")]
+        public IActionResult AddSubjectsToCourse(AddSubjectsToCourseDto dto)
+        {
+            try
+            {
+                _courseService.UpdateAddSubjectsToCourse(dto.CourseId, dto.SubjectIds);
+                return Ok("Subjects added to course successfully.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
+
+        [HttpDelete("remove-subjects-from-course")]
+        public IActionResult RemoveSubjectsFromCourse(RemoveSubjectsFromCourseDto dto)
+        {
+            try
+            {
+                _courseService.RemoveSubjectsFromCourse(dto.CourseId, dto.SubjectIds);
+                return Ok("Subjects removed from course successfully.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
 
 
         // [HttpPost("add-subjects-to-course")]

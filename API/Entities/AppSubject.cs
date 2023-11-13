@@ -8,16 +8,16 @@ namespace API.Entities
 {
     public class AppSubject
     {
-    public int Id { get; set; }
+        public int Id { get; set; }
 
-    public string SubjectCode {get; set;}
+        public string SubjectCode { get; set; }
 
-    public string Name { get; set; }
+        public string Name { get; set; }
 
-    public string Description { get; set; }
-    public PhaseEnum Phase {get; set;}
+        public string Description { get; set; }
+        public PhaseEnum Phase { get; set; }
 
-     public ICollection<CourseSubject> CourseSubjects { get; set; }
-     public List<AppCourse> Courses { get; set; }
+        public virtual ICollection<CourseSubject> CourseSubjects { get; set; }
+        public virtual ICollection<Attendance> Attendances { get; set; }
     }
 }
