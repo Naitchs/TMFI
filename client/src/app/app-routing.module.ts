@@ -50,6 +50,8 @@ const routes : Routes = [
       {path: 'integration', component: ExcelPanelComponent},
       {path: 'excel-detail/:publicId', component: ExcelDetailComponent},
       {path: 'subject', component: SubjectPanelComponent},
+      // {path: 'course-detail/:id', component: },
+      // {path: 'subject-edit/:id', component: UpdateCourseComponent},
       {path: 'course', component: CoursePanelComponent},
       {path: 'course-detail/:id', component: CourseDetailComponent},
       {path: 'course-edit/:id', component: UpdateCourseComponent},

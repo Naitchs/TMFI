@@ -13,9 +13,14 @@ export class ProfileService {
   baseUrl = environment.apiUrl;
   ipProfile: Profile[] = [];
   sapProfile: Sap[] = [];
+  deletedIp: any;
+  deletedSap: any;
 
   private ipRegisteredSource = new Subject<Profile>();
   ipRegistered$ = this.ipRegisteredSource.asObservable();
+
+  private sapRegisteredSource = new Subject<Sap>();
+  sapRegistered$ = this.sapRegisteredSource.asObservable();
 
   constructor(private http: HttpClient) { }
 
@@ -62,11 +67,19 @@ export class ProfileService {
 
 
   registerSap(model: any) {
-    return this.http.post<Sap>(this.baseUrl + 'sapprofile/register-sap', model);
+    return this.http.post<Sap>(this.baseUrl + 'sapprofile/register-sap', model).pipe(
+      map((sap) => {
+        this.sapRegisteredSource.next(sap);
+      })
+    )   
   }
 
   proceedRegisterSap(model: any) {
-    return this.http.post<Sap>(this.baseUrl + 'sapprofile/register-sap-proceed', model);
+    return this.http.post<Sap>(this.baseUrl + 'sapprofile/register-sap-proceed', model).pipe(
+      map((sap) => {
+        this.sapRegisteredSource.next(sap);
+      })
+    )   
   }
 
   getSaps() {
@@ -94,6 +107,24 @@ export class ProfileService {
       })
     )
   }
+
+  deleteIp(id: number){
+    return this.http.delete(this.baseUrl + 'ipprofile/delete-ip/' + id).pipe(
+      map(ip => {
+        this.deletedIp = ip;
+        return ip;
+      })
+    )
+  };
+
+  deleteSap(id: number){
+    return this.http.delete(this.baseUrl + 'sapprofile/delete-sap/' + id).pipe(
+      map(sap => {
+        this.deletedSap = sap;
+        return sap;
+      })
+    )
+  };
 
 
 

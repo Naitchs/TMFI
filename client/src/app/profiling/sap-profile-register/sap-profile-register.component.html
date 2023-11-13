@@ -116,14 +116,14 @@
 
     </div>
 
-    <legend>Location</legend>
+    <legend>Address</legend>
     <hr>
 
     <div class="row">
 
       <div class="col-md-4 mb-3">
         <app-text-input [formControl]="$any(sapForm.controls['street'])" 
-                  [label]="'Barangay'">
+                  [label]="'Street'">
         </app-text-input>
       </div>
 
@@ -176,7 +176,7 @@
 
       <div class="col-md-4 mb-3">
         <app-text-input [formControl]="$any(sapForm.controls['numberOfSibling'])" 
-                  [label]="'Number of Sibling'">
+                  [label]="'Number of Sibling'" [type]="'number'">
         </app-text-input>
       </div>
       
@@ -222,7 +222,7 @@
 
       <div class="col-md-4 mb-3">
         <app-text-input [formControl]="$any(sapForm.controls['talent'])" 
-                  [label]="'Talen'">
+                  [label]="'Talent'">
         </app-text-input>
       </div>
 
@@ -260,7 +260,7 @@
     </div>
   
     <div class="text-center">
-      <button class="btn btn-success me-2"  data-bs-toggle="modal" data-bs-target="#proceedModal">submit</button>
+      <button class="btn btn-success me-2"  data-bs-toggle="modal" data-bs-target="#proceedModal">Submit</button>
       <!-- <button class="btn btn-default" type="button" (click)="cancel()">cancel</button> -->
     </div>
 

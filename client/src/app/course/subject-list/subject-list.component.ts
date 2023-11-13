@@ -61,6 +61,10 @@ export class SubjectListComponent {
     this.router.navigate(['/subject-detail', id]);
   }
 
+  redirectToEdit(id: number) {
+    this.router.navigate(['/subject-edit', id]);
+  }
+
   deleteSubject() {
     $('#proceedModal').modal('hide');
     console.log(this.subjectId);

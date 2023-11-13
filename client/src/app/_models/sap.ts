@@ -1,5 +1,6 @@
 export interface Sap {
 
+  id: number;
   publicId: string;
   firstname: string;
   middlename: string;

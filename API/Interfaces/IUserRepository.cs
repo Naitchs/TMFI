@@ -12,7 +12,7 @@ namespace API.Interfaces
         AppIp Add(AppIp ip);
 
         void UpdateSap(AppSap sap);
-        void Add(AppSap sap);
+        AppSap Add(AppSap sap);
 
         void Add(AppDocumentation doc);
         void updateDoc(AppDocumentation doc);
@@ -54,6 +54,9 @@ namespace API.Interfaces
 
         int SapGetNextPublicId();
         string SapGeneratePublicId();
+
+        void DeleteIp(int id);
+        void DeleteSap(int id);
         
 
         //   Task<AppCourse> GetCourseByIdAsync(int id);

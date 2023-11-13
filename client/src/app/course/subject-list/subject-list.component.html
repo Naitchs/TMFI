@@ -78,14 +78,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let subject of paginatedList" (click)="redirectToDetail(subject.id)">
-        <td>{{ subject.subjectCode}}</td>
-        <td>{{ subject.name }} </td>
-        <td>{{ subject.phase }} </td>
-        <td><button class="btn btn-info">Edit</button>
+      <tr *ngFor="let subject of paginatedList" >
+        <td (click)="redirectToDetail(subject.id)">{{ subject.subjectCode}}</td>
+        <td (click)="redirectToDetail(subject.id)">{{ subject.name }} </td>
+        <td (click)="redirectToDetail(subject.id)">{{ subject.phase }} </td>
+        <td><button class="btn btn-info" (click)="redirectToEdit(subject.id)"><i class="bi bi-pencil"></i></button>
           &nbsp; 
           <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#proceedModal"
-            (click)="deleteClick(subject.id)">Delete</button>
+            (click)="deleteClick(subject.id)"><i class="bi bi-trash"></i></button>
         </td>
       </tr>
     </tbody>
@@ -108,7 +108,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p>Are you sure you want to Delete Course?</p>
+        <p>Are you sure you want to Delete Subject?</p>
       </div>
       <div class="modal-footer" *ngIf="subjects">
         <button type="button" class="btn btn-success me-2" (click)="deleteSubject(subjects.id)">Yes</button>

@@ -1,6 +1,6 @@
 export interface Profile {
 
-
+  id: number;
   publicId: string;
   firstname: string;
   middlename: string;
