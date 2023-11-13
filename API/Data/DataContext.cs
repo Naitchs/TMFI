@@ -7,29 +7,29 @@ using static API.Entities.MediaModels;
 
 namespace API.Data
 {
-  public class DataContext : IdentityDbContext<AppUser, AppRole, int,
-          IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>, 
-          IdentityRoleClaim<int>, IdentityUserToken<int>>
-  {
-    public DataContext(DbContextOptions options) : base(options)
+    public class DataContext : IdentityDbContext<AppUser, AppRole, int,
+            IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>,
+            IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
-    }
+        public DataContext(DbContextOptions options) : base(options)
+        {
+        }
 
         // public DbSet<AppUser> Users { get; set; }
-           public DbSet<AppDocumentation> AppDocumentations { get; set; }
-           public DbSet<Video> Videos { get; set; }
-           public DbSet<Files> Files { get; set; }
-           public DbSet<Picture> Pictures { get; set; }
-           public DbSet<AppIp> Ips { get; set; }
-           public DbSet<AppSap> Saps { get; set; }
-           public DbSet<ExcelData> ExcelData { get; set; }
-           public DbSet<ExcelFile> ExcelFile { get; set; }
+        public DbSet<AppDocumentation> AppDocumentations { get; set; }
+        public DbSet<Video> Videos { get; set; }
+        public DbSet<Files> Files { get; set; }
+        public DbSet<Picture> Pictures { get; set; }
+        public DbSet<AppIp> Ips { get; set; }
+        public DbSet<AppSap> Saps { get; set; }
+        public DbSet<ExcelData> ExcelData { get; set; }
+        public DbSet<ExcelFile> ExcelFile { get; set; }
 
-           public DbSet<AppCourse> Courses { get; set; }
-
-           public DbSet<AppEnroll> Enrolls { get; set; }
-
-           public DbSet<AppSubject> Subjects { get; set; }
+        public DbSet<AppCourse> Courses { get; set; }
+        public DbSet<AppSubject> Subjects { get; set; }
+        public DbSet<Attendance> Attendances { get; set; }
+        public DbSet<CourseSubject> CourseSubjects { get; set; }
+        public DbSet<CourseStudent> CourseStudents { get; set; }
 
 
         //    public DbSet<AppCourse> Courses { get; set; }
@@ -74,17 +74,48 @@ namespace API.Data
         .HasForeignKey(ef => ef.ExcelDataId);
 
 
-            builder.Entity<AppCourse>()
-        .HasMany(e => e.Subjects)
-        .WithMany(e => e.Courses);
+            // Configure Course-Subject many-to-many relationship
+            builder.Entity<CourseSubject>()
+                .HasKey(cs => new { cs.CourseID, cs.SubjectID });
 
-            builder.Entity<AppSubject>()
-        .HasMany(e => e.Courses)
-        .WithMany(e => e.Subjects);
+            builder.Entity<CourseSubject>()
+                .HasOne(cs => cs.Course)
+                .WithMany(c => c.CourseSubjects)
+                .HasForeignKey(cs => cs.CourseID);
+
+            builder.Entity<CourseSubject>()
+                .HasOne(cs => cs.Subject)
+                .WithMany(s => s.CourseSubjects)
+                .HasForeignKey(cs => cs.SubjectID);
+
+            // Configure Course-Student many-to-many relationship
+            builder.Entity<CourseStudent>()
+                .HasKey(cs => new { cs.CourseID, cs.StudentID });
+
+            builder.Entity<CourseStudent>()
+                .HasOne(cs => cs.Course)
+                .WithMany(c => c.CourseStudents)
+                .HasForeignKey(cs => cs.CourseID);
+
+            builder.Entity<CourseStudent>()
+                .HasOne(cs => cs.Student)
+                .WithMany(s => s.CourseStudents)
+                .HasForeignKey(cs => cs.StudentID);
+
+            // Configure Attendance-Student and Attendance-Subject relationships
+            builder.Entity<Attendance>()
+                .HasOne(a => a.Student)
+                .WithMany(s => s.Attendances)
+                .HasForeignKey(a => a.StudentID);
+
+            builder.Entity<Attendance>()
+                .HasOne(a => a.Subject)
+                .WithMany(s => s.Attendances)
+                .HasForeignKey(a => a.SubjectID);
 
 
 
         }
-        
+
     }
 }

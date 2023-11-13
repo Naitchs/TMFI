@@ -27,5 +27,10 @@ namespace API.Interfaces
 
         // void AddSubjectsToCourse(int subjectId, List<int> courseIds);
          void AddSubjectsToCourse(int courseId, List<int> subjectIds);
+         List<AppSubject> GetSubjectsInCourse(int courseId);
+
+         List<AppSubject> GetSubjectsNotInCourse(int courseId);
+         void UpdateAddSubjectsToCourse(int courseId, List<int> subjectIds);
+         void RemoveSubjectsFromCourse(int courseId, List<int> subjectIds);
     }
 }

@@ -124,6 +124,7 @@ namespace API.Services
             }
         }
 
+
         public void AddSubjectsToCourse(int courseId, List<int> subjectIds)
         {
             var course = _context.Courses.FirstOrDefault(c => c.Id == courseId);
@@ -133,25 +134,130 @@ namespace API.Services
                 throw new InvalidOperationException($"Course with ID {courseId} not found");
             }
 
-            foreach (var subjectId in subjectIds)
+            var subjectsToAdd = _context.Subjects.Where(s => subjectIds.Contains(s.Id)).ToList();
+
+            foreach (var subject in subjectsToAdd)
             {
-                var subject = _context.Subjects.FirstOrDefault(s => s.Id == subjectId);
-
-                if (subject == null)
-                {
-                    throw new InvalidOperationException($"Subject with ID {subjectId} not found");
-                }
-
-                if (subject.Courses == null)
-                {
-                    subject.Courses = new List<AppCourse>();
-                }
-
-                subject.Courses.Add(course);
+                course.CourseSubjects.Add(new CourseSubject { Course = course, Subject = subject });
             }
 
             _context.SaveChanges();
         }
+
+
+        public List<AppSubject> GetSubjectsInCourse(int courseId)
+        {
+            var course = _context.Courses
+                .Include(c => c.CourseSubjects)
+                .ThenInclude(cs => cs.Subject)
+                .FirstOrDefault(c => c.Id == courseId);
+
+            if (course == null)
+            {
+                throw new InvalidOperationException($"Course with ID {courseId} not found");
+            }
+
+            return course.CourseSubjects.Select(cs => cs.Subject).ToList();
+        }
+
+
+        private List<AppSubject> GetSubjectsNotInCourse(int courseId, List<int> subjectIds)
+        {
+            return _context.Subjects
+                .Where(s => subjectIds.Contains(s.Id) && !_context.CourseSubjects.Any(cs => cs.CourseID == courseId && cs.SubjectID == s.Id))
+                .ToList();
+        }
+
+        public List<AppSubject> GetSubjectsNotInCourse(int courseId)
+        {
+            return _context.Subjects
+                .Where(s => !_context.CourseSubjects.Any(cs => cs.CourseID == courseId && cs.SubjectID == s.Id))
+                .ToList();
+        }
+
+
+        public void UpdateAddSubjectsToCourse(int courseId, List<int> subjectIds)
+        {
+            var course = _context.Courses
+           .Include(c => c.CourseSubjects)
+           .FirstOrDefault(c => c.Id == courseId);
+
+            if (course == null)
+            {
+                throw new InvalidOperationException($"Course with ID {courseId} not found");
+            }
+
+            // Add new subjects to the course
+            var subjectsToAdd = GetSubjectsNotInCourse(courseId, subjectIds);
+
+            foreach (var subjectToAdd in subjectsToAdd)
+            {
+                course.CourseSubjects.Add(new CourseSubject { Course = course, Subject = subjectToAdd });
+            }
+
+            _context.SaveChanges();
+        }
+
+
+        public void RemoveSubjectsFromCourse(int courseId, List<int> subjectIds)
+        {
+            var course = _context.Courses
+          .Include(c => c.CourseSubjects)
+          .FirstOrDefault(c => c.Id == courseId);
+
+            if (course == null)
+            {
+                throw new InvalidOperationException($"Course with ID {courseId} not found");
+            }
+
+            // Remove existing subjects not in the new list
+            var subjectsToRemove = course.CourseSubjects
+                .Where(cs => subjectIds.Contains(cs.SubjectID))
+                .ToList();
+
+            foreach (var subjectToRemove in subjectsToRemove)
+            {
+                course.CourseSubjects.Remove(subjectToRemove);
+            }
+
+            _context.SaveChanges();
+        }
+
+
+
+
+
+
+
+
+        // public void AddSubjectsToCourse(int courseId, List<int> subjectIds)
+        // {
+        //     var course = _context.Courses.FirstOrDefault(c => c.Id == courseId);
+
+        //     if (course == null)
+        //     {
+        //         throw new InvalidOperationException($"Course with ID {courseId} not found");
+        //     }
+
+        //     foreach (var subjectId in subjectIds)
+        //     {
+        //         var subject = _context.Subjects.FirstOrDefault(s => s.Id == subjectId);
+
+        //         if (subject == null)
+        //         {
+        //             throw new InvalidOperationException($"Subject with ID {subjectId} not found");
+        //         }
+
+        //         if (subject.Courses == null)
+        //         {
+        //             subject.Courses = new List<AppCourse>();
+        //         }
+
+        //         subject.Courses.Add(course);
+        //     }
+
+        //     _context.SaveChanges();
+        // }
 
         // public void AddSubjectsToCourse(int courseId, List<int> subjectIds)
         // {
