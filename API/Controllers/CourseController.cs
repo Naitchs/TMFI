@@ -235,6 +235,93 @@ namespace API.Controllers
             }
         }
 
+        [HttpPost("add-students-to-course")]
+        public IActionResult AddStudentsToCourse(AddStudentsToCourseDto dto)
+        {
+            try
+            {
+                _courseService.AddStudentsToCourse(dto.CourseId, dto.StudentIds);
+                return Ok("Students added to course successfully.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpGet("get-students-not-in-course/{courseId}")]
+        public IActionResult GetStudentsNotInCourse(int courseId)
+        {
+            try
+            {
+                var studentsNotInCourse = _courseService.GetStudentsNotInCourse(courseId);
+                return Ok(studentsNotInCourse);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpGet("get-students-in-course/{courseId}")]
+        public IActionResult GetStudentsInCourse(int courseId)
+        {
+            try
+            {
+                var studentsInCourse = _courseService.GetStudentsInCourse(courseId);
+                return Ok(studentsInCourse);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("remove-student-from-course")]
+        public IActionResult RemoveStudentFromCourse(RemoveStudentFromCourseDto dto)
+        {
+            try
+            {
+                _courseService.RemoveStudentFromCourse(dto.CourseId, dto.StudentId);
+                return Ok("Student removed from course successfully.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpGet("get-courses-of-student/{studentId}")]
+        public IActionResult GetCoursesOfStudent(int studentId)
+        {
+            try
+            {
+                var coursesOfStudent = _courseService.GetCoursesOfStudent(studentId);
+                return Ok(coursesOfStudent);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("remove-course-from-student")]
+        public IActionResult RemoveCourseFromStudent(RemoveCourseFromStudentDto dto)
+        {
+            try
+            {
+                _courseService.RemoveCourseFromStudent(dto.StudentId, dto.CourseId);
+                return Ok("Course removed from student successfully.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
+
+
+
 
 
     }
