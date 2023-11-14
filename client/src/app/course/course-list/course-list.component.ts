@@ -98,10 +98,10 @@ export class CourseListComponent implements OnInit {
 
   deleteCourse() {
     $('#proceedModal').modal('hide');
-    console.log(this.courseId); // Tiyakin na tama ang this.courseId
+    // console.log(this.courseId); // Tiyakin na tama ang this.courseId
 
     const index = this.course.findIndex(c => c.id === this.courseId);
-    console.log("Index ng tinanggal na course:", index);
+    // console.log("Index ng tinanggal na course:", index);
 
     if (this.courseId == 0) return;
 

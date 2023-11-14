@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Course } from '../_models/course';
 import { HttpClient } from '@angular/common/http';
-import { map, of } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { Subjects } from '../_models/subject';
+import { SubjectsCourse } from '../_models/subjects-course';
 
 @Injectable({
   providedIn: 'root'
@@ -78,5 +79,22 @@ export class CourseService {
       })
     )
   };
+
+
+  addSubjectsToCourse(dto: SubjectsCourse): Observable<any>{
+    return this.http.post(this.baseUrl + 'course/add-subjects-to-course', dto);
+  }
+
+  getSubjectsInCourse(courseId: number): Observable<Subjects[]> {
+    return this.http.get<Subjects[]>(this.baseUrl + 'course/get-subjects-in-course/' + courseId);
+  }
+
+  getSubjectsNotInCourse(courseId: number): Observable<Subjects[]> {
+    return this.http.get<Subjects[]>(this.baseUrl + 'course/get-subjects-not-in-course/' + courseId);
+  }
+
+  removeSubjectsFromCourse(courseId: number, subjectId: number){
+    return this.http.delete(this.baseUrl + 'course/remove-subjects-from-course', { body: { CourseId: courseId, SubjectId: subjectId } });
+  }
 
 }

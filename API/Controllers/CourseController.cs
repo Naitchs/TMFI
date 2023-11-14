@@ -31,139 +31,6 @@ namespace API.Controllers
         }
 
 
-        //        [HttpPost("add-course")]
-        // public async Task<IActionResult> CreateCourse([FromBody] CourseDto courseDto)
-        // {
-        //     try
-        //     {
-        //         var user = await _userRepository.GetUsersByUsernameAsync(User.GetUsername());
-
-        //         if (user == null)
-        //         {
-        //             return NotFound(new { error = "User not found" });
-        //         }
-
-        //         var appCourse = _mapper.Map<AppCourse>(courseDto);
-
-
-        //         // Make sure user.Courses is initialized (not null)
-        //         user.Courses ??= new List<AppCourse>();
-
-
-        //         var facilitatorInfo = await _userRepository.GetFacilitatorInfoAsync(User.GetUsername());
-
-        //         if (facilitatorInfo != null)
-        //         {
-        //             appCourse.FacilitatorId = facilitatorInfo.Id;
-        //             appCourse.FacilitatorName = facilitatorInfo.UserName;
-        //         }
-
-        //         user.Courses.Add(appCourse);
-
-        //         if (await _userRepository.SaveAllAsync())
-        //         {
-        //             return Ok(new { message = "Course added successfully" });
-        //         }
-        //         else
-        //         {
-        //             return BadRequest(new { error = "Failed to add Course" });
-        //         }
-        //     }
-        //     catch (Exception ex)
-        //     {
-
-        //        if (ex.InnerException != null)
-        //     {
-        //         Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
-        //     }
-
-        //     return StatusCode(500, new { error = $"Internal server error: {ex.Message}" });
-        //     }
-        // }
-
-        // [HttpPost("enroll-students")]
-        // public async Task<IActionResult> EnrollStudents([FromBody] EnrollmentDto enrollmentDto)
-        // {
-        //     try
-        //     {
-        //         var facilitator = await _userRepository.GetUsersByUsernameAsync(User.GetUsername());
-
-        //         if (facilitator == null)
-        //         {
-        //             return NotFound(new { error = "Facilitator not found" });
-        //         }
-
-        //         var course = await _userRepository.GetCourseByIdAsync(enrollmentDto.CourseId);
-
-        //         if (course == null)
-        //         {
-        //             return NotFound(new { error = $"Course with ID {enrollmentDto.CourseId} not found" });
-        //         }
-
-        //         foreach (var studentDto in enrollmentDto.Students)
-        //         {
-        //             var studentInfo = await _userRepository.GetStudentInfoAsync(studentDto.Id);
-
-        //             if (studentInfo == null)
-        //             {
-        //                 return NotFound(new { error = $"Student with ID {studentDto.Id} not found" });
-        //             }
-
-        //             if (course.Enrollments.Any(e => e.StudentEnrollments.Any(se => se.StudentId == studentDto.Id)))
-        //             {
-        //                 return BadRequest(new { error = $"Student with ID {studentDto.Id} is already enrolled in the course" });
-        //             }
-
-        //             var appStudentEnrollment = new AppStudentEnrollment
-        //             {
-        //                 StudentId = studentDto.Id,
-        //                 StudentName = $"{studentDto.Firstname} {studentDto.Lastname}",
-        //                 EnrollmentId = enrollmentDto.EnrollmentId,
-        //                 Enrollment = null
-        //             };
-
-        //             studentInfo.Enrollments ??= new List<AppStudentEnrollment>();
-        //             studentInfo.Enrollments.Add(appStudentEnrollment);
-        //         }
-
-        //         if (await _userRepository.SaveAllAsync())
-        //         {
-        //             return Ok(new { message = "Students enrolled successfully" });
-        //         }
-        //         else
-        //         {
-        //             return BadRequest(new { error = "Failed to enroll students" });
-        //         }
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         return StatusCode(500, new { error = $"Internal server error: {ex.Message}" });
-        //     }
-        // }
-
-
-
-
-
-        //    [HttpGet]
-        //    public async Task<ActionResult<IEnumerable<CourseDto>>> GetCourses(){
-
-        //     var courses = await _userRepository.GetCoursesAsync();
-
-        //     return Ok(courses);
-
-
-        //    }
-
-        //     [HttpGet("facilitators")]
-        //     public async Task<ActionResult<IEnumerable<FacilitatorDto>>>GetFacilitators(){
-
-        //        var users =  await _userRepository.GetFacilitatorsAsync();
-
-        //        return Ok(users);
-
-        //     }
-
         [HttpPost("add-course")]
         public IActionResult CreateCourse(CourseDto courseDto)
         {
@@ -275,7 +142,7 @@ namespace API.Controllers
             try
             {
                 _courseService.AddSubjectsToCourse(dto.CourseId, dto.SubjectIds);
-                return Ok("Subjects added to course successfully.");
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -284,30 +151,44 @@ namespace API.Controllers
         }
 
 
+        // [HttpGet("get-subjects-in-course/{courseId}")]
+        // public IActionResult GetSubjectsInCourse(int courseId)
+        // {
+        //     try
+        //     {
+        //         var subjectsInCourse = _courseService.GetSubjectsInCourse(courseId);
+
+        //         // Use JsonSerializerOptions to configure reference handling
+        //         var options = new JsonSerializerOptions
+        //         {
+        //             ReferenceHandler = ReferenceHandler.Preserve,
+        //             MaxDepth = 32  // You can adjust this depth based on your needs
+        //         };
+
+        //         var json = JsonSerializer.Serialize(subjectsInCourse, options);
+
+        //         // Return JSON result
+        //         return Content(json, "application/json");
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         return BadRequest($"An error occurred: {ex.Message}");
+        //     }
+
+        // }
+
         [HttpGet("get-subjects-in-course/{courseId}")]
         public IActionResult GetSubjectsInCourse(int courseId)
         {
             try
             {
                 var subjectsInCourse = _courseService.GetSubjectsInCourse(courseId);
-
-                // Use JsonSerializerOptions to configure reference handling
-                var options = new JsonSerializerOptions
-                {
-                    ReferenceHandler = ReferenceHandler.Preserve,
-                    MaxDepth = 32  // You can adjust this depth based on your needs
-                };
-
-                var json = JsonSerializer.Serialize(subjectsInCourse, options);
-
-                // Return JSON result
-                return Content(json, "application/json");
+                return Ok(subjectsInCourse);
             }
             catch (Exception ex)
             {
                 return BadRequest($"An error occurred: {ex.Message}");
             }
-
         }
 
         [HttpGet("get-subjects-not-in-course/{courseId}")]
@@ -345,8 +226,8 @@ namespace API.Controllers
         {
             try
             {
-                _courseService.RemoveSubjectsFromCourse(dto.CourseId, dto.SubjectIds);
-                return Ok("Subjects removed from course successfully.");
+                _courseService.RemoveSubjectFromCourse(dto.CourseId, dto.SubjectId);
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -354,33 +235,6 @@ namespace API.Controllers
             }
         }
 
-
-
-        // [HttpPost("add-subjects-to-course")]
-        // public IActionResult AddSubjectsToCourse([FromBody] AddSubjectsToCourseDto addSubjectsToCourse)
-        // {
-        //     var course = _courseService.GetCourseId(addSubjectsToCourse.CourseId);
-
-        //     if (course == null)
-        //     {
-        //         return NotFound("Course not found");
-        //     }
-        //     if (addSubjectsToCourse.SubjectIds != null)
-        //     {
-        //         foreach (var subjectId in addSubjectsToCourse.SubjectIds)
-        //         {
-        //             var subject = _courseService.GetSubjectById(subjectId);
-
-        //             if (subject == null)
-        //             {
-        //                 return NotFound($"Subject with ID {subjectId} not found");
-        //             }
-
-        //             _courseService.AddSubjectToCourse(addSubjectsToCourse.CourseId, subjectId);
-        //         }
-        //     }
-        //     return Ok("Subjects added to course successfully");
-        // }
 
 
     }
