@@ -142,23 +142,24 @@ namespace API.Services
             }
 
             _context.SaveChanges();
+
         }
 
 
-        public List<AppSubject> GetSubjectsInCourse(int courseId)
-        {
-            var course = _context.Courses
-                .Include(c => c.CourseSubjects)
-                .ThenInclude(cs => cs.Subject)
-                .FirstOrDefault(c => c.Id == courseId);
+        // public List<AppSubject> GetSubjectsInCourse(int courseId)
+        // {
+        //     var course = _context.Courses
+        //         .Include(c => c.CourseSubjects)
+        //         .ThenInclude(cs => cs.Subject)
+        //         .FirstOrDefault(c => c.Id == courseId);
 
-            if (course == null)
-            {
-                throw new InvalidOperationException($"Course with ID {courseId} not found");
-            }
+        //     if (course == null)
+        //     {
+        //         throw new InvalidOperationException($"Course with ID {courseId} not found");
+        //     }
 
-            return course.CourseSubjects.Select(cs => cs.Subject).ToList();
-        }
+        //     return course.CourseSubjects.Select(cs => cs.Subject).ToList();
+        // }
 
 
         private List<AppSubject> GetSubjectsNotInCourse(int courseId, List<int> subjectIds)
@@ -173,6 +174,16 @@ namespace API.Services
             return _context.Subjects
                 .Where(s => !_context.CourseSubjects.Any(cs => cs.CourseID == courseId && cs.SubjectID == s.Id))
                 .ToList();
+        }
+
+        public List<AppSubject> GetSubjectsInCourse(int courseId)
+        {
+            var subjectsInCourse = _context.CourseSubjects
+                .Where(cs => cs.CourseID == courseId)
+                .Select(cs => cs.Subject)
+                .ToList();
+
+            return subjectsInCourse;
         }
 
 
@@ -199,29 +210,27 @@ namespace API.Services
         }
 
 
-        public void RemoveSubjectsFromCourse(int courseId, List<int> subjectIds)
+        public void RemoveSubjectFromCourse(int courseId, int subjectId)
         {
             var course = _context.Courses
-          .Include(c => c.CourseSubjects)
-          .FirstOrDefault(c => c.Id == courseId);
+                .Include(c => c.CourseSubjects)
+                .FirstOrDefault(c => c.Id == courseId);
 
             if (course == null)
             {
                 throw new InvalidOperationException($"Course with ID {courseId} not found");
             }
 
-            // Remove existing subjects not in the new list
-            var subjectsToRemove = course.CourseSubjects
-                .Where(cs => subjectIds.Contains(cs.SubjectID))
-                .ToList();
+            // Remove the specific subject
+            var subjectToRemove = course.CourseSubjects.FirstOrDefault(cs => cs.SubjectID == subjectId);
 
-            foreach (var subjectToRemove in subjectsToRemove)
+            if (subjectToRemove != null)
             {
                 course.CourseSubjects.Remove(subjectToRemove);
+                _context.SaveChanges();
             }
-
-            _context.SaveChanges();
         }
+
 
 
 

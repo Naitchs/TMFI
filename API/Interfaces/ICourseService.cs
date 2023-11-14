@@ -31,6 +31,6 @@ namespace API.Interfaces
 
          List<AppSubject> GetSubjectsNotInCourse(int courseId);
          void UpdateAddSubjectsToCourse(int courseId, List<int> subjectIds);
-         void RemoveSubjectsFromCourse(int courseId, List<int> subjectIds);
+         void RemoveSubjectFromCourse(int courseId, int subjectId);
     }
 }
