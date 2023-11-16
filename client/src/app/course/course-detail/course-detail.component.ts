@@ -57,6 +57,10 @@ export class CourseDetailComponent implements OnInit {
     this.router.navigate(['/course-edit', id]);
   }
 
+  redirectToEnroll(id: number){
+    this.router.navigate(['/course-enroll', id]);
+  }
+
   loadCourse(id: number) {
     this.courseService.getCourse(id).subscribe({
       next: course => {
@@ -111,10 +115,11 @@ export class CourseDetailComponent implements OnInit {
               if (this.id) {
                 this.loadSubjectsInCourse(this.id);
                 this.loadSubjectsNotInCourse(this.id);
+                this.successMessage = 'Subjects added successfully';
               }
             });
             
-            this.successMessage = 'Subjects added successfully';
+
             this.show = false;            
           },
           error => {
@@ -151,23 +156,17 @@ export class CourseDetailComponent implements OnInit {
     const subjectIdToRemove: number = this.subjectId;
 
     if (this.subjectId == 0) return;
-    const index = this.subjectsCourse.findIndex(cs => cs.subjectId === subjectIdToRemove);
 
       this.courseService.removeSubjectsFromCourse(this.id, this.subjectId).subscribe(
         (subject) => {
-          this.successMessage = 'Subjects removed from course successfully';
-          // Optionally, you can reload the subjects in the course after removal
-          // this.loadSubjectsInCourse(this.course.id);
           this.route.params.subscribe(params => {
             this.id = +params['id'];
             if (this.id) {
               this.loadSubjectsInCourse(this.id);
               this.loadSubjectsNotInCourse(this.id);
+              this.successMessage = 'Subjects removed from course successfully';
             }
           });
-          if (index !== -1) {
-            this.subjectsCourse.splice(index, 1);
-          }
         },
         (error) => {
           this.errorMessage = 'Error removing subjects from course:'

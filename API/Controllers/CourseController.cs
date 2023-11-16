@@ -241,7 +241,21 @@ namespace API.Controllers
             try
             {
                 _courseService.AddStudentsToCourse(dto.CourseId, dto.StudentIds);
-                return Ok("Students added to course successfully.");
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpPost("add-student-to-course")]
+        public IActionResult AddStudentToCourse(AddStudentToCourseDto dto)
+        {
+            try
+            {
+                _courseService.AddStudentToCourse(dto.CourseId, dto.StudentId);
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -262,6 +276,30 @@ namespace API.Controllers
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
+
+        [HttpGet("search-students-not-in-course")]
+        public IActionResult SearchStudentsNotInCourse(int courseId, string search = null)
+        {
+            try
+            {
+                var studentsNotInCourse = _courseService.SearchStudentsNotInCourse(courseId, search);
+
+                if (studentsNotInCourse.Any())
+                {
+                    return Ok(studentsNotInCourse);
+                }
+                else
+                {
+                    return NotFound("No students found matching the search criteria. Or Check if it is already enrolled in this course.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
+
 
         [HttpGet("get-students-in-course/{courseId}")]
         public IActionResult GetStudentsInCourse(int courseId)
@@ -312,6 +350,34 @@ namespace API.Controllers
             {
                 _courseService.RemoveCourseFromStudent(dto.StudentId, dto.CourseId);
                 return Ok("Course removed from student successfully.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpPost("create-attendance")]
+        public IActionResult CreateAttendance([FromBody] CreateAttendanceDto dto)
+        {
+            try
+            {
+                _courseService.CreateAttendance(dto);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("delete-attendance/{attendanceId}")]
+        public IActionResult DeleteAttendance(int attendanceId)
+        {
+            try
+            {
+                _courseService.DeleteAttendance(attendanceId);
+                return Ok("Attendance deleted successfully.");
             }
             catch (Exception ex)
             {

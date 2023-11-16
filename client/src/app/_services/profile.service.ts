@@ -56,6 +56,12 @@ export class ProfileService {
     return this.http.get<Profile>(this.baseUrl + 'ipprofile/' + publicId);
   }
 
+  getStudent(id: number) {
+    const ip = this.ipProfile.find(x => x.id === id);
+    if (ip) return of(ip);
+    return this.http.get<Profile>(this.baseUrl + 'ipprofile/student/' + id);
+  }
+
   updateIp(ipProfile: Profile, publicId: string) {
     return this.http.put(this.baseUrl + 'ipprofile/update-ip/' + publicId, ipProfile).pipe(
       map(() => {

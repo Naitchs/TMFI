@@ -36,10 +36,16 @@ namespace API.Interfaces
 
 
          void AddStudentsToCourse(int courseId, List<int> studentIds);
+         void AddStudentToCourse(int courseId, int studentId);
          List<AppIp> GetStudentsNotInCourse(int courseId);
+         List<AppIp> SearchStudentsNotInCourse(int courseId, string search = null);
          List<AppIp> GetStudentsInCourse(int courseId);
          void RemoveStudentFromCourse(int courseId, int studentId);
          List<AppCourse> GetCoursesOfStudent(int studentId);
          void RemoveCourseFromStudent(int studentId, int courseId);
+
+
+         void CreateAttendance(CreateAttendanceDto dto);
+         void DeleteAttendance(int attendanceId);
     }
 }

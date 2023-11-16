@@ -63,6 +63,7 @@ import { SubjectListComponent } from './course/subject-list/subject-list.compone
 import { MaterialModule } from './material.module';
 import { UpdateCourseComponent } from './course/update-course/update-course.component';
 import { CourseDetailComponent } from './course/course-detail/course-detail.component';
+import { EnrollStudentsComponent } from './course/enroll-students/enroll-students.component';
 
 
 
@@ -122,6 +123,7 @@ import { CourseDetailComponent } from './course/course-detail/course-detail.comp
     SubjectListComponent,
     UpdateCourseComponent,
     CourseDetailComponent,
+    EnrollStudentsComponent,
 
   ],
   imports: [

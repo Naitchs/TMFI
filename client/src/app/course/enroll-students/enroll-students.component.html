@@ -1,0 +1,129 @@
+<div class="card shadow mb-3">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-6">
+        <input [(ngModel)]="search" placeholder="Search ID or Name" class="form-control" />
+      </div>
+      <div class="col-md-6">
+        <button type="submit" class="btn btn-info" (click)="searchStudents()">Search Students</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<div class="card shadow col-md-4" *ngIf="show == true">
+  <div class="card-body">
+    <div>
+      <ul class="list-group">
+        <li *ngFor="let student of studentsNotInCourse" class="list-group-item list-group-item-action"
+          (click)="loadStudent(student.id)">{{ student.publicId }} - {{ student.firstname }} {{ student.lastname }}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<div class="card shadow" *ngIf="showDetails == true">
+  <div class="card-body" *ngIf="ipProfile">
+
+    <div class="alert alert-dismissible alert-success" *ngIf="successMessage" #successAlert>
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      <strong>Well done!</strong>
+      <p>{{ successMessage }}</p>
+    </div>
+
+    <div class="alert alert-dismissible alert-primary" *ngIf="errorMessage">
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      <strong>Oh snap!</strong>
+      <p>{{ errorMessage }}</p>
+    </div>
+
+    <div>
+      <strong>ID:</strong>
+      <p>{{ipProfile?.publicId}}</p>
+    </div>
+
+    <div>
+      <strong>Name:</strong>
+      <p>{{caps(ipProfile?.firstname)}} {{caps(ipProfile?.middlename)}} {{caps(ipProfile?.lastname)}}
+        {{caps(ipProfile?.suffix)}}</p>
+    </div>
+
+    <div>
+      <strong>Age:</strong>
+      <p>{{ipProfile?.age}}</p>
+    </div>
+
+    <div>
+      <strong>Birthday:</strong>
+      <p>{{ getFormattedDate(ipProfile?.dateOfBirth) }}</p>
+    </div>
+
+    <div>
+      <strong>Gender:</strong>
+      <p>{{caps(ipProfile?.gender)}}</p>
+    </div>
+    <div>
+      <strong>Status:</strong>
+      <p>{{caps(ipProfile?.status)}}</p>
+    </div>
+    <div>
+      <strong>Tribe:</strong>
+      <p>{{caps(ipProfile?.tribe)}}</p>
+    </div>
+    <div>
+      <strong>Location:</strong>
+      <p>{{caps(ipProfile?.street)}} {{caps(ipProfile?.barangay)}}, {{caps(ipProfile?.city)}}</p>
+    </div>
+
+    <div>
+      <strong>Phone Number:</strong>
+      <p>{{ipProfile?.phoneNum}}</p>
+    </div>
+
+
+  </div>
+
+  <div class="card-footer">
+    <div class="btn-group d-flex">
+
+      <button class="btn btn-success" (click)="clickToEnroll(ipProfile.id)"
+      data-bs-toggle="modal" data-bs-target="#proceedModal">Enroll Student</button>
+      <button class="btn btn-secondary" (click)="close()">Cancel</button>
+
+    </div>
+  </div>
+
+</div>
+
+
+<div class="modal fade border-info" id="proceedModal" tabindex="-1" aria-labelledby="exampleModalLabels"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><strong>Heads up!</strong></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to Enroll Ip?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success me-2" (click)="addStudentToCourse()">Yes</button>
+        <button type="button" class="btn btn-danger me-2" (click)="modalHide()">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- <div *ngFor="let student of studentsNotInCourse">
+  <p>{{ student.firstname }} {{ student.lastname }}</p>
+</div> -->

@@ -30,6 +30,7 @@ namespace API.Interfaces
 
         Task<AppUser> GetUsersByIdAsync(int id);
         Task<IpDto> GetIpsByIdAsync(string publicId);
+        Task<IpDto> GetStudentByIdAsync(int id);
         Task<AppIp> GetIpsByPublicIdAsync(string publicId);
         Task<AppSap> GetSapByPublicIdAsync(string publicId);
         Task<SapDto> GetSapsByIdAsync(string publicId);
