@@ -26,10 +26,9 @@
       <div class="card-footer">
         <div class="btn-group d-flex">
 
-          <button class="btn btn-success" (click)="redirectToEdit(course.id)">Edit</button>
+          <button class="btn btn-info" (click)="redirectToEdit(course.id)">Edit</button>
 
-          <button class="btn btn-primary" (click)="showAddSubject()" *ngIf="subjectsInCourse.length > 0">Add
-            Subjects</button>
+          <button class="btn btn-secondary" (click)="redirectToEnroll(course.id)">Enroll</button>
 
         </div>
       </div>
@@ -53,19 +52,28 @@
           <p>{{ errorMessage }}</p>
         </div>
 
-        <div >
+        <div>
 
           <div *ngIf="subjectsInCourse.length > 0 && show == false">
-            <h3>Subjects in Course</h3>
-            <ul class="list-group">
-              <li class="list-group-item d-flex justify-content-between align-items-center"
-                *ngFor="let subject of subjectsInCourse">
-                {{ subject.name }} -
-                <span class="badge bg-primary square-pill">
-                  <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"
-                    (click)="getSubjectIdToDelete(subject.id)"><i class="bi bi-trash"></i></button></span>
-              </li>
-            </ul>
+            <div class="card shadow">
+              <div class="card-body">
+                <h3>Subjects in Course</h3>
+                <button class="btn btn-primary mt-3 mb-3" (click)="showAddSubject()"
+                  *ngIf="subjectsInCourse.length > 0">Add
+                  Subjects</button>
+
+                <ul class="list-group">
+                  <li class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngFor="let subject of subjectsInCourse">
+                    {{ subject.name }} 
+                    <span class="badge bg-primary square-pill" role="button" (click)="getSubjectIdToDelete(subject.id)"
+                      data-bs-toggle="modal" data-bs-target="#deleteModal">
+                      <i class="bi bi-trash"></i>
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
           <div *ngIf="subjectsInCourse.length === 0">
             <div class="card shadow">
@@ -73,16 +81,16 @@
                 <div class="form-group">
                   <label>Select Subjects:</label>
                   <div *ngFor="let subject of subjects">
-                    <label class="form-check-label mb-2">
-                      <input type="checkbox" name="selectedSubjects" [value]="subject.id" class="form-check-input"> {{
+                    <label class="form-check-label mb-3 mt-3">
+                      <input type="checkbox" name="selectedSubjects" [value]="subject.id" class="form-check-input mb-3"> {{
                       subject.name }}
                     </label>
                   </div>
-    
+
                   <button class="btn btn-success" (click)="addSubjectsToCourse()">Add Subjects</button>
                 </div>
               </div>
-            </div> 
+            </div>
           </div>
         </div>
       </tab>
@@ -115,11 +123,6 @@
 
       </div>
 
-
-
-      <tab heading="Tren">
-        <app-tren></app-tren>
-      </tab>
     </tabset>
   </div>
 
@@ -137,9 +140,9 @@
         <div class="modal-body">
           <p>Are you sure you want to Delete Subject?</p>
         </div>
-        <div class="modal-footer" *ngIf="subjects">
+        <div class="modal-footer" >
           <button type="button" class="btn btn-success me-2"
-            (click)="removeSubjectsFromCourse(subjects.id)">Yes</button>
+            (click)="removeSubjectsFromCourse()">Yes</button>
           <button type="button" class="btn btn-danger me-2" (click)="modalHide()">No</button>
         </div>
       </div>

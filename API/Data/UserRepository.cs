@@ -222,6 +222,15 @@ namespace API.Data
            .FirstOrDefaultAsync();
     }
 
+    public async Task<IpDto> GetStudentByIdAsync(int id)
+    {
+
+      return await _context.Ips
+           .Where(ip => ip.Id == id)
+           .ProjectTo<IpDto>(_mapper.ConfigurationProvider)
+           .FirstOrDefaultAsync();
+    }
+
     public async Task<MemberDto> GetMemberAsync(string username)
     {
       return await _context.Users
@@ -383,7 +392,7 @@ namespace API.Data
         _context.SaveChanges();
       }
     }
-  
+
 
   }
 }

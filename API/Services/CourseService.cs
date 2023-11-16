@@ -252,12 +252,50 @@ namespace API.Services
             _context.SaveChanges();
         }
 
+        public void AddStudentToCourse(int courseId, int studentId)
+        {
+            var course = _context.Courses
+                .Include(c => c.CourseStudents)
+                .FirstOrDefault(c => c.Id == courseId);
+
+            if (course == null)
+            {
+                throw new InvalidOperationException($"Course with ID {courseId} not found");
+            }
+
+            var studentToAdd = _context.Ips.FirstOrDefault(s => s.Id == studentId);
+
+            if (studentToAdd == null)
+            {
+                throw new InvalidOperationException($"Student with ID {studentId} not found");
+            }
+
+            course.CourseStudents.Add(new CourseStudent { Course = course, Student = studentToAdd });
+
+            _context.SaveChanges();
+        }
+
         public List<AppIp> GetStudentsNotInCourse(int courseId)
         {
             return _context.Ips
                 .Where(s => !_context.CourseStudents.Any(cs => cs.CourseID == courseId && cs.StudentID == s.Id))
                 .ToList();
         }
+
+        public List<AppIp> SearchStudentsNotInCourse(int courseId, string search = null)
+        {
+            var query = _context.Ips
+                .Where(s => !_context.CourseStudents.Any(cs => cs.CourseID == courseId && cs.StudentID == s.Id));
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                // Add your search conditions based on your model properties
+                query = query.Where(s => s.Firstname.Contains(search) || s.Lastname.Contains(search) || s.PublicId.Contains(search));
+            }
+
+            return query.ToList();
+        }
+
 
         public List<AppIp> GetStudentsInCourse(int courseId)
         {
@@ -309,6 +347,35 @@ namespace API.Services
 
             _context.CourseStudents.Remove(enrollment);
             _context.SaveChanges();
+        }
+
+        public void CreateAttendance(CreateAttendanceDto dto)
+        {
+            var attendance = new Attendance
+            {
+                StudentID = dto.StudentId,
+                SubjectID = dto.SubjectId,
+                Date = DateTime.Now,
+                Status = dto.Status
+            };
+
+            _context.Attendances.Add(attendance);
+            _context.SaveChanges();
+        }
+
+        public void DeleteAttendance(int attendanceId)
+        {
+            var attendance = _context.Attendances.Find(attendanceId);
+
+            if (attendance != null)
+            {
+                _context.Attendances.Remove(attendance);
+                _context.SaveChanges();
+            }
+            else
+            {
+                throw new InvalidOperationException($"Attendance with ID {attendanceId} not found");
+            }
         }
 
 

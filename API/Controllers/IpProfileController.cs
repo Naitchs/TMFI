@@ -125,6 +125,14 @@ namespace API.Controllers
 
         }
 
+        [HttpGet("student/{id}")]
+        public async Task<ActionResult<IpDto>> GetStudent(int id)
+        {
+
+            return await _userRepository.GetStudentByIdAsync(id);
+
+        }
+
         [HttpPut("update-ip/{publicId}")]
         public async Task<ActionResult> UpdateIp(string publicId, [FromBody] IpUpdateDto ipUpdateDto)
         {
@@ -155,7 +163,7 @@ namespace API.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-        
+
         [HttpDelete("delete-ip/{id}")]
         public IActionResult DeleteSubject(int id)
         {
