@@ -12,24 +12,8 @@
 </div>
 
 
-
-
-
-<div class="card shadow col-md-4" *ngIf="show == true">
+<div class="card shadow">
   <div class="card-body">
-    <div>
-      <ul class="list-group">
-        <li *ngFor="let student of studentsNotInCourse" class="list-group-item list-group-item-action"
-          (click)="loadStudent(student.id)">{{ student.publicId }} - {{ student.firstname }} {{ student.lastname }}
-        </li>
-      </ul>
-    </div>
-  </div>
-</div>
-
-
-<div class="card shadow" *ngIf="showDetails == true">
-  <div class="card-body" *ngIf="ipProfile">
 
     <div class="alert alert-dismissible alert-success" *ngIf="successMessage" #successAlert>
       <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -43,62 +27,112 @@
       <p>{{ errorMessage }}</p>
     </div>
 
-    <div>
-      <strong>ID:</strong>
-      <p>{{ipProfile?.publicId}}</p>
+    <div class="mb-2" *ngIf="showDetails == false && show == false">
+      <div>
+
+        <div class="row col-md-12 table-responsive ">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th style="width: 10%;">Id</th>
+                <th style="width: 50%;">Name</th>
+                <th style="width: 10%;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let students of paginatedList" >
+                <td >{{ students?.publicId }}</td>
+                <td>{{ students?.firstname }} {{ students?.middlename }} {{ students?.lastname }} {{ students?.suffix }}</td>
+                <td>
+                  <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                    (click)="clickToDelete(students.id)"><i class="bi bi-trash"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="pagination">
+            <button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+            <span> Page {{ currentPage }} of {{ totalPages }} </span>
+            <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+          </div>
+        </div>
+
+      </div>
     </div>
 
-    <div>
-      <strong>Name:</strong>
-      <p>{{caps(ipProfile?.firstname)}} {{caps(ipProfile?.middlename)}} {{caps(ipProfile?.lastname)}}
-        {{caps(ipProfile?.suffix)}}</p>
+    <div class="card shadow col-md-12" *ngIf="show == true">
+      <div class="card-body">
+        <div>
+          <ul class="list-group">
+            <li *ngFor="let student of studentsNotInCourse" class="list-group-item list-group-item-action"
+              (click)="loadStudent(student.id)">{{ student.publicId }} - {{ student.firstname }} {{ student.lastname }}
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
 
-    <div>
-      <strong>Age:</strong>
-      <p>{{ipProfile?.age}}</p>
-    </div>
+    <div class="mb-2" *ngIf="showDetails == true">
+      <div *ngIf="ipProfile">
 
-    <div>
-      <strong>Birthday:</strong>
-      <p>{{ getFormattedDate(ipProfile?.dateOfBirth) }}</p>
-    </div>
+        <div>
+          <strong>ID:</strong>
+          <p>{{ipProfile?.publicId}}</p>
+        </div>
 
-    <div>
-      <strong>Gender:</strong>
-      <p>{{caps(ipProfile?.gender)}}</p>
-    </div>
-    <div>
-      <strong>Status:</strong>
-      <p>{{caps(ipProfile?.status)}}</p>
-    </div>
-    <div>
-      <strong>Tribe:</strong>
-      <p>{{caps(ipProfile?.tribe)}}</p>
-    </div>
-    <div>
-      <strong>Location:</strong>
-      <p>{{caps(ipProfile?.street)}} {{caps(ipProfile?.barangay)}}, {{caps(ipProfile?.city)}}</p>
-    </div>
+        <div>
+          <strong>Name:</strong>
+          <p>{{caps(ipProfile?.firstname)}} {{caps(ipProfile?.middlename)}} {{caps(ipProfile?.lastname)}}
+            {{caps(ipProfile?.suffix)}}</p>
+        </div>
 
-    <div>
-      <strong>Phone Number:</strong>
-      <p>{{ipProfile?.phoneNum}}</p>
+        <div>
+          <strong>Age:</strong>
+          <p>{{ipProfile?.age}}</p>
+        </div>
+
+        <div>
+          <strong>Birthday:</strong>
+          <p>{{ getFormattedDate(ipProfile?.dateOfBirth) }}</p>
+        </div>
+
+        <div>
+          <strong>Gender:</strong>
+          <p>{{caps(ipProfile?.gender)}}</p>
+        </div>
+        <div>
+          <strong>Status:</strong>
+          <p>{{caps(ipProfile?.status)}}</p>
+        </div>
+        <div>
+          <strong>Tribe:</strong>
+          <p>{{caps(ipProfile?.tribe)}}</p>
+        </div>
+        <div>
+          <strong>Location:</strong>
+          <p>{{caps(ipProfile?.street)}} {{caps(ipProfile?.barangay)}}, {{caps(ipProfile?.city)}}</p>
+        </div>
+
+        <div>
+          <strong>Phone Number:</strong>
+          <p>{{ipProfile?.phoneNum}}</p>
+        </div>
+
+        <div class="card-footer">
+          <div class="btn-group d-flex">
+
+            <button class="btn btn-success" (click)="clickToEnroll(ipProfile.id)" data-bs-toggle="modal"
+              data-bs-target="#proceedModal">Enroll Student</button>
+            <button class="btn btn-secondary" (click)="close()">Cancel</button>
+
+          </div>
+        </div>
+
+      </div>
     </div>
 
 
   </div>
-
-  <div class="card-footer">
-    <div class="btn-group d-flex">
-
-      <button class="btn btn-success" (click)="clickToEnroll(ipProfile.id)"
-      data-bs-toggle="modal" data-bs-target="#proceedModal">Enroll Student</button>
-      <button class="btn btn-secondary" (click)="close()">Cancel</button>
-
-    </div>
-  </div>
-
 </div>
 
 
@@ -118,6 +152,27 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-success me-2" (click)="addStudentToCourse()">Yes</button>
         <button type="button" class="btn btn-danger me-2" (click)="modalHide()">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade border-info" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabels"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><strong>Heads up!</strong></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to Delete Student?</p>
+      </div>
+      <div class="modal-footer" *ngIf="studentsInCourse">
+        <button type="button" class="btn btn-success me-2" (click)="removeStudent(studentsInCourse.id)">Yes</button>
+        <button type="button" class="btn btn-danger me-2" (click)="deleteModalHide()">No</button>
       </div>
     </div>
   </div>

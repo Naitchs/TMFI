@@ -152,8 +152,6 @@ export class CourseDetailComponent implements OnInit {
   removeSubjectsFromCourse(): void {
 
     $('#deleteModal').modal('hide');
-    
-    const subjectIdToRemove: number = this.subjectId;
 
     if (this.subjectId == 0) return;
 
@@ -173,6 +171,10 @@ export class CourseDetailComponent implements OnInit {
         }
       );
     
+  }
+
+  cancel(){
+    this.show = false;
   }
 
 

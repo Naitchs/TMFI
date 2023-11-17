@@ -321,7 +321,7 @@ namespace API.Controllers
             try
             {
                 _courseService.RemoveStudentFromCourse(dto.CourseId, dto.StudentId);
-                return Ok("Student removed from course successfully.");
+                return Ok();
             }
             catch (Exception ex)
             {

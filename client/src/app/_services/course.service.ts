@@ -127,4 +127,14 @@ export class CourseService {
     return this.http.get<Profile[]>(this.baseUrl + 'course/get-students-not-in-course/' + courseId);
   }
 
+  getStudentsInCourse(courseId: number): Observable<any> {
+    return this.http.get(this.baseUrl + 'course/get-students-in-course/' + courseId);
+  }
+
+  removeStudentFromCourse(courseId: number, studentId: number) {
+    return this.http.delete(this.baseUrl + 'course/remove-student-from-course', { body: { courseId: courseId, studentId: studentId } });
+  }
+
+
+
 }

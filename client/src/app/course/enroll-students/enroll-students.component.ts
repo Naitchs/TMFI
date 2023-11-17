@@ -17,107 +17,189 @@ export class EnrollStudentsComponent {
   course: Course | undefined;
   ipProfile: Profile | undefined;
   id: number | undefined;
-  studentsNotInCourse: Profile [] = [];
+  studentsNotInCourse: Profile[] = [];
+  studentsInCourse: Profile[] = [];
   search: string | null = null;
   successMessage: string | null = null;
   errorMessage: string | null = null;
   show: boolean = false;
   showDetails: boolean = false;
   studentId: number = 0;
+  deleteStudent: number = 0;
+
+  currentPage: number = 1;
+  itemsPerPage: number = 8;
+  totalItems: number;
 
   constructor(private courseService: CourseService, private route: ActivatedRoute,
     private router: Router, private profileService: ProfileService) { }
 
 
-    ngOnInit(): void{
-      this.route.params.subscribe(params => {
-        this.id = +params['id'];
-        if (this.id) {
-          this.loadCourse(this.id);
-        }
-      });
+  ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      this.id = +params['id'];
+      if (this.id) {
+        this.loadCourse(this.id);
+        this.loadStudents(this.id);
+      }
+    });
 
-      this.studentId = 0;
-    }
-  
-    loadCourse(id: number) {
- 
-      this.courseService.getCourse(id).subscribe({
-        next: course => {
-          this.course = course;
-        }
-      });
-    }
+    this.studentId = 0;
+    this.deleteStudent = 0;
+  }
 
-    loadStudent(id: number) {
-      this.show = false;
-      this.profileService.getStudent(id).subscribe({
-        next: ipProfile => {
-          // console.log(ipProfile);
-          this.ipProfile = ipProfile;
-          this.showDetails = true;
-        }
-      });
-    }
+  loadCourse(id: number) {
 
-    modalHide() {
-      $('#proceedModal').modal('hide');
-    }
+    this.courseService.getCourse(id).subscribe({
+      next: course => {
+        this.course = course;
+      }
+    });
+  }
 
-    addStudentToCourse(): void {
-      $('#proceedModal').modal('hide');
-      const dto: EnrollStudent = { courseId: this.id, studentId: this.studentId }; // Replace with your actual data
-      
-      this.courseService.addStudentToCourse(dto).subscribe(
-        (response) => {
-          this.successMessage = 'Student added successfully';
+  loadStudents(id: number) {
+    this.courseService.getStudentsInCourse(id).subscribe({
+      next: students => {
+        this.studentsInCourse = students;
+      }
+    });
+  }
+
+  loadStudent(id: number) {
+    this.show = false;
+    this.profileService.getStudent(id).subscribe({
+      next: ipProfile => {
+        // console.log(ipProfile);
+        this.ipProfile = ipProfile;
+        this.showDetails = true;
+      }
+    });
+  }
+
+  modalHide() {
+    $('#proceedModal').modal('hide');
+  }
+
+  addStudentToCourse(): void {
+    $('#proceedModal').modal('hide');
+    const dto: EnrollStudent = { courseId: this.id, studentId: this.studentId }; // Replace with your actual data
+
+    this.courseService.addStudentToCourse(dto).subscribe(
+      (response) => {
+        this.route.params.subscribe(params => {
+          this.id = +params['id'];
+          if (this.id) {
+            this.loadStudents(this.id);
+            this.successMessage = 'Student added successfully';
+            this.errorMessage = null;
+          }
+        });
+
+      },
+      (error) => {
+        this.errorMessage = 'Error adding student to course'
+        this.successMessage = null;
+      }
+    );
+  }
+
+  close() {
+    this.showDetails = false;
+  }
+
+  searchStudents(): void {
+    this.courseService.searchStudentsNotInCourse(this.id, this.search)
+      .subscribe(
+        students => {
+          this.studentsNotInCourse = students;
           this.errorMessage = null;
+          this.show = true;
         },
-        (error) => {
-          this.errorMessage = 'Error adding student to course'
-          this.successMessage = null;
+        error => {
+          // this.studentsNotInCourse = [];
+          this.errorMessage = 'Error fetching students. Please try again.';
         }
       );
+  }
+
+  clickToEnroll(id: number) {
+    this.studentId = id;
+  }
+
+  clickToDelete(id: number) {
+    this.deleteStudent = id;
+  }
+
+  caps(str: string): string {
+    if (!str) return str;
+
+    return str
+      .toLowerCase()
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
+
+  getFormattedDate(dateOfBirth: string): string {
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateOfBirth).toLocaleDateString(undefined, options);
+  }
+
+  get paginatedList() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.studentsInCourse.slice(startIndex, endIndex);
+  }
+
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+    }
+  }
+
+  get totalPages() {
+    return Math.ceil(this.studentsInCourse.length / this.itemsPerPage);
+  }
+
+  deleteModalHide() {
+    $('#deleteModal').modal('hide');
+  }
+
+  removeStudent(): void {
+
+    $('#deleteModal').modal('hide');
+
+    if (this.deleteStudent === 0) {
+      return;
     }
 
-    close(){
-      this.showDetails = false;
-    }
-
-    searchStudents(): void {
-      this.courseService.searchStudentsNotInCourse(this.id, this.search)
-        .subscribe(
-          students => {
-            this.studentsNotInCourse = students;
-            this.errorMessage = null;
-            this.show = true;
-          },
-          error => {
-            // this.studentsNotInCourse = [];
-            this.errorMessage = 'Error fetching students. Please try again.';
+    this.courseService.removeStudentFromCourse(this.id, this.deleteStudent).subscribe(
+      _ => {
+        this.route.params.subscribe(params => {
+          this.id = +params['id'];
+          if (this.id) {
+            this.loadCourse(this.id);
+            this.loadStudents(this.id);
           }
-        );
-    }
+        });
+        this.successMessage = 'Student remove Successfully';
 
-    clickToEnroll(id: number){
-      this.studentId = id;
-      console.log(this.studentId);
-    }
+        console.log("deletedId", this.deleteStudent);
+        console.log("courseId", this.id);
+      }, (error) => {
+        this.errorMessage = 'Error removing Stundent from course:'
+      }
+    )
 
-    caps(str: string): string {
-      if (!str) return str;
-    
-      return str
-        .toLowerCase()
-        .split(' ')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
-    }
-  
-    getFormattedDate(dateOfBirth: string): string {
-      const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-      return new Date(dateOfBirth).toLocaleDateString(undefined, options);
-    }
+  }
+
+
 
 
 
