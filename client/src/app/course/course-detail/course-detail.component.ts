@@ -103,6 +103,8 @@ export class CourseDetailComponent implements OnInit {
   }
 
   addSubjectsToCourse(): void {
+    this.successMessage = null;
+    this.errorMessage = null;
     if (this.id !== undefined) {
       const selectedSubjectIds = Array.from(document.querySelectorAll('input[name=selectedSubjects]:checked')).map((el: HTMLInputElement) => parseInt(el.value));
 
@@ -133,23 +135,33 @@ export class CourseDetailComponent implements OnInit {
   }
 
   showAddSubject() {
+    this.successMessage = null;
+    this.errorMessage = null;
     this.show = true;
   }
   back() {
+    this.successMessage = null;
+    this.errorMessage = null;
     this.show = false;
     this.showAfterAdd = false;
   }
 
   getSubjectIdToDelete(id: number) {
+    this.successMessage = null;
+    this.errorMessage = null;
     this.subjectId = id;
   }
 
   modalHide() {
+    this.successMessage = null;
+    this.errorMessage = null;
     $('#deleteModal').modal('hide');
   }
 
 
   removeSubjectsFromCourse(): void {
+    this.successMessage = null;
+    this.errorMessage = null;
 
     $('#deleteModal').modal('hide');
 
@@ -174,6 +186,8 @@ export class CourseDetailComponent implements OnInit {
   }
 
   cancel(){
+    this.successMessage = null;
+    this.errorMessage = null;
     this.show = false;
   }
 

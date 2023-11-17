@@ -14,7 +14,7 @@ import * as XLSX from 'xlsx';
   templateUrl: './excel-detail.component.html',
   styleUrls: ['./excel-detail.component.scss']
 })
-export class ExcelDetailComponent implements OnInit{
+export class ExcelDetailComponent implements OnInit {
 
   baseUrl = environment.apiUrl;
   excelDatas: Exceldata | undefined;
@@ -23,13 +23,14 @@ export class ExcelDetailComponent implements OnInit{
   sheetNames: string[] = [];
   fileToUpload: File | null = null;
   excelDataMap: { [key: string]: Exceldatarow[] } = {};
+  show: boolean = true;
 
-  constructor(private integrationService: IntegrationService, 
-    private route: ActivatedRoute, 
+  constructor(private integrationService: IntegrationService,
+    private route: ActivatedRoute,
     private http: HttpClient,
-    private toastr: ToastrService) {}
+    private toastr: ToastrService) { }
 
-  ngOnInit(): void{
+  ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.publicId = params['publicId'];
       if (this.publicId) {
@@ -37,7 +38,7 @@ export class ExcelDetailComponent implements OnInit{
       }
     });
   }
-  
+
   // loadExcelData(publicId: string) {
   //   this.integrationService.getExcelData(publicId).subscribe({
   //     next: Exceldata => {
@@ -58,21 +59,20 @@ export class ExcelDetailComponent implements OnInit{
   loadExcelData(publicId: string) {
     this.integrationService.getExcelData(publicId).subscribe({
       next: Exceldata => {
-        this.excelDatas = Exceldata; 
+        this.excelDatas = Exceldata;
 
         if (Exceldata.excelFiles[0]) {
           const cloudinaryUrl = Exceldata.excelFiles[0].url;
           this.downloadFileFromCloudinary(cloudinaryUrl);
         }
-
       },
       error: (error) => {
         console.error(error);
       }
     });
-}
+  }
 
-downloadFileFromCloudinary(url: string) {
+  downloadFileFromCloudinary(url: string) {
     axios({
       url: url,
       method: 'GET',
@@ -87,33 +87,35 @@ downloadFileFromCloudinary(url: string) {
       this.fileToUpload = file;
       this.uploadFileToBackend(); // Upload the file to backend
     });
-}
+  }
 
 
   // loadSheets() {
   //   this.sheetNames = Object.keys(this.excelDatas?.excelDataRowList || {});
   // }
-  
+
   selectSheet(sheetName: string) {
     this.selectedSheet = sheetName;
   }
 
   uploadFileToBackend() {
+    this.show = false;
+
     if (!this.fileToUpload) {
       console.error("No file selected");
       return;
-  }
+    }
+
 
     const formData = new FormData();
     formData.append('file', this.fileToUpload as File);
-  
+
     this.http.post(`${this.baseUrl}integrate/upload-excel`, formData)
       .subscribe((response: { [key: string]: Exceldatarow[] }) => {
         this.sheetNames = Object.keys(response);
         this.selectedSheet = this.sheetNames[0];
         this.excelDataMap = response;
-
-
+       
       });
   }
 
@@ -125,15 +127,22 @@ downloadFileFromCloudinary(url: string) {
     link.click();
     document.body.removeChild(link);
   }
-  
+
 
   caps(str: string): string {
     if (!str) return str;
-  
+
     return str
       .toLowerCase()
       .split(' ')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
   }
+
+  reload() {
+    this.show = false;
+    location.reload();
+  }
+
+
 }

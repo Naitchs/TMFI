@@ -290,7 +290,7 @@ namespace API.Controllers
                 }
                 else
                 {
-                    return NotFound("No students found matching the search criteria. Or Check if it is already enrolled in this course.");
+                    return BadRequest("No students found, Check if it is already Enrolled.");
                 }
             }
             catch (Exception ex)

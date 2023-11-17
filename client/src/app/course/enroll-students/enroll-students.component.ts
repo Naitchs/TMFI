@@ -26,6 +26,7 @@ export class EnrollStudentsComponent {
   showDetails: boolean = false;
   studentId: number = 0;
   deleteStudent: number = 0;
+  searchMessage: string | null = null;
 
   currentPage: number = 1;
   itemsPerPage: number = 8;
@@ -104,29 +105,42 @@ export class EnrollStudentsComponent {
   }
 
   close() {
+    this.successMessage = null;
+    this.errorMessage = null;
     this.showDetails = false;
   }
 
   searchStudents(): void {
+    this.successMessage = null;
+    this.errorMessage = null;
+    this.show = true;
     this.courseService.searchStudentsNotInCourse(this.id, this.search)
       .subscribe(
-        students => {
+        (students) => {
           this.studentsNotInCourse = students;
           this.errorMessage = null;
-          this.show = true;
         },
         error => {
           // this.studentsNotInCourse = [];
-          this.errorMessage = 'Error fetching students. Please try again.';
+          if (error.status === 400) {
+            if (error.error === "No students found, Check if it is already Enrolled.") {
+              this.searchMessage = 'No students found, Check if it is already Enrolled.';
+              this.studentsNotInCourse = [];
+            }
+          }
         }
       );
   }
 
   clickToEnroll(id: number) {
+    this.successMessage = null;
+    this.errorMessage = null;
     this.studentId = id;
   }
 
   clickToDelete(id: number) {
+    this.successMessage = null;
+    this.errorMessage = null;
     this.deleteStudent = id;
   }
 
@@ -197,6 +211,10 @@ export class EnrollStudentsComponent {
       }
     )
 
+  }
+
+  redirectToDetail(id: number) {
+    this.router.navigate(['/course-detail', id]);
   }
 
 
