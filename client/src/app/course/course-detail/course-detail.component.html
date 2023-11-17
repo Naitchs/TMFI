@@ -66,10 +66,10 @@
                   <li class="list-group-item d-flex justify-content-between align-items-center"
                     *ngFor="let subject of subjectsInCourse">
                     {{ subject.name }} 
-                    <span class="badge bg-primary square-pill" role="button" (click)="getSubjectIdToDelete(subject.id)"
+                    <button class="btn btn-danger" role="button" (click)="getSubjectIdToDelete(subject.id)"
                       data-bs-toggle="modal" data-bs-target="#deleteModal">
                       <i class="bi bi-trash"></i>
-                    </span>
+                    </button>
                   </li>
                 </ul>
               </div>

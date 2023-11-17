@@ -3,47 +3,41 @@
     <h2>Report Details</h2>
   </div>
 
-  <div class="card-body shadow"> 
-  <div class="col-md-4">
-    <label class="form-label mt-2" for="publicId"><strong>Public ID</strong></label>
-    <input class="form-control" id="publicId" 
-                                        type="text" 
-                                        [attr.readonly]="true" 
-                                        [value]="excelDatas?.publicId">
-  </div> 
-  
-  <div class="col-md-4">
-    <label class="form-label mt-2" for="title"><strong>Title</strong></label>
-    <input class="form-control" id="title" 
-                                        type="text" 
-                                        [attr.readonly]="true" 
-                                        [value]="caps(excelDatas?.title)">
-  </div>
-  
-  <div class="col-md-4 mb-3">
-    <label class="form-label mt-2" for="dateUploaded"><strong>Date & Time Uploaded</strong></label>
-    <input class="form-control" id="dateUploaded" 
-                                        type="text" 
-                                        [attr.readonly]="true" 
-                                        [value]="excelDatas?.dateUploaded | date:'medium'">
-  </div> 
-  
+  <div class="card-body shadow">
+    <div class="col-md-4">
+      <label class="form-label mt-2" for="publicId"><strong>Public ID</strong></label>
+      <input class="form-control" id="publicId" type="text" [attr.readonly]="true" [value]="excelDatas?.publicId">
+    </div>
 
-</div>
+    <div class="col-md-4">
+      <label class="form-label mt-2" for="title"><strong>Title</strong></label>
+      <input class="form-control" id="title" type="text" [attr.readonly]="true" [value]="caps(excelDatas?.title)">
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <label class="form-label mt-2" for="dateUploaded"><strong>Date & Time Uploaded</strong></label>
+      <input class="form-control" id="dateUploaded" type="text" [attr.readonly]="true"
+        [value]="excelDatas?.dateUploaded | date:'medium'">
+    </div>
+
+
+  </div>
 </div>
 
 <div class="card p-3 shadow mb-3">
 
+  <button *ngIf="show == true" class="btn btn-info col-md-2" (click)="reload()">View</button>
+
   <li *ngFor="let file of excelDatas?.excelFiles" class="list-group-item mb-3">
     <button (click)="downloadFile(file.url, file.publicId)" class="btn btn-primary">Download File</button>
   </li>
-  
-  <div class="col-md-4 mb-3">
+
+  <div class="col-md-4 mb-3" *ngIf="show == false">
     <select [(ngModel)]="selectedSheet" class="form-select">
       <option *ngFor="let sheet of sheetNames" [value]="sheet">{{ sheet }}</option>
     </select>
   </div>
-  
+
   <div *ngIf="selectedSheet" class="table-container">
     <table class="table" border="1">
       <thead>
@@ -60,8 +54,8 @@
       </tbody>
     </table>
   </div>
-  
-  
+
+
 </div>
 
 
@@ -82,4 +76,3 @@
     </tbody>
   </table>
 </div> -->
-

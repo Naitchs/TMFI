@@ -60,7 +60,8 @@
 
       <div class="card-footer">
         <button data-bs-toggle="modal" data-bs-target="#proceedModal" [disabled]="!editForm.dirty" form="editForm"
-          class="btn btn-success col-md-12"> Save changes</button>
+          class="btn btn-success col-md-6"> Save changes</button>
+          <button class="btn btn-secondary col-md-6" (click)="redirectToDetail(course.id)">Back</button>
       </div>
     </div>
   </div>

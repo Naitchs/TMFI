@@ -194,7 +194,7 @@ public async Task<ActionResult> SaveExcelData([FromForm] ExcelDataDto dto)
 }
 public int GetNextPublicId()
 {
-   int nextId = _context.ExcelData.Any() ? _context.ExcelData.Max(e => e.Id) + 1 : 4001;
+   int nextId = _context.ExcelData.Any() ? _context.ExcelData.Max(e => e.Id) + 1 : 0001;
    return nextId;
 }
 

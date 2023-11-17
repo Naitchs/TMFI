@@ -4,8 +4,9 @@
       <div class="col-md-6">
         <input [(ngModel)]="search" placeholder="Search ID or Name" class="form-control" />
       </div>
-      <div class="col-md-6">
-        <button type="submit" class="btn btn-info" (click)="searchStudents()">Search Students</button>
+      <div class="col-md-6" *ngIf="course">
+        <button type="submit" class="btn btn-info" (click)="searchStudents()">Search Students</button> &nbsp;
+        <button class="btn btn-secondary" (click)="redirectToDetail(course.id)">Back</button>
       </div>
     </div>
   </div>
@@ -60,7 +61,7 @@
       </div>
     </div>
 
-    <div class="card shadow col-md-12" *ngIf="show == true">
+    <div class="card shadow col-md-12 mb-3" *ngIf="show == true">
       <div class="card-body">
         <div>
           <ul class="list-group">
@@ -68,6 +69,7 @@
               (click)="loadStudent(student.id)">{{ student.publicId }} - {{ student.firstname }} {{ student.lastname }}
             </li>
           </ul>
+          <p class="text-info" *ngIf="searchMessage"> {{ searchMessage }}</p>
         </div>
       </div>
     </div>

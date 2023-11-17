@@ -1,6 +1,6 @@
 import { Component, HostListener, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
 import { Course } from 'src/app/_models/course';
 import { User } from 'src/app/_models/user';
@@ -25,7 +25,7 @@ export class UpdateCourseComponent {
   user: User | null = null;
 
   constructor (private accountService: AccountService, private courseService: CourseService,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute, private router: Router) {
 this.accountService.currentUser$.pipe(take(1)).subscribe({
 next: user => this.user = user
 })
@@ -80,6 +80,11 @@ next: user => this.user = user
       });
     }
   }
+
+  redirectToDetail(id: number) {
+    this.router.navigate(['/course-detail', id]);
+  }
+
 
 
 }

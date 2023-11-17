@@ -104,10 +104,10 @@ export class CourseService {
     return this.http.post(this.baseUrl + 'course/add-student-to-course', dto);
   }
 
-  searchStudentsNotInCourse(courseId: number, search: string | null): Observable<Profile[]> {
+  searchStudentsNotInCourse(courseId: number, search: string | null): Observable<any[]> {
     const url = `${this.baseUrl}course/search-students-not-in-course?courseId=${courseId}&search=${search || ''}`;
 
-    return this.http.get<Profile[]>(url)
+    return this.http.get<any[]>(url)
       .pipe(
         // catchError(this.handleError)  // Add error handling if needed
         map(ip => {
