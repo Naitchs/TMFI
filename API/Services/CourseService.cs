@@ -124,6 +124,14 @@ namespace API.Services
             }
         }
 
+        public async Task<AppSubject> GetSubjectId(int id)
+        {
+            return await _context.Subjects
+                  .Where(c => c.Id == id)
+                  .ProjectTo<AppSubject>(_mapper.ConfigurationProvider)
+                  .FirstOrDefaultAsync();
+        }
+
 
         public void AddSubjectsToCourse(int courseId, List<int> subjectIds)
         {
@@ -362,6 +370,44 @@ namespace API.Services
             _context.Attendances.Add(attendance);
             _context.SaveChanges();
         }
+
+        public Dictionary<DateTime, List<CreateAttendanceDto>> GetAttendanceRecordsGroupedByDate(int subjectId)
+        {
+            var attendanceRecordsGrouped = _context.Attendances
+                .Where(a => a.SubjectID == subjectId)
+                .GroupBy(a => a.Date.Date) // Group by the date part only
+                .ToDictionary(
+                    group => group.Key,
+                    group => group.Select(a => new CreateAttendanceDto
+                    {
+                        AttendanceID = a.AttendanceID,
+                        StudentId = a.StudentID,
+                        SubjectId = a.SubjectID,
+                        Status = a.Status
+                        // Add other properties as needed
+                    }).ToList()
+                );
+
+            return attendanceRecordsGrouped;
+        }
+
+        public void EditAttendance(int attendanceId, EditAttendanceDto dto)
+        {
+            var attendance = _context.Attendances.Find(attendanceId);
+
+            if (attendance != null)
+            {
+                // Update the status
+                attendance.Status = dto.Status;
+
+                _context.SaveChanges();
+            }
+            else
+            {
+                throw new InvalidOperationException($"Attendance with ID {attendanceId} not found");
+            }
+        }
+
 
         public void DeleteAttendance(int attendanceId)
         {

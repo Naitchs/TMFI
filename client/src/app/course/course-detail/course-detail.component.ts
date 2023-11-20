@@ -54,11 +54,13 @@ export class CourseDetailComponent implements OnInit {
   }
 
   redirectToEdit(id: number) {
-    this.router.navigate(['/course-edit', id]);
+    const encryptedId = btoa(id.toString());
+    this.router.navigate(['/course-edit', encryptedId]);
   }
 
   redirectToEnroll(id: number){
-    this.router.navigate(['/course-enroll', id]);
+    const encryptedId = btoa(id.toString());
+    this.router.navigate(['/course-enroll', encryptedId]);
   }
 
   loadCourse(id: number) {
@@ -191,6 +193,12 @@ export class CourseDetailComponent implements OnInit {
     this.show = false;
   }
 
+
+  redirectToAttendance(courseId: number, subjectId: number) {
+    const encryptedCourseId = btoa(courseId.toString());
+    const encryptedSubjectId = btoa(subjectId.toString());
+    this.router.navigate(['/attendance', encryptedCourseId, 'subject', encryptedSubjectId]);
+  }
 
 
 }

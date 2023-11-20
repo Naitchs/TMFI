@@ -28,6 +28,7 @@ import { SubjectPanelComponent } from "./course/subject-panel/subject-panel.comp
 import { UpdateCourseComponent } from "./course/update-course/update-course.component";
 import { CourseDetailComponent } from "./course/course-detail/course-detail.component";
 import { EnrollStudentsComponent } from "./course/enroll-students/enroll-students.component";
+import { AttendanceComponent } from "./course/attendance/attendance.component";
 
 
 const routes : Routes = [
@@ -57,6 +58,10 @@ const routes : Routes = [
       {path: 'course-detail/:id', component: CourseDetailComponent},
       {path: 'course-edit/:id', component: UpdateCourseComponent},
       {path: 'course-enroll/:id', component: EnrollStudentsComponent},
+
+      { path: 'attendance/:courseId/subject/:subjectId', component: AttendanceComponent },
+
+
       {path: 'admin', component: AdminPanelComponent, canActivate: [AdminGuard]},
       {path: 'home', component: HomeComponent }
     ]

@@ -128,6 +128,15 @@ namespace API.Controllers
             return Ok(course);
         }
 
+        [HttpGet("get-subject/{id}")]
+        public async Task<ActionResult<SubjectDto>> GetSubject(int id)
+        {
+
+            var subject = await _courseService.GetSubjectId(id);
+
+            return Ok(subject);
+        }
+
         [HttpDelete("delete-subject/{id}")]
         public IActionResult DeleteSubject(int id)
         {
@@ -363,6 +372,52 @@ namespace API.Controllers
             try
             {
                 _courseService.CreateAttendance(dto);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpPost("create-multiple-attendances")]
+        public IActionResult CreateMultipleAttendances([FromBody] List<CreateAttendanceDto> attendanceDtos)
+        {
+            try
+            {
+                foreach (var dto in attendanceDtos)
+                {
+                    _courseService.CreateAttendance(dto);
+                }
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpGet("get-grouped-attendance-records/{subjectId}")]
+        public IActionResult GetGroupedAttendanceRecords(int subjectId)
+        {
+            try
+            {
+                var groupedAttendanceRecords = _courseService.GetAttendanceRecordsGroupedByDate(subjectId);
+                return Ok(groupedAttendanceRecords);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpPut("edit-attendance/{attendanceId}")]
+        public IActionResult EditAttendance(int attendanceId, [FromBody] EditAttendanceDto dto)
+        {
+            try
+            {
+                _courseService.EditAttendance(attendanceId, dto);
                 return Ok();
             }
             catch (Exception ex)
