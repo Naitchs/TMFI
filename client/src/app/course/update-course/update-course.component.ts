@@ -33,8 +33,11 @@ next: user => this.user = user
 
   ngOnInit(): void{
     this.route.params.subscribe(params => {
-      this.id = +params['id'];
-      if (this.id) {
+      const encryptedId = params['id'];
+
+      // Decrypt the id using base64 decoding
+      if (encryptedId) {
+        this.id = +atob(encryptedId); // Convert back to number
         this.loadCourse(this.id);
       }
     });
@@ -69,7 +72,7 @@ next: user => this.user = user
       const updatedCourse: Course = { ...this.course, ...this.editForm.value };
       this.courseService.updateCourse(updatedCourse, this.id!).subscribe({
         next: () => {
-          this.successMessage = 'Profile updated successfully';
+          this.successMessage = 'Course updated successfully';
           this.editForm?.reset(this.course);
           // this.loadIp(this.publicId!);// Reload ang profile
         },

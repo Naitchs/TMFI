@@ -38,8 +38,11 @@ export class EnrollStudentsComponent {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.id = +params['id'];
-      if (this.id) {
+      const encryptedId = params['id'];
+
+      // Decrypt the id using base64 decoding
+      if (encryptedId) {
+        this.id = +atob(encryptedId); // Convert back to number
         this.loadCourse(this.id);
         this.loadStudents(this.id);
       }
@@ -88,11 +91,14 @@ export class EnrollStudentsComponent {
     this.courseService.addStudentToCourse(dto).subscribe(
       (response) => {
         this.route.params.subscribe(params => {
-          this.id = +params['id'];
-          if (this.id) {
+          const encryptedId = params['id'];
+    
+          // Decrypt the id using base64 decoding
+          if (encryptedId) {
+            this.id = +atob(encryptedId); // Convert back to number
+            this.loadCourse(this.id);
             this.loadStudents(this.id);
             this.successMessage = 'Student added successfully';
-            this.errorMessage = null;
           }
         });
 
@@ -196,12 +202,16 @@ export class EnrollStudentsComponent {
     this.courseService.removeStudentFromCourse(this.id, this.deleteStudent).subscribe(
       _ => {
         this.route.params.subscribe(params => {
-          this.id = +params['id'];
-          if (this.id) {
+          const encryptedId = params['id'];
+    
+          // Decrypt the id using base64 decoding
+          if (encryptedId) {
+            this.id = +atob(encryptedId); // Convert back to number
             this.loadCourse(this.id);
             this.loadStudents(this.id);
           }
         });
+        
         this.successMessage = 'Student remove Successfully';
 
         console.log("deletedId", this.deleteStudent);

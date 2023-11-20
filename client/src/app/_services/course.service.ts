@@ -7,6 +7,7 @@ import { Subjects } from '../_models/subject';
 import { SubjectsCourse } from '../_models/subjects-course';
 import { EnrollStudent } from '../_models/enroll-student';
 import { Profile } from '../_models/profile';
+import { AttendanceDto } from '../_models/attendance-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -74,6 +75,12 @@ export class CourseService {
     )
   };
 
+  getSubject(id: number) {
+    const subject = this.subject.find(x => x.id === id);
+    if (subject) return of(subject);
+    return this.http.get<Subjects>(this.baseUrl + 'course/get-subject/' + id);
+  }
+
   deleteSubject(id: number) {
     return this.http.delete(this.baseUrl + 'course/delete-subject/' + id).pipe(
       map(subject => {
@@ -134,6 +141,29 @@ export class CourseService {
   removeStudentFromCourse(courseId: number, studentId: number) {
     return this.http.delete(this.baseUrl + 'course/remove-student-from-course', { body: { courseId: courseId, studentId: studentId } });
   }
+
+
+  createAttendance(attendanceDto: AttendanceDto): Observable<any> {
+    return this.http.post(this.baseUrl + 'course/create-attendance', attendanceDto);
+  }
+
+  createMultipleAttendances(attendanceRecords: AttendanceDto[]): Observable<any> {
+    return this.http.post(this.baseUrl + 'course/create-multiple-attendances', attendanceRecords);
+  }
+
+  getGroupedAttendanceRecords(subjectId: number): Observable<any> {
+    return this.http.get(this.baseUrl + 'course/get-grouped-attendance-records/' + subjectId);
+  }
+
+  editAttendance(attendanceId: number, newStatus: string): Observable<any> {
+    const headers = { 'Content-Type': 'application/json' };
+    const body = { status: newStatus }; // Wrap newStatus in an object with a property named 'status'
+    return this.http.put(this.baseUrl + 'course/edit-attendance/' + attendanceId, body, { headers });
+  }
+  
+  
+  
+  
 
 
 

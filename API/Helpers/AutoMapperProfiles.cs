@@ -91,6 +91,7 @@ namespace API.Helpers
             CreateMap<AppCourse, CourseDto>().ReverseMap();
             CreateMap<AppSubject, SubjectDto>().ReverseMap();
             CreateMap<AppCourse, AppCourse>();
+            CreateMap<AppSubject, AppSubject>();
 
         }
 

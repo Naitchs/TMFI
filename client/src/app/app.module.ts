@@ -64,6 +64,7 @@ import { MaterialModule } from './material.module';
 import { UpdateCourseComponent } from './course/update-course/update-course.component';
 import { CourseDetailComponent } from './course/course-detail/course-detail.component';
 import { EnrollStudentsComponent } from './course/enroll-students/enroll-students.component';
+import { AttendanceComponent } from './course/attendance/attendance.component';
 
 
 
@@ -124,6 +125,7 @@ import { EnrollStudentsComponent } from './course/enroll-students/enroll-student
     UpdateCourseComponent,
     CourseDetailComponent,
     EnrollStudentsComponent,
+    AttendanceComponent,
 
   ],
   imports: [
