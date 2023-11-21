@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using API.Helpers;
 using CloudinaryDotNet;
+using API.Services;
 
 namespace API.Controllers
 {
@@ -25,13 +26,14 @@ namespace API.Controllers
 
         private readonly Cloudinary _cloudinary;
         private readonly DataContext _context;
+        private readonly LogService _logService;
 
         public DocumentationController(IUserRepository userRepository, IMapper mapper,
                           IMediaService mediaService, IOptions<CloudinarySettings> config,
-                          DataContext context)
+                          DataContext context, LogService logService)
         {
             _context = context;
-
+            _logService = logService;
             var acc = new Account(
             config.Value.CloudName,
             config.Value.ApiKey,
@@ -99,6 +101,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                _logService.AddErrorLogs(ex.ToString());
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
 
@@ -160,6 +163,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                 _logService.AddErrorLogs(ex.ToString());
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
@@ -218,6 +222,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                 _logService.AddErrorLogs(ex.ToString());
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
@@ -278,6 +283,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                 _logService.AddErrorLogs(ex.ToString());
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
@@ -394,6 +400,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                 _logService.AddErrorLogs(ex.ToString());
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
@@ -411,6 +418,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                 _logService.AddErrorLogs(ex.ToString());
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
@@ -512,6 +520,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                 _logService.AddErrorLogs(ex.ToString());
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }

@@ -9,4 +9,10 @@ namespace API.Enums
         Phase5=4,
         Phase6=5
     }
+
+    public enum LogTypeEnum
+    {
+        User=0,
+        Error=1
+    }
 }

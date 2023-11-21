@@ -39,6 +39,7 @@ export class CourseDetailComponent implements OnInit {
         this.loadCourse(this.id);
         this.loadSubjectsInCourse(this.id);
         this.loadSubjectsNotInCourse(this.id);
+        
       }
     });
 

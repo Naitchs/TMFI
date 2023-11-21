@@ -24,6 +24,7 @@ namespace API.Extensions
             services.AddScoped<IMediaService, MediaService>();
             services.AddScoped<IExcelService, ExcelService>();
             services.AddScoped<ICourseService, CourseService>();
+            services.AddTransient<LogService>();
 
 
 

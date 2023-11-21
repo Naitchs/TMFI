@@ -29,6 +29,7 @@ import { UpdateCourseComponent } from "./course/update-course/update-course.comp
 import { CourseDetailComponent } from "./course/course-detail/course-detail.component";
 import { EnrollStudentsComponent } from "./course/enroll-students/enroll-students.component";
 import { AttendanceComponent } from "./course/attendance/attendance.component";
+import { HeroesComponent } from "./heroes/heroes.component";
 
 
 const routes : Routes = [
@@ -68,6 +69,7 @@ const routes : Routes = [
   },
   // {path: 'errors', component: TestErrorComponent},
   {path: 'not-found', component: NotFoundComponent},
+  {path: 'log-in', component: HeroesComponent},
   {path: 'server-error', component: ServerErrorComponent},
   {path: '**', component: NotFoundComponent,  pathMatch: 'full'}
   
