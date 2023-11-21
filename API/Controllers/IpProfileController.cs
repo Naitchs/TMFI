@@ -2,6 +2,7 @@ using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Interfaces;
+using API.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +15,11 @@ namespace API.Controllers
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        private readonly LogService _logService;
 
-        public IpProfileController(IUserRepository userRepository, IMapper mapper)
+        public IpProfileController(IUserRepository userRepository, IMapper mapper, LogService logService)
         {
-
-
+            _logService = logService;
             _mapper = mapper;
             _userRepository = userRepository;
 
@@ -58,13 +59,12 @@ namespace API.Controllers
                 }
                 else
                 {
-                    // Return an error response if saving to the database fails
                     return BadRequest(new { error = "Failed to add IP profiling" });
                 }
             }
             catch (Exception ex)
             {
-                // If an error occurs during registration, return an error response.
+                _logService.AddErrorLogs(ex.ToString());
                 return StatusCode(500, new { error = $"Internal server error: {ex.Message}" });
             }
         }
@@ -101,7 +101,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                // If an error occurs during registration, return an error response.
+                 _logService.AddErrorLogs(ex.ToString());
                 return StatusCode(500, new { error = $"Internal server error: {ex.Message}" });
             }
         }
@@ -160,6 +160,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                 _logService.AddErrorLogs(ex.ToString());
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }

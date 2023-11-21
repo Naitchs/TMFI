@@ -30,6 +30,7 @@ namespace API.Data
         public DbSet<Attendance> Attendances { get; set; }
         public DbSet<CourseSubject> CourseSubjects { get; set; }
         public DbSet<CourseStudent> CourseStudents { get; set; }
+        public DbSet<AppLogs> Logs { get; set; }
 
 
         //    public DbSet<AppCourse> Courses { get; set; }

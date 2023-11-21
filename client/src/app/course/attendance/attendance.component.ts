@@ -23,10 +23,12 @@ export class AttendanceComponent {
   markedAttendance: { [key: number]: string } = {};
   groupedAttendanceRecords: any[] = [];
   addAttendance: boolean = false;
+  canCreateAttendance: boolean = false;
   currentDate: Date = new Date();
   successMessage: string | null = null;
   errorMessage: string | null = null;
   attendanceId: number = 0;
+  attendanceIdToDelete: number = 0;
   statusToEdit: string = '';
 
   constructor(private courseService: CourseService, private route: ActivatedRoute,
@@ -54,17 +56,39 @@ export class AttendanceComponent {
               attendanceRecords: data[date],
             }));
 
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);  // I-set ang oras sa midnight para i-ignore ang oras
+            const hasAttendanceForToday = this.groupedAttendanceRecords.some(record => {
+              const recordDate = new Date(record.date);
+              recordDate.setHours(0, 0, 0, 0);  // I-set ang oras sa midnight para i-ignore ang oras
+              return recordDate.getTime() === today.getTime();
+            });
+
+            this.canCreateAttendance = !hasAttendanceForToday;
+
+
             console.log('Grouped Attendance Records:', this.groupedAttendanceRecords);
           },
           (error) => {
             this.errorMessage = 'Error fetching grouped attendance records:', error;
           }
         );
+
+        this.courseService.getCourse(this.courseId).subscribe({
+          next: course => {
+            console.log('Course data:', course);
+            this.course = course;
+          },
+          error: err => {
+            console.error('Error fetching course:', err);
+          }
+        });
       }
     });
 
     this.currentDate = new Date();
     this.attendanceId = 0;
+    this.attendanceIdToDelete = 0;
 
   }
 
@@ -118,6 +142,7 @@ export class AttendanceComponent {
             );
           }
         });
+        this.addAttendance = false;
       },
       (error) => {
         this.errorMessage = 'Error creating attendance records: ', error;
@@ -156,11 +181,11 @@ export class AttendanceComponent {
   loadCourse(id: number) {
     this.courseService.getCourse(id).subscribe({
       next: course => {
-        // console.log(ipProfile);
         this.course = course;
       }
     });
   }
+
 
 
   loadSubject(id: number) {
@@ -199,6 +224,32 @@ export class AttendanceComponent {
     this.successMessage = null;
     this.errorMessage = null;
     this.addAttendance = false;
+    this.route.params.subscribe(params => {
+      const encryptedCourseId = params['courseId'];
+      const encryptedSubjectId = params['subjectId'];
+
+      // Decrypt the id using base64 decoding
+      if (encryptedCourseId && encryptedSubjectId) {
+        this.courseId = +atob(encryptedCourseId);
+        this.subjectId = +atob(encryptedSubjectId);
+
+        this.loadSubject(this.subjectId);
+        this.loadStudents(this.courseId);
+
+        this.courseService.getGroupedAttendanceRecords(this.subjectId).subscribe(
+          (data) => {
+            // Convert the object to an array
+            this.groupedAttendanceRecords = Object.keys(data).map((date) => ({
+              date,
+              attendanceRecords: data[date],
+            }));
+          },
+          (error) => {
+            this.errorMessage = 'Error fetching grouped attendance records:', error;
+          }
+        );
+      }
+    });
   }
 
 
@@ -226,51 +277,99 @@ export class AttendanceComponent {
     $('#editAttendanceModal').modal('hide');
     this.successMessage = null;
     this.errorMessage = null;
-      this.courseService.editAttendance(this.attendanceId, this.statusToEdit).subscribe(
-        () => {
-          this.successMessage = 'Attendance edited successfully.';
-          this.route.params.subscribe(params => {
-            const encryptedCourseId = params['courseId'];
-            const encryptedSubjectId = params['subjectId'];
-      
-            // Decrypt the id using base64 decoding
-            if (encryptedCourseId && encryptedSubjectId) {
-              this.courseId = +atob(encryptedCourseId);
-              this.subjectId = +atob(encryptedSubjectId);
-      
-              this.loadSubject(this.subjectId);
-              this.loadStudents(this.courseId);
-      
-              this.courseService.getGroupedAttendanceRecords(this.subjectId).subscribe(
-                (data) => {
-                  // Convert the object to an array
-                  this.groupedAttendanceRecords = Object.keys(data).map((date) => ({
-                    date,
-                    attendanceRecords: data[date],
-                  }));
+    this.courseService.editAttendance(this.attendanceId, this.statusToEdit).subscribe(
+      () => {
+        this.successMessage = 'Attendance edited successfully.';
+        this.route.params.subscribe(params => {
+          const encryptedCourseId = params['courseId'];
+          const encryptedSubjectId = params['subjectId'];
 
-                },
-                (error) => {
-                  this.errorMessage = 'Error fetching grouped attendance records:', error;
-                }
-              );
-            }
-          });
+          // Decrypt the id using base64 decoding
+          if (encryptedCourseId && encryptedSubjectId) {
+            this.courseId = +atob(encryptedCourseId);
+            this.subjectId = +atob(encryptedSubjectId);
+
+            this.loadSubject(this.subjectId);
+            this.loadStudents(this.courseId);
+
+            this.courseService.getGroupedAttendanceRecords(this.subjectId).subscribe(
+              (data) => {
+                // Convert the object to an array
+                this.groupedAttendanceRecords = Object.keys(data).map((date) => ({
+                  date,
+                  attendanceRecords: data[date],
+                }));
+
+              },
+              (error) => {
+                this.errorMessage = 'Error fetching grouped attendance records:', error;
+              }
+            );
+          }
+        });
 
 
-          this.attendanceId = null;
-          this.statusToEdit = '';
+        this.attendanceId = null;
+        this.statusToEdit = '';
 
-         
-        },
-        (error) => {
-          this.errorMessage = 'Error editing attendance:';
-        }
-      );
+
+      },
+      (error) => {
+        this.errorMessage = 'Error editing attendance:';
+      }
+    );
   }
 
   redirectToDetail(id: number) {
     this.router.navigate(['/course-detail', id]);
+  }
+
+  clickToDelete(id: number) {
+    this.attendanceIdToDelete = id;
+    this.successMessage = null;
+    this.errorMessage = null;
+    $('#deleteAttendanceModal').modal('show');
+  }
+
+  deleteAttendance() {
+    $('#deleteAttendanceModal').modal('hide');
+    console.log('delete', this.attendanceIdToDelete);
+    this.courseService.deleteAttendace(this.attendanceIdToDelete).subscribe(
+      () => {
+        this.successMessage = 'Attendance Deleted successfully.';
+        this.route.params.subscribe(params => {
+          const encryptedCourseId = params['courseId'];
+          const encryptedSubjectId = params['subjectId'];
+
+          // Decrypt the id using base64 decoding
+          if (encryptedCourseId && encryptedSubjectId) {
+            this.courseId = +atob(encryptedCourseId);
+            this.subjectId = +atob(encryptedSubjectId);
+
+            this.loadSubject(this.subjectId);
+            this.loadStudents(this.courseId);
+
+            this.courseService.getGroupedAttendanceRecords(this.subjectId).subscribe(
+              (data) => {
+                // Convert the object to an array
+                this.groupedAttendanceRecords = Object.keys(data).map((date) => ({
+                  date,
+                  attendanceRecords: data[date],
+                }));
+
+              },
+              (error) => {
+                this.errorMessage = 'Error fetching grouped attendance records:', error;
+              }
+            );
+          }
+        });
+        this.attendanceIdToDelete = null;
+
+      }, (error) => {
+        this.errorMessage = 'Error Deleting Attendance: ', error;
+      }
+    )
   }
 
 

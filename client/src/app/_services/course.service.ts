@@ -160,6 +160,10 @@ export class CourseService {
     const body = { status: newStatus }; // Wrap newStatus in an object with a property named 'status'
     return this.http.put(this.baseUrl + 'course/edit-attendance/' + attendanceId, body, { headers });
   }
+
+  deleteAttendace(attendanceId: number){
+    return this.http.delete(this.baseUrl + 'course/delete-attendance/' + attendanceId);
+  }
   
   
   

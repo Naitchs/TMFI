@@ -21,11 +21,12 @@ namespace API.Controllers
         private readonly DataContext _context;
         private readonly IMapper _mapper;
         private readonly ICourseService _courseService;
+        private readonly LogService _logService;
 
-        public CourseController(IMapper mapper, ICourseService courseService
+        public CourseController(IMapper mapper, ICourseService courseService, LogService logService
                                )
         {
-
+            _logService = logService;
             _courseService = courseService;
             _mapper = mapper;
         }
@@ -155,6 +156,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                 _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -196,6 +198,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                 _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -210,6 +213,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                 _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -225,6 +229,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                 _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -240,6 +245,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                 _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -254,6 +260,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                 _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -268,6 +275,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                 _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -282,6 +290,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                 _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -304,6 +313,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                 _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -320,6 +330,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                 _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -334,6 +345,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                 _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -348,6 +360,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                 _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -362,6 +375,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                 _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -376,6 +390,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                 _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -394,6 +409,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                 _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -408,6 +424,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                 _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -422,6 +439,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                 _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -432,10 +450,11 @@ namespace API.Controllers
             try
             {
                 _courseService.DeleteAttendance(attendanceId);
-                return Ok("Attendance deleted successfully.");
+                return Ok();
             }
             catch (Exception ex)
             {
+                 _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }

@@ -2,6 +2,7 @@ using API.Data.Migrations;
 using API.DTOs;
 using API.Entities;
 using API.Interfaces;
+using API.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,9 +14,10 @@ namespace API.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
-        public SapProfileController(IUserRepository userRepository, IMapper mapper)
+        private readonly LogService _logService;
+        public SapProfileController(IUserRepository userRepository, IMapper mapper, LogService logService)
         {
-
+            _logService = logService;
             _userRepository = userRepository;
             _mapper = mapper;
 
@@ -52,13 +54,12 @@ namespace API.Controllers
                 }
                 else
                 {
-                    // Return an error response if saving to the database fails
                     return BadRequest(new { error = "Failed to add SAP profiling" });
                 }
             }
             catch (Exception ex)
             {
-                // If an error occurs during registration, return an error response.
+                 _logService.AddErrorLogs(ex.ToString());
                 return StatusCode(500, new { error = $"Internal server error: {ex.Message}" });
             }
 
@@ -90,13 +91,12 @@ namespace API.Controllers
                 }
                 else
                 {
-                    // Return an error response if saving to the database fails
                     return BadRequest(new { error = "Failed to add SAP profiling" });
                 }
             }
             catch (Exception ex)
             {
-                // If an error occurs during registration, return an error response.
+                 _logService.AddErrorLogs(ex.ToString());
                 return StatusCode(500, new { error = $"Internal server error: {ex.Message}" });
             }
 
@@ -146,6 +146,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                 _logService.AddErrorLogs(ex.ToString());
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }

@@ -1,9 +1,10 @@
 <div class="card shadow mt-4 mb-3">
   <div class="card-body">
     <h5 class="card-title">Subject Details</h5>
-    <div *ngIf="subject">
+    <div *ngIf="subject || course">
       <p class="card-text"><strong>Subject Name:</strong> {{ subject.name }}</p>
       <p class="card-text"><strong>Subject Code:</strong> {{ subject.subjectCodeeD }}</p>
+      <button class="btn btn-secondary mt-3" (click)="redirectToDetail(course.id)">Back to Course</button>
       <!-- Add more properties as needed -->
     </div>
     <div *ngIf="!subject">
@@ -27,7 +28,7 @@
 <div class="card shadow mb-3" *ngIf="addAttendance == false">
   <div class="card-body">
     <h5 class="card-title">Students</h5>
-    <button class="btn btn-info mb-3" (click)="showAddAttendance()">Create Attendance</button>
+    <button class="btn btn-info mb-3" (click)="showAddAttendance()" [disabled]="!canCreateAttendance">Create Attendance</button>
     <div class="row col-md-12 table-responsive">
       <table class="table table-hover table-bordered">
         <thead>
@@ -58,7 +59,7 @@
                     &nbsp;
                     <button class="btn btn-sm btn-info" *ngIf=" isEditable(record)" (click)="clickEditAttendance(attendance.attendanceID)"><i
                         class="bi bi-pencil"></i></button>
-                    <button class="btn btn-sm btn-danger" *ngIf=" isEditable(record)" (click)="deleteAttendance(attendance)"><i
+                    <button class="btn btn-sm btn-danger" *ngIf=" isEditable(record)" (click)="clickToDelete(attendance.attendanceID)"><i
                         class="bi bi-trash"></i></button>
                   </div>
                 </div>
@@ -68,8 +69,8 @@
         </tbody>
       </table>
     </div>
-    <div *ngFor="let course of course">
-      <button class="btn btn-secondary mt-3" (click)="redirectToDetail(course.id)">Back</button>
+    <div >
+      
     </div>
     
   </div>
@@ -83,7 +84,7 @@
       <div class="row col-md-12 table-responsive">
         <table class="table table-hover table-bordered">
           <thead>
-            <tr *ngFor="let record of groupedAttendanceRecords">
+            <tr>
               <th style="width: 5%;">Id</th>
               <th style="width: 50%;">Name</th>
               <th style="width: 20%;"> {{ currentDate | date:'medium' }}</th>
@@ -118,7 +119,6 @@
 </div>
 
 
-<!-- Add this code to your modal -->
 <div class="modal fade" id="editAttendanceModal" tabindex="-1" role="dialog" aria-labelledby="editAttendanceModalLabel"
   aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -148,6 +148,28 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" (click)="editAttendance()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="deleteAttendanceModal" tabindex="-1" role="dialog" aria-labelledby="editAttendanceModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editAttendanceModalLabel">Delete Attendance</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to Delete Attendance?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" (click)="deleteAttendance()">Delete Attendance</button>
       </div>
     </div>
   </div>

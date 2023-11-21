@@ -59,19 +59,27 @@
               <div class="card-body">
                 <h3>Subjects in Course</h3>
                 <button class="btn btn-primary mt-3 mb-3" (click)="showAddSubject()"
-                  *ngIf="subjectsInCourse.length > 0">Add
-                  Subjects</button>
+                  *ngIf="subjectsInCourse.length > 0">
+                  Add Subjects</button>
 
                 <ul class="list-group">
                   <li class="list-group-item d-flex justify-content-between align-items-center"
-                    *ngFor="let subject of subjectsInCourse || course" (click)="redirectToAttendance(course.id, subject.id)">
-                    {{ subject.name }} 
-                    <button class="btn btn-danger" role="button" (click)="getSubjectIdToDelete(subject.id)"
-                      data-bs-toggle="modal" data-bs-target="#deleteModal">
-                      <i class="bi bi-trash"></i>
-                    </button>
+                    *ngFor="let subject of subjectsInCourse || course">
+                    <div>
+                      {{ subject.name }}
+                    </div>
+                    <div>
+                      <button class="btn btn-info btn-sm" role="button"
+                        (click)="redirectToAttendance(course.id, subject.id)">Attendance</button>
+                      &nbsp;
+                      <button class="btn btn-danger btn-sm" role="button" (click)="getSubjectIdToDelete(subject.id)"
+                        data-bs-toggle="modal" data-bs-target="#deleteModal">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
                   </li>
                 </ul>
+
               </div>
             </div>
           </div>
@@ -141,9 +149,8 @@
         <div class="modal-body">
           <p>Are you sure you want to Delete Subject?</p>
         </div>
-        <div class="modal-footer" >
-          <button type="button" class="btn btn-success me-2"
-            (click)="removeSubjectsFromCourse()">Yes</button>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success me-2" (click)="removeSubjectsFromCourse()">Yes</button>
           <button type="button" class="btn btn-danger me-2" (click)="modalHide()">No</button>
         </div>
       </div>
