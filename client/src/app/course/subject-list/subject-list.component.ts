@@ -1,7 +1,8 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subjects } from 'src/app/_models/subject';
+import { PhaseEnum, Subjects } from 'src/app/_models/subject';
 import { CourseService } from 'src/app/_services/course.service';
 declare var $: any;
 
@@ -15,6 +16,11 @@ export class SubjectListComponent {
 
   // @ViewChild('subjectForm') subjectForm: NgForm | undefined;
   subjectForm: FormGroup = new FormGroup({});
+  // phases: PhaseEnum[] = Object.values(PhaseEnum) as PhaseEnum[];
+  // phases: string[] = Object.keys(PhaseEnum).filter(key => !isNaN(Number(PhaseEnum[key])));
+  phases: string[] = Object.keys(PhaseEnum).filter(key => isNaN(Number(PhaseEnum[key])));
+
+ 
 
   subjects: Subjects[] = [];
   subjectId: number;
@@ -58,27 +64,29 @@ export class SubjectListComponent {
   }
 
   redirectToDetail(id: number) {
-    this.router.navigate(['/subject-detail', id]);
+    const encryptedId = btoa(id.toString());
+    this.router.navigate(['/subject-detail', encryptedId]);
   }
 
   redirectToEdit(id: number) {
-    this.router.navigate(['/subject-edit', id]);
+    const encryptedId = btoa(id.toString());
+    this.router.navigate(['/subject-edit', encryptedId]);
   }
 
   deleteSubject() {
     $('#proceedModal').modal('hide');
     console.log(this.subjectId);
+
+    const index = this.subjects.findIndex(c => c.id === this.subjectId);
+
     if (this.subjectId == 0) return;
+
     this.courseService.deleteSubject(this.subjectId).subscribe(
       (subject) => {
         this.successMessage = 'Deleted Successfully!';
         this.subjectId = 0;
 
-        // Find the index of the deleted subject in the array
-        const index = this.subjects.findIndex(c => c.id === this.subjectId);
-
         if (index !== -1) {
-          // Remove the deleted subject from the array
           this.subjects.splice(index, 1);
         }
       }, (error) => {
@@ -98,35 +106,54 @@ export class SubjectListComponent {
       subjectCode: ['', Validators.required],
       name: ['', Validators.required],
       description: [''],
-      phase: [Validators.required],
+      phase: [null, Validators.required],
     });
   }
 
   createSubject() {
-    const values = {...this.subjectForm.value};
+    const values = { ...this.subjectForm.value };
 
     if (this.subjectForm.invalid) {
-      this.errorMessageModal = "Please fill up all the required";
+      this.errorMessageModal = 'Please fill up all the required fields.';
       return;
     }
 
+    values.phase = +values.phase;
+
     this.courseService.addSubject(values).subscribe(
-      (subjects) => {
-        this.successMessage = 'Course Added Successfully!';
-        this.subjectForm.reset();
-        this.errorMessage = null;
-        this.errorMessageModal = null;
-        // console.log("----------", subjects);
-        this.subjects.push(subjects);
+      (addedSubject) => {
+        this.successMessage = 'Subject added successfully!';
+        this.resetForm();
+        this.subjects.push(addedSubject);
         $('#addSubjectModal').modal('hide');
+      },
+      (error) => {
+        this.errorMessageModal = 'Error adding subject.';
 
-
-      }, (error) => {
-        this.errorMessageModal = 'Error';
-        this.successMessage = null;
+        if (error instanceof HttpErrorResponse && error.status === 400) {
+          // Log the server-side validation error
+          console.error('Server-side validation error:', error.error);
+        } else {
+          console.error('Error:', error);
+        }
       }
-    )
+    );
   }
+
+  resetForm() {
+    this.subjectForm.reset({
+      phase: null // Resetting the phase to null
+    });
+  }
+
+  onModalHidden() {
+    this.resetForm();
+  }
+
+  getPhaseName(phase: PhaseEnum): string {
+    return PhaseEnum[phase];
+  }
+  
 
 
   get paginatedList() {
@@ -136,12 +163,16 @@ export class SubjectListComponent {
   }
 
   previousPage() {
+    this.errorMessageModal = null;
+    this.successMessage = null;
     if (this.currentPage > 1) {
       this.currentPage--;
     }
   }
 
   nextPage() {
+    this.errorMessageModal = null;
+    this.successMessage = null;
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
     }

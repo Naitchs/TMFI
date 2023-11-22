@@ -66,6 +66,15 @@ export class CourseService {
     return this.http.post<Subjects>(this.baseUrl + 'course/add-subject', model);
   };
 
+  updateSubject(subject: Subjects, id: number) {
+    return this.http.put(this.baseUrl + 'course/edit-subject/' + id, subject).pipe(
+      map(() => {
+        const index = this.subject.indexOf(subject);
+        this.subject[index] = { ...this.subject[index], ...subject }
+      })
+    )
+  }
+
   getSubjects() {
     if (this.subject.length > 0) return of(this.subject);
     return this.http.get<Subjects[]>(this.baseUrl + 'course/get-subjects').pipe(

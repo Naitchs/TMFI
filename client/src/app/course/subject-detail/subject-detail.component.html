@@ -1,0 +1,40 @@
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a [routerLink]="['/home']" >Home</a></li>
+  <li class="breadcrumb-item"><a [routerLink]="['/subject-panel']" >Subject</a></li>
+  <li class="breadcrumb-item active">Details</li>
+</ol>
+
+<div class="row" *ngIf="subject">
+  <div class="col-md-4 mb-3">
+    <div class="card shadow">
+      <div class="card-body">
+
+        <div>
+          <strong>Subject Code:</strong>
+          <p>{{subject.subjectCode}} </p>
+        </div>
+        <div>
+          <strong>Name:</strong>
+          <p>{{subject.name}}</p>
+        </div>
+        <div>
+          <strong>Description:</strong>
+          <p>{{subject.description}} </p>
+        </div>
+        <div>
+          <strong>Phase:</strong>
+          <p>{{getPhaseName(subject.phase)}}</p>
+        </div>
+
+
+      </div>
+
+      <div class="card-footer">
+        <div class="btn-group d-flex">
+
+          <button class="btn btn-info" (click)="redirectToEdit(subject.id)">Edit</button>
+        </div>
+      </div>
+
+    </div>
+  </div>

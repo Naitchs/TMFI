@@ -65,6 +65,8 @@ import { UpdateCourseComponent } from './course/update-course/update-course.comp
 import { CourseDetailComponent } from './course/course-detail/course-detail.component';
 import { EnrollStudentsComponent } from './course/enroll-students/enroll-students.component';
 import { AttendanceComponent } from './course/attendance/attendance.component';
+import { UpdateSubjectComponent } from './course/update-subject/update-subject.component';
+import { SubjectDetailComponent } from './course/subject-detail/subject-detail.component';
 
 
 
@@ -126,6 +128,8 @@ import { AttendanceComponent } from './course/attendance/attendance.component';
     CourseDetailComponent,
     EnrollStudentsComponent,
     AttendanceComponent,
+    UpdateSubjectComponent,
+    SubjectDetailComponent,
 
   ],
   imports: [

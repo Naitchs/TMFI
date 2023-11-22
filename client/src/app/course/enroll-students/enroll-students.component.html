@@ -1,12 +1,18 @@
+<ol class="breadcrumb" *ngIf="course">
+  <li class="breadcrumb-item"><a [routerLink]="['/home']" >Home</a></li>
+  <li class="breadcrumb-item"><a [routerLink]="['/course-panel']" >Course</a></li>
+  <li class="breadcrumb-item"><a [routerLink]="['/']" (click)="redirectToDetail(course.id)" >Details</a></li>
+  <li class="breadcrumb-item active">Enroll</li>
+</ol>
+
 <div class="card shadow mb-3">
   <div class="card-body">
     <div class="row">
       <div class="col-md-6">
         <input [(ngModel)]="search" placeholder="Search ID or Name" class="form-control" />
       </div>
-      <div class="col-md-6" *ngIf="course">
+      <div class="col-md-6">
         <button type="submit" class="btn btn-info" (click)="searchStudents()">Search Students</button> &nbsp;
-        <button class="btn btn-secondary" (click)="redirectToDetail(course.id)">Back</button>
       </div>
     </div>
   </div>

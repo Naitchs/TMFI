@@ -30,6 +30,9 @@ import { CourseDetailComponent } from "./course/course-detail/course-detail.comp
 import { EnrollStudentsComponent } from "./course/enroll-students/enroll-students.component";
 import { AttendanceComponent } from "./course/attendance/attendance.component";
 import { HeroesComponent } from "./heroes/heroes.component";
+import { UpdateSubjectComponent } from "./course/update-subject/update-subject.component";
+import { SubjectDetailComponent } from "./course/subject-detail/subject-detail.component";
+import { SubjectListComponent } from "./course/subject-list/subject-list.component";
 
 
 const routes : Routes = [
@@ -42,23 +45,40 @@ const routes : Routes = [
       {path: 'members/:username', component: MembersDetailComponent},
       {path: 'member/edit', component: MemberEditComponent, canDeactivate: [PreventUnsavedChangesGuard]},
       {path: 'list', component: ListsComponent},
+
+      {path: 'ip-profiling', component: ProfilingPanelComponent},
       {path: 'ip-detail/:publicId', component: IpDetailComponent},
       {path: 'ip-edit/:publicId', component: IpEditComponent, canDeactivate: [IpPreventUnsavedChangesGuard]},
+      {path: 'ip-panel', component: ProfilingPanelComponent},
+
+      {path: 'sap-profiling', component: SapPanelComponent},
       {path: 'sap-detail/:publicId', component: SapDetailComponent},
       {path: 'sap-edit/:publicId', component: SapEditComponent, canDeactivate: [SapPreventUnsavedChangesGuard]},
+      {path: 'sap-panel', component: SapPanelComponent},
+
+
       {path: 'documentation-detail/:publicId', component: DocumentationDetailComponent},
-      {path: 'ip-profiling', component: ProfilingPanelComponent},
-      {path: 'sap-profiling', component: SapPanelComponent},
       {path: 'documentation', component: DocumentationPanelComponent},
+      {path: 'media-panel', component: DocumentationPanelComponent},
+
+      
       {path: 'integration', component: ExcelPanelComponent},
       {path: 'excel-detail/:publicId', component: ExcelDetailComponent},
+      {path: 'excel-panel', component: ExcelPanelComponent},
+   
+   
       {path: 'subject', component: SubjectPanelComponent},
-      // {path: 'course-detail/:id', component: },
-      // {path: 'subject-edit/:id', component: UpdateCourseComponent},
+      {path: 'subject-detail/:id', component: SubjectDetailComponent},
+      {path: 'subject-edit/:id', component: UpdateSubjectComponent},
+      {path: 'subject-list', component: SubjectListComponent},
+      {path: 'subject-panel', component: SubjectPanelComponent},
+
+
       {path: 'course', component: CoursePanelComponent},
       {path: 'course-detail/:id', component: CourseDetailComponent},
       {path: 'course-edit/:id', component: UpdateCourseComponent},
       {path: 'course-enroll/:id', component: EnrollStudentsComponent},
+      {path: 'course-panel', component: CoursePanelComponent},
 
       { path: 'attendance/:courseId/subject/:subjectId', component: AttendanceComponent },
 

@@ -1,3 +1,5 @@
+
+
 <div class="alert alert-dismissible alert-success" *ngIf="successMessage" #successAlert>
   <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
   <strong>Well done!</strong>
@@ -84,7 +86,7 @@
         <td><button class="btn btn-info" (click)="redirectToEdit(course.id)"><i class="bi bi-pencil"></i></button>
           &nbsp;
           <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#proceedModal"
-            (click)="deleteClick(subject.id)"><i class="bi bi-trash"></i></button>
+            (click)="deleteClick(course.id)"><i class="bi bi-trash"></i></button>
         </td>
       </tr>
     </tbody>

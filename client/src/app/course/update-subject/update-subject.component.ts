@@ -1,59 +1,52 @@
-import { Component, HostListener, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { take } from 'rxjs';
-import { Course } from 'src/app/_models/course';
-import { User } from 'src/app/_models/user';
-import { AccountService } from 'src/app/_services/account.service';
+import { PhaseEnum, Subjects } from 'src/app/_models/subject';
 import { CourseService } from 'src/app/_services/course.service';
 declare var $: any;
 
-
 @Component({
-  selector: 'app-update-course',
-  templateUrl: './update-course.component.html',
-  styleUrls: ['./update-course.component.scss']
+  selector: 'app-update-subject',
+  templateUrl: './update-subject.component.html',
+  styleUrls: ['./update-subject.component.scss']
 })
-export class UpdateCourseComponent {
+export class UpdateSubjectComponent {
 
-  @ViewChild('editForm') editForm: NgForm |undefined;
+  @ViewChild('editForm') editForm: NgForm | undefined;
+  phases: string[] = Object.keys(PhaseEnum).filter(key => isNaN(Number(PhaseEnum[key])));
 
 
-  course: Course | undefined;
+  subject: Subjects | undefined;
   id: number | undefined;
   successMessage: string | null = null;
-  user: User | null = null;
 
-  constructor (private accountService: AccountService, private courseService: CourseService,
-    private route: ActivatedRoute, private router: Router) {
-this.accountService.currentUser$.pipe(take(1)).subscribe({
-next: user => this.user = user
-})
-}
+  constructor(private courseService: CourseService,
+    private route: ActivatedRoute, private router: Router) { }
 
-  ngOnInit(): void{
+  ngOnInit(): void {
     this.route.params.subscribe(params => {
       const encryptedId = params['id'];
 
       // Decrypt the id using base64 decoding
       if (encryptedId) {
         this.id = +atob(encryptedId); // Convert back to number
-        this.loadCourse(this.id);
+        this.loadSubject(this.id);
       }
     });
   }
 
-  loadCourse(id: number) {
-    this.courseService.getCourse(id).subscribe({
-      next: course => {
-        this.course = course;
+  loadSubject(id: number) {
+    this.courseService.getSubject(id).subscribe({
+      next: subject => {
+        this.subject = subject;
+        console.log(this.subject);
       }
     });
   }
 
   caps(str: string): string {
     if (!str) return str;
-  
+
     return str
       .toLowerCase()
       .split(' ')
@@ -66,14 +59,15 @@ next: user => this.user = user
     $('#proceedModal').modal('hide');
   }
 
-  updateCourse(){
+  updateSubject(){
     $('#proceedModal').modal('hide');
     if (this.editForm && this.editForm.form.valid) {
-      const updatedCourse: Course = { ...this.course, ...this.editForm.value };
-      this.courseService.updateCourse(updatedCourse, this.id!).subscribe({
+      const updatedSubject: Subjects = { ...this.subject, ...this.editForm.value };
+
+      this.courseService.updateSubject(updatedSubject, this.id!).subscribe({
         next: () => {
           this.successMessage = 'Course updated successfully';
-          this.editForm?.reset(this.course);
+          this.editForm?.reset(this.subject);
           // this.loadIp(this.publicId!);// Reload ang profile
         },
         error: (error) => {
@@ -86,9 +80,11 @@ next: user => this.user = user
 
   redirectToDetail(id: number) {
     const encryptedId = btoa(id.toString());
-    this.router.navigate(['/course-detail', encryptedId]);
+    this.router.navigate(['/subject-detail', encryptedId]);
   }
 
-
+  getPhaseName(phase: PhaseEnum): string {
+    return PhaseEnum[phase];
+  }
 
 }

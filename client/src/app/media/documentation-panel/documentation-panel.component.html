@@ -1,10 +1,15 @@
-<h2>Documentation Panel</h2>
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a [routerLink]="['/home']" >Home</a></li>
+  <li class="breadcrumb-item active">Media</li>
+</ol>
+
+<h2>Media</h2>
 <div class="tab-panel p-3 shadow mb-3">
   <tabset class="member-tabset">
-    <tab heading="Add Documentation" *appHasRole="['Member']">
+    <tab heading="Add Media" *appHasRole="['Member']">
       <app-documentation></app-documentation>
     </tab>
-    <tab heading="Documentation List" *appHasRole="['Member']">
+    <tab heading="Media List" *appHasRole="['Member']">
            <div class="container">
                <app-documentation-list></app-documentation-list>
            </div>

@@ -1,4 +1,4 @@
-<div class="alert alert-dismissible alert-success" *ngIf="successMessage" #successAlert>
+<div class="alert alert-dismissible alert-success" *ngIf="successMessage">
   <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
   <strong>Well done!</strong>
   <p>{{ successMessage }}</p>
@@ -10,7 +10,7 @@
   <p>{{ errorMessage }}</p>
 </div>
 
-<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSubjectModal">
+<button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addSubjectModal">
   Add Subject
 </button>
 
@@ -53,8 +53,12 @@
 
           <div class="col-md-12 mb-3">
             <label for="phase">Phase<span class="text-danger">*</span></label>
-            <app-text-input [formControl]="$any(subjectForm.controls['phase'])" [label]="'Phase'" id="phase" type="number">
-            </app-text-input>
+            <select class="form-control" formControlName="phase">
+              <option *ngFor="let phase of phases" [value]="phase">{{ getPhaseName(phase) }}</option>
+            </select>
+            <div *ngIf="subjectForm.get('phase').hasError('required') && subjectForm.get('phase').touched" class="text-danger">
+              Phase is required.
+            </div>
           </div>
 
         </form>
@@ -68,7 +72,7 @@
 </div>
 
 <div class="row col-md-12 table-responsive">
-  <table class="table">
+  <table class="table table-hover table-bordered">
     <thead>
       <tr>
         <th style="width: 10%;">Subject Code</th>
@@ -81,7 +85,7 @@
       <tr *ngFor="let subject of paginatedList" >
         <td (click)="redirectToDetail(subject.id)">{{ subject.subjectCode}}</td>
         <td (click)="redirectToDetail(subject.id)">{{ subject.name }} </td>
-        <td (click)="redirectToDetail(subject.id)">{{ subject.phase }} </td>
+        <td (click)="redirectToDetail(subject.id)">{{ getPhaseName(subject.phase) }} </td>
         <td><button class="btn btn-info" (click)="redirectToEdit(subject.id)"><i class="bi bi-pencil"></i></button>
           &nbsp; 
           <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#proceedModal"
