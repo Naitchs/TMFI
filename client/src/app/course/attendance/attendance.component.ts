@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Course } from 'src/app/_models/course';
 import { Profile } from 'src/app/_models/profile';
-import { Subjects } from 'src/app/_models/subject';
+import { PhaseEnum, Subjects } from 'src/app/_models/subject';
 import { CourseService } from 'src/app/_services/course.service';
 declare var $: any;
 
@@ -33,6 +33,7 @@ export class AttendanceComponent {
   selectAll: boolean = true;
   show: boolean = false;
   validationError: boolean = false;
+  phases: string[] = Object.keys(PhaseEnum).filter(key => isNaN(Number(PhaseEnum[key])));
 
   constructor(private courseService: CourseService, private route: ActivatedRoute,
     private router: Router) { }
@@ -433,7 +434,8 @@ export class AttendanceComponent {
   }
 
   redirectToDetail(id: number) {
-    this.router.navigate(['/course-detail', id]);
+    const encryptedId = btoa(id.toString());
+    this.router.navigate(['/course-detail', encryptedId]);
   }
 
   clickToDelete(id: number) {
@@ -441,6 +443,10 @@ export class AttendanceComponent {
     this.successMessage = null;
     this.errorMessage = null;
     $('#deleteAttendanceModal').modal('show');
+  }
+
+  getPhaseName(phase: PhaseEnum): string {
+    return PhaseEnum[phase];
   }
 
   // deleteAttendance() {

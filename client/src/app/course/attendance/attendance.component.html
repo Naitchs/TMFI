@@ -1,10 +1,17 @@
+<ol class="breadcrumb" *ngIf="course">
+  <li class="breadcrumb-item"><a [routerLink]="['/home']" >Home</a></li>
+  <li class="breadcrumb-item"><a [routerLink]="['/course-panel']" >Course</a></li>
+  <li class="breadcrumb-item"><a [routerLink]="['/']" (click)="redirectToDetail(course.id)" >Details</a></li>
+  <li class="breadcrumb-item active">Attendance</li>
+</ol>
+
 <div class="card shadow mt-4 mb-3">
   <div class="card-body">
     <h5 class="card-title">Subject Details</h5>
-    <div *ngIf="subject || course">
-      <p class="card-text"><strong>Subject Name:</strong> {{ subject?.name }}</p>
+    <div *ngIf="subject">
       <p class="card-text"><strong>Subject Code:</strong> {{ subject?.subjectCode }}</p>
-      <button class="btn btn-secondary mt-3" (click)="redirectToDetail(course.id)">Back to Course</button>
+      <p class="card-text"><strong>Subject Name:</strong> {{ subject?.name }}</p>
+      <p class="card-text"><strong>Phase:</strong> {{ getPhaseName(subject?.phase) }}</p>
       <!-- Add more properties as needed -->
     </div>
     <div *ngIf="!subject">

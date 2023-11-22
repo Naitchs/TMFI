@@ -1,3 +1,9 @@
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a [routerLink]="['/home']" >Home</a></li>
+  <li class="breadcrumb-item"><a [routerLink]="['/excel-panel']" >Report</a></li>
+  <li class="breadcrumb-item active">Details</li>
+</ol>
+
 <div *ngIf="excelDatas" class="card p-3 shadow mb-3">
   <div class="card-header">
     <h2>Report Details</h2>

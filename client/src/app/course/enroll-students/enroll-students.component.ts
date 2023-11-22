@@ -224,7 +224,8 @@ export class EnrollStudentsComponent {
   }
 
   redirectToDetail(id: number) {
-    this.router.navigate(['/course-detail', id]);
+    const encryptedId = btoa(id.toString());
+    this.router.navigate(['/course-detail', encryptedId]);
   }
 
 

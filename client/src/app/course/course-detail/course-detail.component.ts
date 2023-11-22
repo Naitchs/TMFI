@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Course } from 'src/app/_models/course';
 import { RemoveSubjectsFromCourse } from 'src/app/_models/remove-subjects-from-course';
-import { Subjects } from 'src/app/_models/subject';
+import { PhaseEnum, Subjects } from 'src/app/_models/subject';
 import { SubjectsCourse } from 'src/app/_models/subjects-course';
 import { CourseService } from 'src/app/_services/course.service';
 declare var $: any;
@@ -27,6 +27,7 @@ export class CourseDetailComponent implements OnInit {
   subjectsNotInCourse: Subjects[] = [];
   subjectId: number = 0;
   subjectsCourse: RemoveSubjectsFromCourse [] = [];
+  phases: string[] = Object.keys(PhaseEnum).filter(key => isNaN(Number(PhaseEnum[key])));
 
   constructor(private courseService: CourseService, private route: ActivatedRoute,
     private router: Router) { }
@@ -34,8 +35,10 @@ export class CourseDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.id = +params['id'];
-      if (this.id) {
+      const encryptedId = params['id'];
+
+      if (encryptedId) {
+        this.id = +atob(encryptedId)
         this.loadCourse(this.id);
         this.loadSubjectsInCourse(this.id);
         this.loadSubjectsNotInCourse(this.id);
@@ -116,11 +119,14 @@ export class CourseDetailComponent implements OnInit {
         .subscribe(
           response => {
             this.route.params.subscribe(params => {
-              this.id = +params['id'];
-              if (this.id) {
+              const encryptedId = params['id'];
+        
+              if (encryptedId) {
+                this.id = +atob(encryptedId)
+                this.loadCourse(this.id);
                 this.loadSubjectsInCourse(this.id);
                 this.loadSubjectsNotInCourse(this.id);
-                this.successMessage = 'Subjects added successfully';
+                
               }
             });
             
@@ -173,11 +179,14 @@ export class CourseDetailComponent implements OnInit {
       this.courseService.removeSubjectsFromCourse(this.id, this.subjectId).subscribe(
         (subject) => {
           this.route.params.subscribe(params => {
-            this.id = +params['id'];
-            if (this.id) {
+            const encryptedId = params['id'];
+      
+            if (encryptedId) {
+              this.id = +atob(encryptedId)
+              this.loadCourse(this.id);
               this.loadSubjectsInCourse(this.id);
               this.loadSubjectsNotInCourse(this.id);
-              this.successMessage = 'Subjects removed from course successfully';
+              
             }
           });
         },
@@ -199,6 +208,11 @@ export class CourseDetailComponent implements OnInit {
     const encryptedCourseId = btoa(courseId.toString());
     const encryptedSubjectId = btoa(subjectId.toString());
     this.router.navigate(['/attendance', encryptedCourseId, 'subject', encryptedSubjectId]);
+  }
+
+
+  getPhaseName(phase: PhaseEnum): string {
+    return PhaseEnum[phase];
   }
 
 

@@ -89,11 +89,13 @@ export class CourseListComponent implements OnInit {
   }
 
   redirectToDetail(id: number) {
-    this.router.navigate(['/course-detail', id]);
+    const encryptedId = btoa(id.toString());
+    this.router.navigate(['/course-detail', encryptedId]);
   }
 
   redirectToEdit(id: number) {
-    this.router.navigate(['/course-edit', id]);
+    const encryptedId = btoa(id.toString());
+    this.router.navigate(['/course-edit', encryptedId]);
   }
 
   deleteCourse() {
