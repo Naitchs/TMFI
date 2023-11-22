@@ -8,6 +8,7 @@ import { SubjectsCourse } from '../_models/subjects-course';
 import { EnrollStudent } from '../_models/enroll-student';
 import { Profile } from '../_models/profile';
 import { AttendanceDto } from '../_models/attendance-dto';
+import { DeleteAttendance } from '../_models/delete-attendance';
 
 @Injectable({
   providedIn: 'root'
@@ -161,13 +162,18 @@ export class CourseService {
     return this.http.put(this.baseUrl + 'course/edit-attendance/' + attendanceId, body, { headers });
   }
 
-  deleteAttendace(attendanceId: number){
+  deleteAttendace(attendanceId: number) {
     return this.http.delete(this.baseUrl + 'course/delete-attendance/' + attendanceId);
   }
-  
-  
-  
-  
+
+  deleteMultipleAttendances(request: DeleteAttendance): Observable<void> {
+    return this.http.delete<void>(this.baseUrl + 'course/delete-multiple-attendances', { body: request });
+  }
+
+
+
+
+
 
 
 

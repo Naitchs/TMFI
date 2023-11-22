@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AttendanceDto } from 'src/app/_models/attendance-dto';
 import { Course } from 'src/app/_models/course';
 import { Profile } from 'src/app/_models/profile';
 import { Subjects } from 'src/app/_models/subject';
@@ -30,6 +29,10 @@ export class AttendanceComponent {
   attendanceId: number = 0;
   attendanceIdToDelete: number = 0;
   statusToEdit: string = '';
+  selectedAttendanceIds: number[] = [];
+  selectAll: boolean = true;
+  show: boolean = false;
+  validationError: boolean = false;
 
   constructor(private courseService: CourseService, private route: ActivatedRoute,
     private router: Router) { }
@@ -48,6 +51,8 @@ export class AttendanceComponent {
         this.loadSubject(this.subjectId);
         this.loadStudents(this.courseId);
 
+
+
         this.courseService.getGroupedAttendanceRecords(this.subjectId).subscribe(
           (data) => {
             // Convert the object to an array
@@ -65,6 +70,21 @@ export class AttendanceComponent {
             });
 
             this.canCreateAttendance = !hasAttendanceForToday;
+
+            // this.selectedAttendanceIds = this.groupedAttendanceRecords
+            //   .flatMap(record => record.attendanceRecords)
+            //   .map(attendance => attendance.attendanceID);
+
+            this.selectedAttendanceIds = this.groupedAttendanceRecords
+              .flatMap(record => record.attendanceRecords)
+              .filter(attendance => {
+                const attendanceDate = new Date(attendance.date);
+                attendanceDate.setHours(0, 0, 0, 0);  // Set the time to midnight for comparison
+                return attendanceDate.getTime() === today.getTime();
+              })
+              .map(attendance => attendance.attendanceID);
+
+            console.log('selecetded', this.selectedAttendanceIds);
 
 
             console.log('Grouped Attendance Records:', this.groupedAttendanceRecords);
@@ -92,6 +112,14 @@ export class AttendanceComponent {
 
   }
 
+  toggleSelectAll(): void {
+    this.selectedAttendanceIds = this.selectAll
+      ? this.groupedAttendanceRecords
+        .flatMap(record => record.attendanceRecords)
+        .map(attendance => attendance.attendanceID)
+      : [];
+  }
+
 
   markAttendance(studentId: number, attendanceStatus: string) {
     // Store the attendance status for each student in the markedAttendance object
@@ -101,82 +129,105 @@ export class AttendanceComponent {
   submitAttendance() {
     this.successMessage = null;
     this.errorMessage = null;
-    // Prepare an array of attendance records to be submitted to the backend
-    const attendanceRecords = Object.keys(this.markedAttendance).map((studentId) => {
-      return {
-        studentId: +studentId,
-        subjectId: this.subject?.id || 0, // Adjust accordingly based on your logic
-        status: this.markedAttendance[+studentId],
-      };
+
+    // Check if attendance is selected for all students
+    const allStudentsHaveAttendance = this.studentsInCourse.every(student => {
+      const status = this.markedAttendance[student.id];
+      return status !== undefined;
     });
 
-    this.courseService.createMultipleAttendances(attendanceRecords).subscribe(
-      () => {
-        this.successMessage = 'Attendance records created successfully.';
-        this.route.params.subscribe(params => {
-          const encryptedCourseId = params['courseId'];
-          const encryptedSubjectId = params['subjectId'];
+    if (allStudentsHaveAttendance) {
+      this.validationError = false;
 
-          // Decrypt the id using base64 decoding
-          if (encryptedCourseId && encryptedSubjectId) {
-            this.courseId = +atob(encryptedCourseId);
-            this.subjectId = +atob(encryptedSubjectId);
+      // Prepare an array of attendance records to be submitted to the backend
+      const attendanceRecords = Object.keys(this.markedAttendance).map((studentId) => {
+        return {
+          studentId: +studentId,
+          subjectId: this.subject?.id || 0, // Adjust accordingly based on your logic
+          status: this.markedAttendance[+studentId],
+        };
+      });
 
-            this.loadSubject(this.subjectId);
-            this.loadStudents(this.courseId);
-            this.loadCourse(this.courseId);
+      this.courseService.createMultipleAttendances(attendanceRecords).subscribe(
+        () => {
+          this.successMessage = 'Attendance records created successfully.';
+          this.route.params.subscribe(params => {
+            const encryptedCourseId = params['courseId'];
+            const encryptedSubjectId = params['subjectId'];
 
-            this.courseService.getGroupedAttendanceRecords(this.subjectId).subscribe(
-              (data) => {
-                // Convert the object to an array
-                this.groupedAttendanceRecords = Object.keys(data).map((date) => ({
-                  date,
-                  attendanceRecords: data[date],
-                }));
+            // Decrypt the id using base64 decoding
+            if (encryptedCourseId && encryptedSubjectId) {
+              this.courseId = +atob(encryptedCourseId);
+              this.subjectId = +atob(encryptedSubjectId);
 
-                // console.log('Grouped Attendance Records:', this.groupedAttendanceRecords);
-              },
-              (error) => {
-                this.errorMessage = 'Error fetching grouped attendance records:', error;
-              }
-            );
-          }
-        });
-        this.addAttendance = false;
-      },
-      (error) => {
-        this.errorMessage = 'Error creating attendance records: ', error;
-      }
-    );
+              this.loadSubject(this.subjectId);
+              this.loadStudents(this.courseId);
+
+
+
+              this.courseService.getGroupedAttendanceRecords(this.subjectId).subscribe(
+                (data) => {
+                  // Convert the object to an array
+                  this.groupedAttendanceRecords = Object.keys(data).map((date) => ({
+                    date,
+                    attendanceRecords: data[date],
+                  }));
+
+                  const today = new Date();
+                  today.setHours(0, 0, 0, 0);  // I-set ang oras sa midnight para i-ignore ang oras
+                  const hasAttendanceForToday = this.groupedAttendanceRecords.some(record => {
+                    const recordDate = new Date(record.date);
+                    recordDate.setHours(0, 0, 0, 0);  // I-set ang oras sa midnight para i-ignore ang oras
+                    return recordDate.getTime() === today.getTime();
+                  });
+
+                  this.canCreateAttendance = !hasAttendanceForToday;
+
+                  this.selectedAttendanceIds = this.groupedAttendanceRecords
+                    .flatMap(record => record.attendanceRecords)
+                    .filter(attendance => {
+                      const attendanceDate = new Date(attendance.date);
+                      attendanceDate.setHours(0, 0, 0, 0);  // Set the time to midnight for comparison
+                      return attendanceDate.getTime() === today.getTime();
+                    })
+                    .map(attendance => attendance.attendanceID);
+
+                  console.log('selecetded', this.selectedAttendanceIds);
+
+
+                  console.log('Grouped Attendance Records:', this.groupedAttendanceRecords);
+                },
+                (error) => {
+                  this.errorMessage = 'Error fetching grouped attendance records:', error;
+                }
+              );
+
+              this.courseService.getCourse(this.courseId).subscribe({
+                next: course => {
+                  console.log('Course data:', course);
+                  this.course = course;
+                },
+                error: err => {
+                  console.error('Error fetching course:', err);
+                }
+              });
+            }
+          });
+          this.addAttendance = false;
+        },
+        (error) => {
+          this.errorMessage = 'Error creating attendance records: ', error;
+        }
+      );
+    } else {
+      this.validationError = true;
+    }
   }
 
   getFormattedDate(dateOfBirth: string): string {
     const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateOfBirth).toLocaleDateString(undefined, options);
   }
-
-  // markAttendance(studentId: number, attendanceStatus: string) {
-  //   const attendanceDto: AttendanceDto = {
-  //     studentId: studentId,
-  //     subjectId: this.subject.id, // Assuming this.subject contains the subject details; adjust accordingly
-  //     status: attendanceStatus,
-  //   };
-
-  //   console.log(studentId);
-
-  //   this.courseService.createAttendance(attendanceDto).subscribe(
-  //     () => {
-  //       // Handle success
-  //       console.log('Attendance record created successfully.');
-  //       // Optionally, perform additional actions after a successful creation
-  //     },
-  //     (error) => {
-  //       // Handle error
-  //       console.error('Error creating attendance record:', error);
-  //       // Optionally, display an error message to the user or perform other actions
-  //     }
-  //   );
-  // }
 
   loadCourse(id: number) {
     this.courseService.getCourse(id).subscribe({
@@ -243,11 +294,41 @@ export class AttendanceComponent {
               date,
               attendanceRecords: data[date],
             }));
+
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);  // I-set ang oras sa midnight para i-ignore ang oras
+            const hasAttendanceForToday = this.groupedAttendanceRecords.some(record => {
+              const recordDate = new Date(record.date);
+              recordDate.setHours(0, 0, 0, 0);  // I-set ang oras sa midnight para i-ignore ang oras
+              return recordDate.getTime() === today.getTime();
+            });
+
+            this.canCreateAttendance = !hasAttendanceForToday;
+
+            this.selectedAttendanceIds = this.groupedAttendanceRecords
+              .flatMap(record => record.attendanceRecords)
+              .filter(attendance => {
+                const attendanceDate = new Date(attendance.date);
+                attendanceDate.setHours(0, 0, 0, 0);  // Set the time to midnight for comparison
+                return attendanceDate.getTime() === today.getTime();
+              })
+              .map(attendance => attendance.attendanceID);
+
           },
           (error) => {
             this.errorMessage = 'Error fetching grouped attendance records:', error;
           }
         );
+
+        this.courseService.getCourse(this.courseId).subscribe({
+          next: course => {
+            console.log('Course data:', course);
+            this.course = course;
+          },
+          error: err => {
+            console.error('Error fetching course:', err);
+          }
+        });
       }
     });
   }
@@ -266,12 +347,14 @@ export class AttendanceComponent {
     return recordDate.getTime() === currentDate.getTime();
   }
 
-  clickEditAttendance(id: number) {
+  clickEditAttendance(id: number, status: string) {
     this.attendanceId = id;
+    this.statusToEdit = status;
     this.successMessage = null;
     this.errorMessage = null;
     $('#editAttendanceModal').modal('show');
   }
+
 
   editAttendance() {
     $('#editAttendanceModal').modal('hide');
@@ -300,11 +383,40 @@ export class AttendanceComponent {
                   attendanceRecords: data[date],
                 }));
 
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);  // I-set ang oras sa midnight para i-ignore ang oras
+                const hasAttendanceForToday = this.groupedAttendanceRecords.some(record => {
+                  const recordDate = new Date(record.date);
+                  recordDate.setHours(0, 0, 0, 0);  // I-set ang oras sa midnight para i-ignore ang oras
+                  return recordDate.getTime() === today.getTime();
+                });
+
+                this.canCreateAttendance = !hasAttendanceForToday;
+
+                this.selectedAttendanceIds = this.groupedAttendanceRecords
+                  .flatMap(record => record.attendanceRecords)
+                  .filter(attendance => {
+                    const attendanceDate = new Date(attendance.date);
+                    attendanceDate.setHours(0, 0, 0, 0);  // Set the time to midnight for comparison
+                    return attendanceDate.getTime() === today.getTime();
+                  })
+                  .map(attendance => attendance.attendanceID);
+
               },
               (error) => {
                 this.errorMessage = 'Error fetching grouped attendance records:', error;
               }
             );
+
+            this.courseService.getCourse(this.courseId).subscribe({
+              next: course => {
+                console.log('Course data:', course);
+                this.course = course;
+              },
+              error: err => {
+                console.error('Error fetching course:', err);
+              }
+            });
           }
         });
 
@@ -331,46 +443,208 @@ export class AttendanceComponent {
     $('#deleteAttendanceModal').modal('show');
   }
 
-  deleteAttendance() {
-    $('#deleteAttendanceModal').modal('hide');
-    console.log('delete', this.attendanceIdToDelete);
-    this.courseService.deleteAttendace(this.attendanceIdToDelete).subscribe(
-      () => {
-        this.successMessage = 'Attendance Deleted successfully.';
-        this.route.params.subscribe(params => {
-          const encryptedCourseId = params['courseId'];
-          const encryptedSubjectId = params['subjectId'];
+  // deleteAttendance() {
+  //   $('#deleteAttendanceModal').modal('hide');
+  //   console.log('delete', this.attendanceIdToDelete);
+  //   this.courseService.deleteAttendace(this.attendanceIdToDelete).subscribe(
+  //     () => {
+  //       this.successMessage = 'Attendance Deleted successfully.';
+  //       this.route.params.subscribe(params => {
+  //         const encryptedCourseId = params['courseId'];
+  //         const encryptedSubjectId = params['subjectId'];
 
-          // Decrypt the id using base64 decoding
-          if (encryptedCourseId && encryptedSubjectId) {
-            this.courseId = +atob(encryptedCourseId);
-            this.subjectId = +atob(encryptedSubjectId);
+  //         // Decrypt the id using base64 decoding
+  //         if (encryptedCourseId && encryptedSubjectId) {
+  //           this.courseId = +atob(encryptedCourseId);
+  //           this.subjectId = +atob(encryptedSubjectId);
 
-            this.loadSubject(this.subjectId);
-            this.loadStudents(this.courseId);
+  //           this.loadSubject(this.subjectId);
+  //           this.loadStudents(this.courseId);
 
-            this.courseService.getGroupedAttendanceRecords(this.subjectId).subscribe(
-              (data) => {
-                // Convert the object to an array
-                this.groupedAttendanceRecords = Object.keys(data).map((date) => ({
-                  date,
-                  attendanceRecords: data[date],
-                }));
 
-              },
-              (error) => {
-                this.errorMessage = 'Error fetching grouped attendance records:', error;
-              }
-            );
-          }
-        });
-        this.attendanceIdToDelete = null;
 
-      }, (error) => {
-        this.errorMessage = 'Error Deleting Attendance: ', error;
-      }
-    )
+  //           this.courseService.getGroupedAttendanceRecords(this.subjectId).subscribe(
+  //             (data) => {
+  //               // Convert the object to an array
+  //               this.groupedAttendanceRecords = Object.keys(data).map((date) => ({
+  //                 date,
+  //                 attendanceRecords: data[date],
+  //               }));
+
+  //               const today = new Date();
+  //               today.setHours(0, 0, 0, 0);  // I-set ang oras sa midnight para i-ignore ang oras
+  //               const hasAttendanceForToday = this.groupedAttendanceRecords.some(record => {
+  //                 const recordDate = new Date(record.date);
+  //                 recordDate.setHours(0, 0, 0, 0);  // I-set ang oras sa midnight para i-ignore ang oras
+  //                 return recordDate.getTime() === today.getTime();
+  //               });
+
+  //               this.canCreateAttendance = !hasAttendanceForToday;
+
+  //               // this.selectedAttendanceIds = this.groupedAttendanceRecords
+  //               //   .flatMap(record => record.attendanceRecords)
+  //               //   .map(attendance => attendance.attendanceID);
+
+  //               this.selectedAttendanceIds = this.groupedAttendanceRecords
+  //               .flatMap(record => record.attendanceRecords)
+  //               .filter(attendance => {
+  //                 const attendanceDate = new Date(attendance.date);
+  //                 attendanceDate.setHours(0, 0, 0, 0);  // Set the time to midnight for comparison
+  //                 return attendanceDate.getTime() === today.getTime();
+  //               })
+  //               .map(attendance => attendance.attendanceID);
+
+  //               console.log('selecetded', this.selectedAttendanceIds);
+
+
+  //               console.log('Grouped Attendance Records:', this.groupedAttendanceRecords);
+  //             },
+  //             (error) => {
+  //               this.errorMessage = 'Error fetching grouped attendance records:', error;
+  //             }
+  //           );
+
+  //           this.courseService.getCourse(this.courseId).subscribe({
+  //             next: course => {
+  //               console.log('Course data:', course);
+  //               this.course = course;
+  //             },
+  //             error: err => {
+  //               console.error('Error fetching course:', err);
+  //             }
+  //           });
+  //         }
+  //       });
+
+  //     }, (error) => {
+  //       this.errorMessage = 'Error Deleting Attendance: ', error;
+  //     }
+  //   )
+  // }
+
+
+  isSelected(attendanceId: number): boolean {
+    const attendance = this.findAttendanceById(attendanceId);
+
+    if (attendance) {
+      const attendanceDate = new Date(attendance.date);
+      attendanceDate.setHours(0, 0, 0, 0);  // Set the time to midnight for comparison
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);  // Set the time to midnight for comparison
+
+      return attendanceDate.getTime() === today.getTime();
+    }
+
+    return false;
   }
+
+  toggleSelection(attendanceId: number): void {
+    if (this.isSelected(attendanceId)) {
+      this.selectedAttendanceIds = this.selectedAttendanceIds.filter(id => id !== attendanceId);
+    } else {
+      this.selectedAttendanceIds.push(attendanceId);
+    }
+  }
+
+  clickToDeleteSelected(): void {
+    $('#deleteAttendanceModal').modal('hide');
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);  // Set the time to midnight for comparison
+
+    for (const attendanceId of this.selectedAttendanceIds) {
+      const attendance = this.findAttendanceById(attendanceId);
+
+      if (attendance) {
+        const attendanceDate = new Date(attendance.date);
+        attendanceDate.setHours(0, 0, 0, 0);  // Set the time to midnight for comparison
+
+        // Check if the attendance record date is today
+        if (attendanceDate.getTime() === today.getTime()) {
+          this.courseService.deleteAttendace(attendanceId).subscribe(
+            () => {
+              this.successMessage = 'Attendance Deleted successfully.';
+              this.route.params.subscribe(params => {
+                const encryptedCourseId = params['courseId'];
+                const encryptedSubjectId = params['subjectId'];
+
+                // Decrypt the id using base64 decoding
+                if (encryptedCourseId && encryptedSubjectId) {
+                  this.courseId = +atob(encryptedCourseId);
+                  this.subjectId = +atob(encryptedSubjectId);
+
+                  this.loadSubject(this.subjectId);
+                  this.loadStudents(this.courseId);
+
+                  this.courseService.getGroupedAttendanceRecords(this.subjectId).subscribe(
+                    (data) => {
+                      // Convert the object to an array
+                      this.groupedAttendanceRecords = Object.keys(data).map((date) => ({
+                        date,
+                        attendanceRecords: data[date],
+                      }));
+
+                      const today = new Date();
+                      today.setHours(0, 0, 0, 0);  // I-set ang oras sa midnight para i-ignore ang oras
+                      const hasAttendanceForToday = this.groupedAttendanceRecords.some(record => {
+                        const recordDate = new Date(record.date);
+                        recordDate.setHours(0, 0, 0, 0);  // I-set ang oras sa midnight para i-ignore ang oras
+                        return recordDate.getTime() === today.getTime();
+                      });
+
+                      this.canCreateAttendance = !hasAttendanceForToday;
+
+                      this.selectedAttendanceIds = this.groupedAttendanceRecords
+                        .flatMap(record => record.attendanceRecords)
+                        .filter(attendance => {
+                          const attendanceDate = new Date(attendance.date);
+                          attendanceDate.setHours(0, 0, 0, 0);  // Set the time to midnight for comparison
+                          return attendanceDate.getTime() === today.getTime();
+                        })
+                        .map(attendance => attendance.attendanceID);
+
+                    },
+                    (error) => {
+                      this.errorMessage = 'Error fetching grouped attendance records:', error;
+                    }
+                  );
+
+                  this.courseService.getCourse(this.courseId).subscribe({
+                    next: course => {
+                      console.log('Course data:', course);
+                      this.course = course;
+                    },
+                    error: err => {
+                      console.error('Error fetching course:', err);
+                    }
+                  });
+                }
+              });
+            },
+            (error) => {
+              this.errorMessage = 'Error Deleting Attendance: ' + error;
+            }
+          );
+        } else {
+          this.errorMessage = 'Error to delete: Attendance date is not today.';
+        }
+      }
+    }
+
+  }
+
+
+  private findAttendanceById(attendanceId: number): any {
+    for (const record of this.groupedAttendanceRecords) {
+      const attendance = record.attendanceRecords.find(a => a.attendanceID === attendanceId);
+      if (attendance) {
+        return attendance;
+      }
+    }
+    return null;
+  }
+
+
+
 
 
 }

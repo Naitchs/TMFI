@@ -156,7 +156,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                 _logService.AddErrorLogs(ex.ToString());
+                _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -198,7 +198,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                 _logService.AddErrorLogs(ex.ToString());
+                _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -213,7 +213,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                 _logService.AddErrorLogs(ex.ToString());
+                _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -229,7 +229,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                 _logService.AddErrorLogs(ex.ToString());
+                _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -245,7 +245,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                 _logService.AddErrorLogs(ex.ToString());
+                _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -260,7 +260,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                 _logService.AddErrorLogs(ex.ToString());
+                _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -275,7 +275,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                 _logService.AddErrorLogs(ex.ToString());
+                _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -290,7 +290,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                 _logService.AddErrorLogs(ex.ToString());
+                _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -313,7 +313,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                 _logService.AddErrorLogs(ex.ToString());
+                _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -330,7 +330,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                 _logService.AddErrorLogs(ex.ToString());
+                _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -345,7 +345,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                 _logService.AddErrorLogs(ex.ToString());
+                _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -360,7 +360,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                 _logService.AddErrorLogs(ex.ToString());
+                _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -375,7 +375,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                 _logService.AddErrorLogs(ex.ToString());
+                _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -390,7 +390,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                 _logService.AddErrorLogs(ex.ToString());
+                _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -409,7 +409,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                 _logService.AddErrorLogs(ex.ToString());
+                _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -424,7 +424,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                 _logService.AddErrorLogs(ex.ToString());
+                _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -439,7 +439,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                 _logService.AddErrorLogs(ex.ToString());
+                _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
@@ -454,10 +454,27 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                 _logService.AddErrorLogs(ex.ToString());
+                _logService.AddErrorLogs(ex.ToString());
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
+
+        [HttpDelete("delete-multiple-attendances")]
+        public IActionResult DeleteMultipleAttendances([FromBody] DeleteAttendanceRequest request)
+        {
+            try
+            {
+                _courseService.DeleteMultipleAttendances(request.SubjectId, request.AttendanceIds);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logService.AddErrorLogs(ex.ToString());
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
+
 
 
 
