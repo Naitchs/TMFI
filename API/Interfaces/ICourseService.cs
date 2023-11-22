@@ -50,5 +50,6 @@ namespace API.Interfaces
         Dictionary<DateTime, List<CreateAttendanceDto>> GetAttendanceRecordsGroupedByDate(int subjectId);
         void EditAttendance(int attendanceId, EditAttendanceDto dto);
         void DeleteAttendance(int attendanceId);
+        void DeleteMultipleAttendances(int subjectId, List<int> attendanceIds);
     }
 }

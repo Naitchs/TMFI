@@ -383,6 +383,7 @@ namespace API.Services
                         AttendanceID = a.AttendanceID,
                         StudentId = a.StudentID,
                         SubjectId = a.SubjectID,
+                        Date = a.Date,
                         Status = a.Status
                         // Add other properties as needed
                     }).ToList()
@@ -423,6 +424,25 @@ namespace API.Services
                 throw new InvalidOperationException($"Attendance with ID {attendanceId} not found");
             }
         }
+
+        public void DeleteMultipleAttendances(int subjectId, List<int> attendanceIds)
+        {
+            var attendancesToDelete = _context.Attendances
+                .Where(a => a.SubjectID == subjectId && attendanceIds.Contains(a.AttendanceID))
+                .ToList();
+
+            if (attendancesToDelete.Any())
+            {
+                _context.Attendances.RemoveRange(attendancesToDelete);
+                _context.SaveChanges();
+            }
+            else
+            {
+                throw new InvalidOperationException($"No attendance records found for Subject ID {subjectId} and the specified IDs.");
+            }
+        }
+
+
 
 
 

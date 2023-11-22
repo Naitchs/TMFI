@@ -2,8 +2,8 @@
   <div class="card-body">
     <h5 class="card-title">Subject Details</h5>
     <div *ngIf="subject || course">
-      <p class="card-text"><strong>Subject Name:</strong> {{ subject.name }}</p>
-      <p class="card-text"><strong>Subject Code:</strong> {{ subject.subjectCodeeD }}</p>
+      <p class="card-text"><strong>Subject Name:</strong> {{ subject?.name }}</p>
+      <p class="card-text"><strong>Subject Code:</strong> {{ subject?.subjectCode }}</p>
       <button class="btn btn-secondary mt-3" (click)="redirectToDetail(course.id)">Back to Course</button>
       <!-- Add more properties as needed -->
     </div>
@@ -28,7 +28,8 @@
 <div class="card shadow mb-3" *ngIf="addAttendance == false">
   <div class="card-body">
     <h5 class="card-title">Students</h5>
-    <button class="btn btn-info mb-3" (click)="showAddAttendance()" [disabled]="!canCreateAttendance">Create Attendance</button>
+    <button class="btn btn-info mb-3" (click)="showAddAttendance()" [disabled]="!canCreateAttendance">Create
+      Attendance</button>
     <div class="row col-md-12 table-responsive">
       <table class="table table-hover table-bordered">
         <thead>
@@ -37,6 +38,9 @@
             <th style="width: 50%;">Name</th>
             <th style="width: 12%;" *ngFor="let record of groupedAttendanceRecords">
               {{ getFormattedDate(record.date) }}
+              <button class="btn btn-sm btn-danger" *ngIf="isEditable(record)" (click)="clickToDelete()">
+                Delete Attendance
+              </button>
             </th>
           </tr>
         </thead>
@@ -48,31 +52,36 @@
             <td *ngFor="let record of groupedAttendanceRecords">
               <!-- Assuming student attendance records are ordered by date -->
               <div *ngFor="let attendance of record.attendanceRecords">
-                <div *ngIf="attendance.studentId === student.id" [ngStyle]="{
-        'border': '1px solid ' + (attendance.status === 'present' ? 'green' : 'red'),
-        'border-radius': '5px',
-        'color': attendance.status === 'present' ? 'green' : 'red',
-        'padding': '5px'
-      }" class="attendance-record mb-1">
-                  <div class="attendance-buttons" >
-                    {{ attendance.status }}
-                    &nbsp;
-                    <button class="btn btn-sm btn-info" *ngIf=" isEditable(record)" (click)="clickEditAttendance(attendance.attendanceID)"><i
-                        class="bi bi-pencil"></i></button>
-                    <button class="btn btn-sm btn-danger" *ngIf=" isEditable(record)" (click)="clickToDelete(attendance.attendanceID)"><i
-                        class="bi bi-trash"></i></button>
+                <div *ngIf="attendance.studentId === student.id" class="attendance-record mb-1">
+                  <div class="flex-container">
+                    <input type="checkbox" [checked]="attendance.status === 'present'" class="checkbox"
+                      [style.background-color]="attendance.status === 'present' ? '#28a745' : '#ffa500'" />
+                    <input *ngIf="isEditable(record) && show == true" type="checkbox" [checked]="isSelected(attendance.attendanceID)" class="checkbox"
+                      (change)="toggleSelection(attendance.attendanceID)" />
+                    <div class="attendance-buttons">
+                      &nbsp;
+                      <button class="btn btn-sm btn-info" *ngIf=" isEditable(record)"
+                        (click)="clickEditAttendance(attendance.attendanceID, attendance.status)">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                      <!-- <button class="btn btn-sm btn-danger" *ngIf=" isEditable(record)"
+                        (click)="clickToDelete(attendance.attendanceID)">
+                        <i class="bi bi-trash"></i>
+                      </button> -->
+                    </div>
                   </div>
                 </div>
               </div>
+
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div >
-      
+    <div>
+
     </div>
-    
+
   </div>
 </div>
 
@@ -112,6 +121,9 @@
         </table>
       </div>
     </div>
+    <div *ngIf="validationError" class="alert alert-danger">
+      Please select attendance for all students.
+    </div>
     <button class="btn btn-success mt-3" (click)="submitAttendance()">Submit Attendance</button>
     &nbsp;
     <button class="btn btn-secondary mt-3" (click)="cancel()">Cancel</button>
@@ -133,15 +145,14 @@
         <form>
           <div class="form-group">
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="statusToEdit" id="editPresent" value="present"
-                [(ngModel)]="statusToEdit" />
+              <input class="form-check-input" type="radio" name="statusToEdit" id="editPresent" value="present" [(ngModel)]="statusToEdit" [checked]="statusToEdit === 'present'" />
               <label class="form-check-label" for="editPresent">Present</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="statusToEdit" id="editAbsent" value="absent"
-                [(ngModel)]="statusToEdit" />
+              <input class="form-check-input" type="radio" name="statusToEdit" id="editAbsent" value="absent" [(ngModel)]="statusToEdit" [checked]="statusToEdit === 'absent'" />
               <label class="form-check-label" for="editAbsent">Absent</label>
             </div>
+            
           </div>
         </form>
       </div>
@@ -154,8 +165,8 @@
 </div>
 
 
-<div class="modal fade" id="deleteAttendanceModal" tabindex="-1" role="dialog" aria-labelledby="editAttendanceModalLabel"
-  aria-hidden="true">
+<div class="modal fade" id="deleteAttendanceModal" tabindex="-1" role="dialog"
+  aria-labelledby="editAttendanceModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -169,7 +180,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-danger" (click)="deleteAttendance()">Delete Attendance</button>
+        <button type="button" class="btn btn-danger" (click)="clickToDeleteSelected()">Delete</button>
       </div>
     </div>
   </div>
