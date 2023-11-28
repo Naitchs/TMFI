@@ -95,6 +95,7 @@ export class IpProfileComponent {
 
         // this.toastr.error('Error registering profile', 'Error');
         }
+        console.log(error);
       }
     );
   }
@@ -112,20 +113,17 @@ export class IpProfileComponent {
     const values = {...this.ipForm.value, dateOfBirth: dob, publicId: publicId};
     this.profileService.proceedRegister(values).subscribe(
       (ip) => {
-        // window.location.reload();
-        // this.toastr.success('Profile registered successfully', 'Success');
+
         this.ipForm.reset(); 
         this.confirmationMessage = null;
         $('#confirmationModal').modal('hide');
         this.successMessage = 'Ip registered successfully';
-        // this.ip.push(ip);
-        // this.ipRegistered.emit(ip);
+
       },
       (error) => {
         this.validationErrors = error; 
         // this.toastr.error('Error registering profile', 'Error');
         this.errorMessage = 'Error registering profile';
-        console.log(error);
         }
     );
   }

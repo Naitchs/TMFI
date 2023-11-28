@@ -1,6 +1,6 @@
 <ol class="breadcrumb" *ngIf="course">
   <li class="breadcrumb-item"><a [routerLink]="['/home']" >Home</a></li>
-  <li class="breadcrumb-item"><a [routerLink]="['/course-panel']" >Course</a></li>
+  <li class="breadcrumb-item"><a [routerLink]="['/course-panel']" >Training</a></li>
   <li class="breadcrumb-item"><a [routerLink]="['/']" (click)="redirectToDetail(course.id)" >Details</a></li>
   <li class="breadcrumb-item active">Attendance</li>
 </ol>
@@ -35,7 +35,7 @@
 <div class="card shadow mb-3" *ngIf="addAttendance == false">
   <div class="card-body">
     <h5 class="card-title">Students</h5>
-    <button class="btn btn-info mb-3" (click)="showAddAttendance()" [disabled]="!canCreateAttendance">Create
+    <button  *appHasRole="['SuperAdmin', 'Admin']" class="btn btn-info mb-3" (click)="showAddAttendance()" [disabled]="!canCreateAttendance">Create
       Attendance</button>
     <div class="row col-md-12 table-responsive">
       <table class="table table-hover table-bordered">
@@ -45,9 +45,11 @@
             <th style="width: 50%;">Name</th>
             <th style="width: 12%;" *ngFor="let record of groupedAttendanceRecords">
               {{ getFormattedDate(record.date) }}
+              <div  *appHasRole="['SuperAdmin', 'Admin']">
               <button class="btn btn-sm btn-danger" *ngIf="isEditable(record)" (click)="clickToDelete()">
                 Delete Attendance
               </button>
+              </div>
             </th>
           </tr>
         </thead>
@@ -65,7 +67,7 @@
                       [style.background-color]="attendance.status === 'present' ? '#28a745' : '#ffa500'" />
                     <input *ngIf="isEditable(record) && show == true" type="checkbox" [checked]="isSelected(attendance.attendanceID)" class="checkbox"
                       (change)="toggleSelection(attendance.attendanceID)" />
-                    <div class="attendance-buttons">
+                    <div class="attendance-buttons"  *appHasRole="['SuperAdmin', 'Admin']">
                       &nbsp;
                       <button class="btn btn-sm btn-info" *ngIf=" isEditable(record)"
                         (click)="clickEditAttendance(attendance.attendanceID, attendance.status)">

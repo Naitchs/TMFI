@@ -21,7 +21,7 @@
         <th style="width: 5%;">Gender</th>
         <th style="width: 10%;">Tribe</th>
         <th style="width: 10%;">City</th>
-        <th style="width: 10%;">Action</th>
+        <th style="width: 10%;" *appHasRole="['SuperAdmin', 'Admin']">Action</th>
       </tr>
     </thead>
     <tbody>
@@ -36,7 +36,7 @@
         <td (click)="redirectToDetail(ipProfile.publicId)">{{ caps(ipProfile?.gender) }}</td>
         <td (click)="redirectToDetail(ipProfile.publicId)">{{ caps(ipProfile?.tribe) }}</td>
         <td (click)="redirectToDetail(ipProfile.publicId)">{{ caps(ipProfile?.city) }}</td>
-        <td>
+        <td *appHasRole="['SuperAdmin', 'Admin']">
           <button class="btn btn-info" (click)="redirectToEdit(ipProfile.publicId)">
             <i class="bi bi-pencil"></i></button>
           &nbsp;

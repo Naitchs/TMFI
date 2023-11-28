@@ -10,7 +10,7 @@
     <div class="col-md-2 col-lg-2 col-xl-2 p-0">
       <app-sidenav [sideBarOpen]="sideBarOpen"></app-sidenav>
     </div>
-    <div class="col-md-12 col-lg-12 col-xl-12 p-0" >
+    <div class="col-md-12 col-lg-12 col-xl-12 p-0" [style.marginLeft.px]="contentMargin">
       <app-heroes *ngIf="!(accountService.currentUser$ | async)"></app-heroes>
       <div class="container content" style="margin-top: 100px;">
         <router-outlet *ngIf="accountService.currentUser$ | async"></router-outlet>

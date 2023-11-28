@@ -197,7 +197,7 @@
   </ul>
 </div>
 
-  <div class="text-center">
+  <div class="text-center" *appHasRole="['SuperAdmin', 'Admin']">
     <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#proceedModal">submit</button>
     <!-- <button class="btn btn-default" type="button" (click)="cancel()">cancel</button> -->
   </div>
