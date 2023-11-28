@@ -70,6 +70,7 @@ export class SapProfileRegisterComponent {
       const dob = this.getDateOnly(this.sapForm.controls['dateOfBirth'].value);
       const publicId = '';
       const values = {...this.sapForm.value, dateOfBirth: dob, publicId: publicId};
+      console.log(values);
       this.profileService.registerSap(values).subscribe(
         () => {
           // window.location.reload();
@@ -79,7 +80,8 @@ export class SapProfileRegisterComponent {
           this.validationErrors = null;
         },
         (error) => {
-          this.validationErrors = error;if (error.status === 400) {
+          this.validationErrors = error;
+          if (error.status === 400) {
             if (error.error === "An existing record with the same details was found. Do you want to proceed?") {
               this.confirmationMessage = 'An existing record with the same details was found. Do you want to proceed?';
               $('#confirmationModal').modal('show');

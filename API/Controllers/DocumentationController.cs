@@ -516,7 +516,7 @@ namespace API.Controllers
                 _userRepository.Add(doc);
                 await _userRepository.SaveAllAsync();
 
-                return Ok(new { message = "Media uploaded successfully" });
+                return Ok();
             }
             catch (Exception ex)
             {

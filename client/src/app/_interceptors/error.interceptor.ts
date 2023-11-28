@@ -25,19 +25,19 @@ export class ErrorInterceptor implements HttpInterceptor {
             // this.toastr.success(message, 'Success');
             // break;
 
-            // case 400: 
-            //   if (error.error.errors){
-            //     const modalStateErrors = [];
-            //     for (const key in error.error.errors){
-            //       if (error.error.errors [key]){
-            //         modalStateErrors.push(error.error.errors[key])
-            //       }
-            //     }
-            //     throw modalStateErrors.flat();
-            //   } else {
-            //     this.toastr.error(error.error, error.status.toString())
-            //   }
-            //   break;
+            case 400: 
+              if (error.error.errors){
+                const modalStateErrors = [];
+                for (const key in error.error.errors){
+                  if (error.error.errors [key]){
+                    modalStateErrors.push(error.error.errors[key])
+                  }
+                }
+                throw modalStateErrors.flat();
+              } else {
+                this.toastr.error(error.error, error.status.toString())
+              }
+              break;
               case 401:
                 this.toastr.error('Unathorized', error.status.toString())
                 // this.router.navigateByUrl('/log-in');
@@ -49,11 +49,11 @@ export class ErrorInterceptor implements HttpInterceptor {
                 const navigationExtras: NavigationExtras = {state: {error: error.error}};
                 this.router.navigateByUrl('/server-error', navigationExtras);
                 break;
-              // default:
-              //   this.toastr.error('Something unexpected went wrong ');
-              //   console.log(error);
+              default:
+                this.toastr.error('Something unexpected went wrong ');
+                console.log(error);
 
-              // break;
+              break;
           }
         }
         throw error;

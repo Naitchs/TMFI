@@ -1,4 +1,115 @@
-<nav id="sidebar" class="d-flex flex-column flex-shrink-0 p-3 " [ngClass]="{ 'd-none': !sideBarOpen }">
+<nav id="sidebar" #sidebar class="d-flex flex-column flex-shrink-0 p-3" [ngClass]="{ 'sidebar-closed': !sideBarOpen }"
+  [@slideAnimation]="animationState">
+
+  <hr>
+  <ul class="nav flex-column mb-auto mt-4" *ngIf="(accountService.currentUser$ | async) as user">
+    <ng-container>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/members/{{user.username}}" routerLinkActive="active">
+          <strong>Welcome {{user.username | titlecase}}</strong></a>
+      </li>
+      <li class="nav-item">
+        <hr>
+      </li>
+    </ng-container>
+
+    <ng-container *ngIf="!(accountService.currentUser$ | async)">
+      <li class="nav-item">
+        <a class="nav-link active" routerLink="/members" routerLinkActive="active">Mission</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" routerLink="/members" routerLinkActive="active">Vision</a>
+      </li>
+    </ng-container>
+
+    <ng-container>
+
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/integration" routerLinkActive="active">
+          <i class="bi bi-file-earmark-spreadsheet"></i> &nbsp;Excel Reports</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/documentation" routerLinkActive="active">
+          <i class="bi bi-collection"></i> &nbsp;Media </a>
+      </li>
+
+
+
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#collapseTren" role="button" aria-expanded="false"
+          aria-controls="collapseTren">
+          <i class="bi bi-ticket"></i> &nbsp;Tren
+        </a>
+        <div class="collapse" id="collapseTren">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/course" routerLinkActive="active">&nbsp;
+                <i class="bi bi-arrow-return-right"></i>&nbsp; Training</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/subject" routerLinkActive="active">&nbsp;
+                <i class="bi bi-arrow-return-right"></i>&nbsp; Subject</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#collapseProfiling" role="button" aria-expanded="false"
+          aria-controls="collapseProfiling">
+          <i class="bi bi-person-add"></i> &nbsp; Profiles
+        </a>
+        <div class="collapse" id="collapseProfiling">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/ip-profiling" routerLinkActive="active"> &nbsp;
+                <i class="bi bi-arrow-return-right"></i> &nbsp; IP Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/sap-profiling" routerLinkActive="active"> &nbsp;
+                <i class="bi bi-arrow-return-right"></i>&nbsp; SAP Profile</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+
+      <ng-container *appHasRole="['SuperAdmin', 'Admin']">
+        <li class="nav-item">
+          <hr>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/admin" routerLinkActive="active">
+            <i class="bi bi-shield"></i> &nbsp; Admin</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/members" routerLinkActive="active">
+            <i class="bi bi-people"></i> &nbsp; Members</a>
+        </li>
+      </ng-container>
+
+    </ng-container>
+  </ul>
+  <hr>
+
+  <div class="dropdownw" *ngIf="(accountService.currentUser$ | async) as user" dropdown>
+    <img src="{{user.photoUrl || './assets/user.png'}}" alt="user photo"
+      style="margin: 0; padding: 0; max-height: 40px; max-width: 40px; border: 2px solid white; border-radius: 50%;">
+    <a class="dropdown-toggle text-light text-decoration-none ms-2 " aria-expanded="false"
+      dropdownToggle><strong>{{user.username | titlecase}}</strong></a>
+
+    <div class="dropdown-menu mt-3" *dropdownMenu>
+      <a class="dropdown-item" routerLink="/member/edit">Edit Profile</a>
+      <a class="dropdown-item" (click)="logout()">Logout</a>
+    </div>
+  </div>
+</nav>
+
+
+
+
+
+<!-- <nav id="sidebar" class="d-flex flex-column flex-shrink-0 p-3 " [ngClass]="{ 'd-none': !sideBarOpen }">
  
   
 
@@ -51,10 +162,10 @@
      
         
   </ng-container>
-  </ul > 
+  </ul >  -->
 
 
-  
+
 <!-- <div class=""> 
   <hr>
   <div class="dropdown" *ngIf="(accountService.currentUser$ | async) as user" dropdown>

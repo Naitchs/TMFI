@@ -98,17 +98,45 @@
 //   --bs-bg-opacity: 1;
 //   background-color: rgba(var(--bs-white-rgb),var(--bs-bg-opacity))!important;
 // }
+/* Add this CSS to your styles.scss or styles.css file */
+.nav-link.router-link-active,
+.nav-item.active {
+  border-left: 4px solid #007bff; /* Add a left border with your desired color */
+  background-color: #333; /* Change the background color to your desired color */
+  color: #fff; /* Change the text color to white or your desired color */
+  font-weight: bold; /* Make the font bold or adjust as needed */
+  padding-left: 12px; /* Add padding to the left for the border */
+}
+
+/* Adjust styles for the collapsed state */
+.nav-link.router-link-active.collapsed,
+.nav-item.active.collapsed {
+  border-left: none; /* Remove the left border when collapsed */
+  background-color: #181818; /* Adjust background color when collapsed */
+}
+
 
 #sidebar {
-  background-color: #5c5c5c; /* Change the color to your desired background color */
-  width: 250px; /* Adjust the width as needed */
+  background-color: #181818; /* Change the color to your desired background color */
+  width: 210px; /* Adjust the width as needed */
   height: 100%; /* Make the sidebar full height */
   position: fixed; /* Fix the sidebar position */
   top: 0;
   left: 0;
   overflow-y: auto; /* Enable vertical scrolling if content exceeds height */
   z-index: 1;
+  transition: width 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out;
 }
+
+a.active {
+  background-color: #181818;
+  color: #fff;
+}
+
+// #sidebar:hover {
+//   width: 300px; /* Adjust to your preferred wider width on hover */
+// }
 
 .navbar-nav {
   padding-top: 50px; /* Adjust the top padding to align content with the header */
@@ -118,9 +146,10 @@
   color: white; /* Change the text color to your desired color */
 }
 
-.nav-link:hover {
-  background-color: #555; /* Add a background color on hover if desired */
-}
+// .nav-link:hover &.active {
+//   background-color: #333; /* Add a background color on hover if desired */
+//   border-radius: 8px;
+// }
 
 /* Add this CSS to your styles.scss or styles.css file */
 .nav-link.router-link-active {
@@ -138,4 +167,37 @@ hr{
 
 .title {
   color: white;
+}
+
+.sidebar-closed {
+  transform: translateX(-280px);  /* Set the width of your sidebar */
+}
+
+
+// Add this to your component's SCSS file
+
+#sidebar {
+  .nav-link {
+    &.active, &:hover {
+      background-color: #333; 
+      border-radius: 8px; 
+    }
+  }
+
+  .nav-item {
+    &.nav-dropdown {
+      .nav-link {
+        padding-left: 20px; // Adjust the padding for dropdown items
+      }
+    }
+  }
+}
+
+// Animation styles for the dropdown
+.collapse {
+  &.show {
+    display: block;
+  }
+
+  transition: height 0.3s ease; // You can adjust the transition speed
 }

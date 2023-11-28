@@ -10,7 +10,7 @@
   <p>{{ errorMessage }}</p>
 </div>
 
-<button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addSubjectModal">
+<button  *appHasRole="['SuperAdmin', 'Admin']" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addSubjectModal">
   Add Subject
 </button>
 
@@ -78,7 +78,7 @@
         <th style="width: 10%;">Subject Code</th>
         <th style="width: 40%;">Name</th>
         <th style="width: 10%;">Phase</th>
-        <th style="width: 10%;">Action</th>
+        <th style="width: 10%;"  *appHasRole="['SuperAdmin', 'Admin']">Action</th>
       </tr>
     </thead>
     <tbody>
@@ -86,7 +86,7 @@
         <td (click)="redirectToDetail(subject.id)">{{ subject.subjectCode}}</td>
         <td (click)="redirectToDetail(subject.id)">{{ subject.name }} </td>
         <td (click)="redirectToDetail(subject.id)">{{ getPhaseName(subject.phase) }} </td>
-        <td><button class="btn btn-info" (click)="redirectToEdit(subject.id)"><i class="bi bi-pencil"></i></button>
+        <td  *appHasRole="['SuperAdmin', 'Admin']"><button class="btn btn-info" (click)="redirectToEdit(subject.id)"><i class="bi bi-pencil"></i></button>
           &nbsp; 
           <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#proceedModal"
             (click)="deleteClick(subject.id)"><i class="bi bi-trash"></i></button>

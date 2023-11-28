@@ -19,7 +19,8 @@ export class AppComponent implements OnInit{
   // private http: HttpClient,
 
   currentRoute: string;
-  sideBarOpen = true;
+  sideBarOpen = false;
+  contentMargin = 0;
 
   ngOnInit() {
     this.router.events.subscribe(event => {
@@ -35,6 +36,11 @@ export class AppComponent implements OnInit{
 
   sideBarToggler() {
     this.sideBarOpen = !this.sideBarOpen;
+    this.adjustContentMargin();
+  }
+
+  adjustContentMargin() {
+    this.contentMargin = this.sideBarOpen ? 100 : 0;
   }
 
   setCurrentUser(){
