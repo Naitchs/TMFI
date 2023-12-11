@@ -10,7 +10,7 @@ using static API.Entities.ExcelModels;
 
 namespace API.Controllers
 {
-    [Authorize]
+    // [Authorize]
     public class IntegrateController : BaseApiController
     {
         private readonly IExcelService _excelService;
@@ -135,7 +135,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                 _logService.AddErrorLogs(ex.ToString());
+                _logService.AddErrorLogs(ex.ToString());
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
@@ -145,6 +145,7 @@ namespace API.Controllers
         {
             try
             {
+                List<ExcelData> excelDataList = new List<ExcelData>();
 
                 string publicId = GeneratePublicId();
 
@@ -153,7 +154,6 @@ namespace API.Controllers
                     PublicId = publicId,
                     Title = dto.Title,
                     DateUploaded = dto.DateUploaded,
-
                 };
 
                 // Process files
@@ -161,38 +161,124 @@ namespace API.Controllers
                 {
                     foreach (var file in dto.ExcelFile)
                     {
-                        var uploadedFile = await _mediaService.AddExcelFileAsync(file);
-
-                        if (uploadedFile.Error != null)
+                        try
                         {
-                            Console.WriteLine(uploadedFile.Error.Message);
-                            return Ok(new { message = "Error in Uploading File:" + uploadedFile.Error.Message });
+
+                            var filename = Guid.NewGuid().ToString();
+                            var fileExtension = System.IO.Path.GetExtension(file.FileName);
+                            // Save the file to wwwroot/uploads
+                            if (await _mediaService.AddExcelFileAsync(file, filename, fileExtension))
+                            {
+
+                                var fileEntity = new ExcelFile
+                                {
+                                    Url = "wwwroot/uploads",
+                                    PublicId = filename + fileExtension
+                                };
+
+                                // Add the file entity to the list
+                                excel.Files.Add(fileEntity);
+                            }
                         }
-
-                        var fileEntity = new ExcelFile
+                        catch (Exception ex)
                         {
-                            Url = uploadedFile.SecureUrl.AbsoluteUri,
-                            PublicId = uploadedFile.PublicId,
-                        };
-                        excel.Files.Add(fileEntity);
+                            Console.WriteLine($"Error saving file: {ex}");
+                            // Handle the error as needed
+                            return StatusCode(500, "Error saving file");
+                        }
                     }
                 }
 
+                // Add the ExcelData entity to the database
                 _excelService.Add(excel);
                 await _excelService.SaveAllAsync();
 
-                return Ok(new { message = "Excel uploaded successfully" });
-
+                return Ok();
             }
             catch (Exception ex)
             {
-                 _logService.AddErrorLogs(ex.ToString());
-                return StatusCode(500, "Internal server error: " + ex.Message);
+                _logService.AddErrorLogs(ex.ToString());
+                Console.WriteLine($"Internal server error: {ex}");
+                return StatusCode(500, "Internal server error");
             }
         }
+
+
+        [HttpGet("{fileName}")]
+        public IActionResult GetFile(string fileName)
+        {
+           var filePath = _mediaService.GetFilePath(fileName);
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound();
+            }
+
+            // Set the appropriate content type for Excel files
+            var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+            // Return the file as a FileStreamResult
+            return File(System.IO.File.OpenRead(filePath), contentType, fileName);
+        }
+
+
+
+
+        // [HttpPost("save-excel-data")]
+        // public async Task<ActionResult> SaveExcelData([FromForm] ExcelDataDto dto)
+        // {
+        //     try
+        //     {
+
+        //         string publicId = GeneratePublicId();
+
+        //         var excel = new ExcelData
+        //         {
+        //             PublicId = publicId,
+        //             Title = dto.Title,
+        //             DateUploaded = dto.DateUploaded,
+        //             DateFrom = dto.DateFrom,
+        //             DateTo = dto.DateTo
+
+        //         };
+
+        //         // Process files
+        //         if (dto.ExcelFile != null)
+        //         {
+        //             foreach (var file in dto.ExcelFile)
+        //             {
+        //                 var uploadedFile = await _mediaService.AddExcelFileAsync(file);
+
+        //                 if (uploadedFile.Error != null)
+        //                 {
+        //                     Console.WriteLine(uploadedFile.Error.Message);
+        //                     return Ok(new { message = "Error in Uploading File:" + uploadedFile.Error.Message });
+        //                 }
+
+        //                 var fileEntity = new ExcelFile
+        //                 {
+        //                     Url = uploadedFile.SecureUrl.AbsoluteUri,
+        //                     PublicId = uploadedFile.PublicId,
+        //                 };
+        //                 excel.Files.Add(fileEntity);
+        //             }
+        //         }
+
+        //         _excelService.Add(excel);
+        //         await _excelService.SaveAllAsync();
+
+        //         return Ok(new { message = "Excel uploaded successfully" });
+
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         _logService.AddErrorLogs(ex.ToString());
+        //         return StatusCode(500, "Internal server error: " + ex.Message);
+        //     }
+        // }
         public int GetNextPublicId()
         {
-            int nextId = _context.ExcelData.Any() ? _context.ExcelData.Max(e => e.Id) + 1 : 0001;
+            int nextId = _context.ExcelData.Any() ? _context.ExcelData.Max(e => e.Id) + 5001 : 5001;
             return nextId;
         }
 
@@ -218,7 +304,7 @@ namespace API.Controllers
 
 
         [HttpGet("get-exceldata")]
-        public async Task<ActionResult<IEnumerable<ExcelDataDto>>> GetExcelData()
+        public async Task<ActionResult<IEnumerable<GetExcelDto>>> GetExcelData()
         {
             try
             {
@@ -229,7 +315,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                 _logService.AddErrorLogs(ex.ToString());
+                _logService.AddErrorLogs(ex.ToString());
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
@@ -267,9 +353,17 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                 _logService.AddErrorLogs(ex.ToString());
+                _logService.AddErrorLogs(ex.ToString());
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
+        }
+
+        [HttpDelete("delete-data/{id}")]
+        public IActionResult DeleteData(int id)
+        {
+            _excelService.DeleteData(id);
+
+            return Ok(_excelService.GetExcelDataAsync());
         }
 
         // [HttpGet("get-excel-file/{publicId}")]

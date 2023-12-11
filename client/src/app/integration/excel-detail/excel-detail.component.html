@@ -1,6 +1,6 @@
 <ol class="breadcrumb">
-  <li class="breadcrumb-item"><a [routerLink]="['/home']" >Home</a></li>
-  <li class="breadcrumb-item"><a [routerLink]="['/excel-panel']" >Report</a></li>
+  <li class="breadcrumb-item"><a [routerLink]="['/home']">Home</a></li>
+  <li class="breadcrumb-item"><a [routerLink]="['/excel-panel']">Report</a></li>
   <li class="breadcrumb-item active">Details</li>
 </ol>
 
@@ -20,6 +20,21 @@
       <input class="form-control" id="title" type="text" [attr.readonly]="true" [value]="caps(excelDatas?.title)">
     </div>
 
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <label class="form-label mt-2" for="from"><strong>From:</strong></label>
+        <input class="form-control" id="from" type="text" [attr.readonly]="true"
+          [value]="excelDatas?.dateFrom | date:'medium'">
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label class="form-label mt-2" for="to"><strong>To:</strong></label>
+        <input class="form-control" id="to" type="text" [attr.readonly]="true"
+          [value]="excelDatas?.dateTo | date:'medium'">
+      </div>
+    </div>
+
+
     <div class="col-md-4 mb-3">
       <label class="form-label mt-2" for="dateUploaded"><strong>Date & Time Uploaded</strong></label>
       <input class="form-control" id="dateUploaded" type="text" [attr.readonly]="true"
@@ -32,9 +47,34 @@
 
 <div class="card p-3 shadow mb-3">
 
-  <button *ngIf="show == true" class="btn btn-info col-md-2" (click)="reload()">View</button>
-
   <li *ngFor="let file of excelDatas?.excelFiles" class="list-group-item mb-3">
+    <button (click)="downloadFile(file.url, file.publicId)" class="btn btn-primary">Download File</button>
+  </li>
+
+  <!-- <li *ngFor="let file of excelDatas?.excelFiles" class="list-group-item mb-3">
+    <iframe [src]="getViewerUrl(file.url, file.publicId)" width="100%" height="600px"></iframe>
+  </li> -->
+
+  <!-- <ngx-doc-viewer *ngFor="let file of excelDatas?.excelFiles" [src]="getExcelFiles(file.publicId)" [type]="'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'"></ngx-doc-viewer> -->
+
+
+  <!-- <ngx-doc-viewer [src]="excelFileUrl" [type]="'excel'"></ngx-doc-viewer> -->
+
+  <div *ngIf="show == true">
+    <button *ngFor="let file of excelDatas?.excelFiles" class="btn btn-info col-md-2"
+      (click)="getExcelFiles(file.publicId)">View</button>
+  </div>
+
+
+  <!-- Sa iyong HTML component -->
+  <div *ngFor="let row of excelData">
+    <div *ngFor="let cell of row">
+      {{ cell }}
+    </div>
+  </div>
+
+
+  <!-- <li *ngFor="let file of excelDatas?.excelFiles" class="list-group-item mb-3">
     <button (click)="downloadFile(file.url, file.publicId)" class="btn btn-primary">Download File</button>
   </li>
 
@@ -59,7 +99,7 @@
         </tr>
       </tbody>
     </table>
-  </div>
+  </div>  -->
 
 
 </div>

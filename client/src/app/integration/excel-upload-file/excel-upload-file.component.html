@@ -56,6 +56,18 @@
         </app-text-input>
       </div>
 
+      <div class="col-md-4 mb-3">
+        <label for="from">From:</label>
+        <app-date-picker [formControl]="$any(integrationForm.controls['dateFrom'])" [label]="'From'" id="from">
+        </app-date-picker>
+      </div>
+  
+      <div class="col-md-4 mb-3">
+        <label for="to">To:</label>
+        <app-date-picker [formControl]="$any(integrationForm.controls['dateTo'])" [label]="'To'" id="to">
+        </app-date-picker>
+      </div>
+
 
   </form>
 

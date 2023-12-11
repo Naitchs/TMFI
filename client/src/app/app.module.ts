@@ -67,6 +67,7 @@ import { EnrollStudentsComponent } from './course/enroll-students/enroll-student
 import { AttendanceComponent } from './course/attendance/attendance.component';
 import { UpdateSubjectComponent } from './course/update-subject/update-subject.component';
 import { SubjectDetailComponent } from './course/subject-detail/subject-detail.component';
+import { NgxDocViewerModule } from 'ngx-doc-viewer';
 
 
 
@@ -139,7 +140,8 @@ import { SubjectDetailComponent } from './course/subject-detail/subject-detail.c
     // * MATERIAL IMPORTS
     HttpClientModule,
     MaterialModule,
-    SharedModule
+    SharedModule,
+    NgxDocViewerModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},

@@ -106,6 +106,8 @@ uploadFileToBackend() {
   initializeForm(){
     this.integrationForm = this.fb.group({
       title: ['', Validators.required], 
+      dateFrom: ['', Validators.required],
+      dateTo: ['', Validators.required]
     })
   }
 
@@ -130,11 +132,18 @@ uploadFileToBackend() {
       return;
     }
 
+    const dateFrom = new Date(values.dateFrom).toISOString();
+    const dateTo = new Date(values.dateTo).toISOString();
+  
+
     const formData = new FormData();
     formData.append('publicId', publicId);
-    formData.append('title', values.title); // I-update ang title base sa kailangan mo
+    formData.append('title', values.title); 
+    formData.append('dateFrom', dateFrom);
+    formData.append('dateTo', dateTo);
     formData.append('dateUploaded', dateUploaded);
     formData.append('excelFile', this.fileToUpload, this.fileToUpload.name);
+    
 
     this.http.post(`${this.baseUrl}integrate/save-excel-data`, formData)
       .subscribe(
