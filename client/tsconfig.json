@@ -3,7 +3,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
+    "outDir": "../API/wwwroot",
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,

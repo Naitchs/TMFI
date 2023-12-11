@@ -12,7 +12,7 @@ namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
     [Migration("20231121065507_add-logs-and-types")]
-    partial class addlogsandtypes
+    partial class Addlogsandtypes
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

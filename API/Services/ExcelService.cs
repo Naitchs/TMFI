@@ -17,16 +17,17 @@ namespace API.Services
     public class ExcelService : IExcelService
     {
 
-    private readonly IMapper _mapper;
-    private readonly IMediaService _mediaService;
+        private readonly IMapper _mapper;
+        private readonly IMediaService _mediaService;
 
-    private readonly Cloudinary _cloudinary;
-    private readonly DataContext _context;
-        public ExcelService (IMapper mapper, 
-                          IMediaService mediaService, 
+        private readonly Cloudinary _cloudinary;
+        private readonly DataContext _context;
+        public ExcelService(IMapper mapper,
+                          IMediaService mediaService,
                           IOptions<CloudinarySettings> config,
-                          DataContext context){
-            
+                          DataContext context)
+        {
+
             var acc = new Account(
             config.Value.CloudName,
             config.Value.ApiKey,
@@ -34,317 +35,390 @@ namespace API.Services
         );
             _cloudinary = new Cloudinary(acc);
             _mediaService = mediaService;
-           
+
             _mapper = mapper;
             _context = context;
 
         }
 
-//  public List<ExcelDataRow> ProcessUploadedFile(string filePath)
-// {
-//     List<ExcelDataRow> excelDataRowList = new List<ExcelDataRow>();
+        //  public List<ExcelDataRow> ProcessUploadedFile(string filePath)
+        // {
+        //     List<ExcelDataRow> excelDataRowList = new List<ExcelDataRow>();
 
-//     try
-//     {
-//         using (var workbook = new XLWorkbook(filePath))
-//         {
-//             foreach (IXLWorksheet worksheet in workbook.Worksheets)
-//             {
-//                 IXLRange range = worksheet.RangeUsed();
+        //     try
+        //     {
+        //         using (var workbook = new XLWorkbook(filePath))
+        //         {
+        //             foreach (IXLWorksheet worksheet in workbook.Worksheets)
+        //             {
+        //                 IXLRange range = worksheet.RangeUsed();
 
-//                 if (range != null)
-//                 {
-//                     var rowCount = range.RowCount();
-//                     var colCount = range.ColumnCount();
+        //                 if (range != null)
+        //                 {
+        //                     var rowCount = range.RowCount();
+        //                     var colCount = range.ColumnCount();
 
-//                     for (int row = 1; row <= rowCount; row++)
-//                     {
-//                         ExcelDataRow excelDataRow = new ExcelDataRow
-//                         {
-//                             RowNumber = row,
-//                             ColumnData = new Dictionary<string, string>(),
-//                             SheetName = worksheet.Name.ToString()
-//                         };
+        //                     for (int row = 1; row <= rowCount; row++)
+        //                     {
+        //                         ExcelDataRow excelDataRow = new ExcelDataRow
+        //                         {
+        //                             RowNumber = row,
+        //                             ColumnData = new Dictionary<string, string>(),
+        //                             SheetName = worksheet.Name.ToString()
+        //                         };
 
-//                         for (int col = 1; col <= colCount; col++)
-//                         {
-//                             string columnName = worksheet.Cell(1, col).CachedValue.ToString();
-//                             string cellValue = worksheet.Cell(row, col).CachedValue.ToString();
+        //                         for (int col = 1; col <= colCount; col++)
+        //                         {
+        //                             string columnName = worksheet.Cell(1, col).CachedValue.ToString();
+        //                             string cellValue = worksheet.Cell(row, col).CachedValue.ToString();
 
-//                             if (!excelDataRow.ColumnData.ContainsKey(columnName))
-//                             {
-//                                 // Suriin kung maari maging DateTime
-//                                 if (DateTime.TryParse(cellValue, out DateTime dateValue))
-//                                 {
-//                                     // Maaring i-convert sa DateTime, ito ay i-convert muna sa string
-//                                     excelDataRow.ColumnData.Add(columnName, dateValue.ToString());
-//                                 }
-//                                 else
-//                                 {
-//                                     // Hindi maaring i-convert sa DateTime, ito ay i-include as is
-//                                     excelDataRow.ColumnData.Add(columnName, cellValue);
-//                                 }
-//                             }
-//                         }
+        //                             if (!excelDataRow.ColumnData.ContainsKey(columnName))
+        //                             {
+        //                                 // Suriin kung maari maging DateTime
+        //                                 if (DateTime.TryParse(cellValue, out DateTime dateValue))
+        //                                 {
+        //                                     // Maaring i-convert sa DateTime, ito ay i-convert muna sa string
+        //                                     excelDataRow.ColumnData.Add(columnName, dateValue.ToString());
+        //                                 }
+        //                                 else
+        //                                 {
+        //                                     // Hindi maaring i-convert sa DateTime, ito ay i-include as is
+        //                                     excelDataRow.ColumnData.Add(columnName, cellValue);
+        //                                 }
+        //                             }
+        //                         }
 
-//                         excelDataRowList.Add(excelDataRow);
-//                     }
-//                 }
-//             }
-//         }
-//     }
-//     catch (Exception ex)
-//     {
-//         Console.WriteLine(ex.Message);
-//         Console.WriteLine(ex.StackTrace);
-//     }
+        //                         excelDataRowList.Add(excelDataRow);
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         Console.WriteLine(ex.Message);
+        //         Console.WriteLine(ex.StackTrace);
+        //     }
 
-//     return excelDataRowList;
-// }
+        //     return excelDataRowList;
+        // }
 
-public Dictionary<string, List<ExcelDataRow>> ProcessUploadedFile(string filePath)
-{
-    Dictionary<string, List<ExcelDataRow>> sheetData = new Dictionary<string, List<ExcelDataRow>>();
-
-    try
-    {
-        using (var workbook = new XLWorkbook(filePath))
+        public Dictionary<string, List<ExcelDataRow>> ProcessUploadedFile(string filePath)
         {
-            foreach (IXLWorksheet worksheet in workbook.Worksheets)
+            Dictionary<string, List<ExcelDataRow>> sheetData = new Dictionary<string, List<ExcelDataRow>>();
+
+            try
             {
-                IXLRange range = worksheet.RangeUsed();
-
-                if (range != null)
+                using (var workbook = new XLWorkbook(filePath))
                 {
-                    var rowCount = range.RowCount();
-                    var colCount = range.ColumnCount();
-
-                    List<ExcelDataRow> excelDataRowList = new List<ExcelDataRow>();
-
-                    for (int row = 1; row <= rowCount; row++)
+                    foreach (IXLWorksheet worksheet in workbook.Worksheets)
                     {
-                        ExcelDataRow excelDataRow = new ExcelDataRow
-                        {
-                            RowNumber = row,
-                            ColumnData = new Dictionary<string, string>(),
-                            SheetName = worksheet.Name.ToString()
-                        };
+                        IXLRange range = worksheet.RangeUsed();
 
-                        for (int col = 1; col <= colCount; col++)
+                        if (range != null)
                         {
-                            string columnName = worksheet.Cell(1, col).CachedValue.ToString();
-                            string cellValue = worksheet.Cell(row, col).CachedValue.ToString();
+                            var rowCount = range.RowCount();
+                            var colCount = range.ColumnCount();
 
-                            if (!excelDataRow.ColumnData.ContainsKey(columnName))
+                            List<ExcelDataRow> excelDataRowList = new List<ExcelDataRow>();
+
+                            for (int row = 1; row <= rowCount; row++)
                             {
-                                excelDataRow.ColumnData.Add(columnName, cellValue);
+                                ExcelDataRow excelDataRow = new ExcelDataRow
+                                {
+                                    RowNumber = row,
+                                    ColumnData = new Dictionary<string, string>(),
+                                    SheetName = worksheet.Name.ToString()
+                                };
+
+                                for (int col = 1; col <= colCount; col++)
+                                {
+                                    string columnName = worksheet.Cell(1, col).CachedValue.ToString();
+                                    string cellValue = worksheet.Cell(row, col).CachedValue.ToString();
+
+                                    if (!excelDataRow.ColumnData.ContainsKey(columnName))
+                                    {
+                                        excelDataRow.ColumnData.Add(columnName, cellValue);
+                                    }
+                                }
+
+                                excelDataRowList.Add(excelDataRow);
                             }
+
+                            sheetData.Add(worksheet.Name.ToString(), excelDataRowList);
                         }
-
-                        excelDataRowList.Add(excelDataRow);
                     }
-
-                    sheetData.Add(worksheet.Name.ToString(), excelDataRowList);
                 }
             }
-        }
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine(ex.Message);
-        Console.WriteLine(ex.StackTrace);
-    }
-
-    return sheetData;
-}
-
-
-
-// public void SaveExcelDataToDatabase(ExcelDataDto excelDataDto)
-// {
-//     try
-//     {
-//         foreach (var sheetName in excelDataDto.SheetData.Keys)
-//         {
-//             var excelDataRowList = excelDataDto.SheetData[sheetName];
-//             string jsonData = JsonConvert.SerializeObject(excelDataRowList);
-
-//             string publicId = GeneratePublicId();
-
-//             var excelData = new ExcelData
-//             {
-//                 PublicId = publicId,
-//                 Title = excelDataDto.Title,
-//                 DateUploaded = excelDataDto.DateUploaded,
-//                 JsonData = jsonData,
-//                 WorksheetName = sheetName // Ito ang pangalan ng worksheet
-//             };
-
-//             _context.ExcelData.Add(excelData);
-//         }
-
-//         _context.SaveChanges();
-
-//         Console.WriteLine("Data saved successfully");
-//     }
-//     catch (Exception ex)
-//     {
-//         Console.WriteLine($"Internal server error: {ex}");
-//     }
-// }
-
-
-// public void SaveExcelDataToDatabase(ExcelDataDto excelDataDto, Dictionary<string, List<ExcelDataRow>> sheetData)
-// {
-//     try
-//     {
-//         List<ExcelData> excelDataList = new List<ExcelData>();
-//         string jsonData = JsonConvert.SerializeObject(sheetData); // Serialize ang sheetData
-
-//         string publicId = GeneratePublicId();
-
-//         excelDataList.Add(new ExcelData
-//         {
-//             PublicId = publicId,
-//             Title = excelDataDto.Title,
-//             DateUploaded = excelDataDto.DateUploaded,
-//             JsonData = jsonData,
-//             WorksheetName = "Combined" // Ito ay naka-depende sa iyong desisyon
-//         });
-
-//         _context.ExcelData.AddRange(excelDataList);
-//         _context.SaveChanges();
-
-//         Console.WriteLine("Data saved successfully");
-//     }
-//     catch (Exception ex)
-//     {
-//         Console.WriteLine($"Internal server error: {ex}");
-//     }
-// }
-
-
-
-
-
-// public void SaveExcelDataToDatabase(ExcelDataDto excelDataDto)
-// {
-//     try
-//     {
-//         List<ExcelData> excelDataList = new List<ExcelData>();
-//         string jsonData = JsonConvert.SerializeObject(excelDataDto.ExcelDataRowList);
-        
-//          string publicId = GeneratePublicId();
-
-//         excelDataList.Add(new ExcelData
-//         {
-//             PublicId = publicId,
-//             Title = excelDataDto.Title,
-//             DateUploaded = excelDataDto.DateUploaded,
-//             JsonData = jsonData
-//         });
-
-//         _context.ExcelData.AddRange(excelDataList);
-//         _context.SaveChanges();
-
-//         Console.WriteLine("Data saved successfully");
-//     }
-//     catch (Exception ex)
-//     {
-//         Console.WriteLine($"Internal server error: {ex}");
-//     }
-// }
-
-public async void SaveExcelDataToDatabase(ExcelDataDto dto)
-{
-    try
-    {
-        List<ExcelData> excelDataList = new List<ExcelData>();
-
-        
-         string publicId = GeneratePublicId();
-
-       var excel = new ExcelData
-        {
-            PublicId = publicId,
-            Title = dto.Title,
-            DateUploaded = dto.DateUploaded,
-          
-        };
-
-         // Process files
-        if (dto.ExcelFile != null)
-        {
-            foreach (var file in dto.ExcelFile)
+            catch (Exception ex)
             {
-                var uploadedFile = await _mediaService.AddExcelFileAsync(file);
-
-                if (uploadedFile.Error != null)
-                {
-                     Console.WriteLine(uploadedFile.Error.Message);
-                }
-
-                var fileEntity = new ExcelFile
-                {
-                    Url = uploadedFile.SecureUrl.AbsoluteUri,
-                    PublicId = uploadedFile.PublicId,
-                };
-                excel.Files.Add(fileEntity);
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
             }
+
+            return sheetData;
         }
-       
-        Add(excel);
-        await SaveAllAsync();
-
-        Console.WriteLine("Data saved successfully");
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Internal server error: {ex}");
-    }
-}
 
 
-public int GetNextPublicId()
-{
-   int nextId = _context.ExcelData.Any() ? _context.ExcelData.Max(e => e.Id) + 1 : 4001;
-   return nextId;
-}
 
-public string GeneratePublicId()
-{
-    int nextId = GetNextPublicId();
-    return "TMFI" + nextId.ToString("D4");
-}
+        // public void SaveExcelDataToDatabase(ExcelDataDto excelDataDto)
+        // {
+        //     try
+        //     {
+        //         foreach (var sheetName in excelDataDto.SheetData.Keys)
+        //         {
+        //             var excelDataRowList = excelDataDto.SheetData[sheetName];
+        //             string jsonData = JsonConvert.SerializeObject(excelDataRowList);
 
-        public async Task<IEnumerable<ExcelDataDto>> GetExcelDataAsync()
+        //             string publicId = GeneratePublicId();
+
+        //             var excelData = new ExcelData
+        //             {
+        //                 PublicId = publicId,
+        //                 Title = excelDataDto.Title,
+        //                 DateUploaded = excelDataDto.DateUploaded,
+        //                 JsonData = jsonData,
+        //                 WorksheetName = sheetName // Ito ang pangalan ng worksheet
+        //             };
+
+        //             _context.ExcelData.Add(excelData);
+        //         }
+
+        //         _context.SaveChanges();
+
+        //         Console.WriteLine("Data saved successfully");
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         Console.WriteLine($"Internal server error: {ex}");
+        //     }
+        // }
+
+
+        // public void SaveExcelDataToDatabase(ExcelDataDto excelDataDto, Dictionary<string, List<ExcelDataRow>> sheetData)
+        // {
+        //     try
+        //     {
+        //         List<ExcelData> excelDataList = new List<ExcelData>();
+        //         string jsonData = JsonConvert.SerializeObject(sheetData); // Serialize ang sheetData
+
+        //         string publicId = GeneratePublicId();
+
+        //         excelDataList.Add(new ExcelData
+        //         {
+        //             PublicId = publicId,
+        //             Title = excelDataDto.Title,
+        //             DateUploaded = excelDataDto.DateUploaded,
+        //             JsonData = jsonData,
+        //             WorksheetName = "Combined" // Ito ay naka-depende sa iyong desisyon
+        //         });
+
+        //         _context.ExcelData.AddRange(excelDataList);
+        //         _context.SaveChanges();
+
+        //         Console.WriteLine("Data saved successfully");
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         Console.WriteLine($"Internal server error: {ex}");
+        //     }
+        // }
+
+
+
+
+
+        // public void SaveExcelDataToDatabase(ExcelDataDto excelDataDto)
+        // {
+        //     try
+        //     {
+        //         List<ExcelData> excelDataList = new List<ExcelData>();
+        //         string jsonData = JsonConvert.SerializeObject(excelDataDto.ExcelDataRowList);
+
+        //          string publicId = GeneratePublicId();
+
+        //         excelDataList.Add(new ExcelData
+        //         {
+        //             PublicId = publicId,
+        //             Title = excelDataDto.Title,
+        //             DateUploaded = excelDataDto.DateUploaded,
+        //             JsonData = jsonData
+        //         });
+
+        //         _context.ExcelData.AddRange(excelDataList);
+        //         _context.SaveChanges();
+
+        //         Console.WriteLine("Data saved successfully");
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         Console.WriteLine($"Internal server error: {ex}");
+        //     }
+        // }
+
+        // public async void SaveExcelDataToDatabase(ExcelDataDto dto)
+        // {
+        //     try
+        //     {
+        //         List<ExcelData> excelDataList = new List<ExcelData>();
+
+        //         string publicId = GeneratePublicId();
+
+        //         var excel = new ExcelData
+        //         {
+        //             PublicId = publicId,
+        //             Title = dto.Title,
+        //             DateUploaded = dto.DateUploaded,
+        //         };
+
+        //         // Process files
+        //         if (dto.ExcelFile != null)
+        //         {
+        //             foreach (var file in dto.ExcelFile)
+        //             {
+        //                 try
+        //                 {
+        //                     // Save the file to wwwroot/uploads
+        //                     var relativeFilePath = await _mediaService.AddExcelFileAsync(file);
+
+        //                     // Create an ExcelFile entity
+        //                     var fileEntity = new ExcelFile
+        //                     {
+        //                         Url = relativeFilePath,
+        //                         PublicId = publicId, // You may want to use a unique identifier here
+        //                     };
+
+        //                     // Add the file entity to the list
+        //                     excel.Files.Add(fileEntity);
+        //                 }
+        //                 catch (Exception ex)
+        //                 {
+        //                     Console.WriteLine($"Error saving file: {ex}");
+        //                     // Handle the error as needed
+        //                 }
+        //             }
+        //         }
+
+        //         // Add the ExcelData entity to the database
+        //         Add(excel);
+        //         await SaveAllAsync();
+
+        //         Console.WriteLine("Data saved successfully");
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         Console.WriteLine($"Internal server error: {ex}");
+        //     }
+        // }
+
+
+        // public async void SaveExcelDataToDatabase(ExcelDataDto dto)
+        // {
+        //     try
+        //     {
+        //         List<ExcelData> excelDataList = new List<ExcelData>();
+
+
+        //         string publicId = GeneratePublicId();
+
+        //         var excel = new ExcelData
+        //         {
+        //             PublicId = publicId,
+        //             Title = dto.Title,
+        //             DateUploaded = dto.DateUploaded,
+
+        //         };
+
+        //         // Process files
+        //         if (dto.ExcelFile != null)
+        //         {
+        //             foreach (var file in dto.ExcelFile)
+        //             {
+        //                 var uploadedFile = await _mediaService.AddExcelFileAsync(file);
+
+        //                 if (uploadedFile.Error != null)
+        //                 {
+        //                     Console.WriteLine(uploadedFile.Error.Message);
+        //                 }
+
+        //                 var fileEntity = new ExcelFile
+        //                 {
+        //                     Url = uploadedFile.SecureUrl.AbsoluteUri,
+        //                     PublicId = uploadedFile.PublicId,
+        //                 };
+        //                 excel.Files.Add(fileEntity);
+        //             }
+        //         }
+
+        //         Add(excel);
+        //         await SaveAllAsync();
+
+        //         Console.WriteLine("Data saved successfully");
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         Console.WriteLine($"Internal server error: {ex}");
+        //     }
+        // }
+
+
+        public int GetNextPublicId()
         {
-            return await _context.ExcelData
-              .ProjectTo<ExcelDataDto>(_mapper.ConfigurationProvider)
-              .ToListAsync();
+            int nextId = _context.ExcelData.Any() ? _context.ExcelData.Max(e => e.Id) + 4001 : 4001;
+            return nextId;
         }
+
+        public string GeneratePublicId()
+        {
+            int nextId = GetNextPublicId();
+            return "TMFI" + nextId.ToString("D4");
+        }
+
+        public async Task<IEnumerable<GetExcelDto>> GetExcelDataAsync()
+        {
+            var data = await _context.ExcelData
+                .ProjectTo<GetExcelDto>(_mapper.ConfigurationProvider)
+                .OrderByDescending(dto => dto.DateFrom)
+                .ToListAsync();
+
+            return data;
+        }
+
 
         public async Task<bool> SaveAllAsync()
         {
-           return await _context.SaveChangesAsync() > 0;
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public void Add(ExcelData excelData)
         {
-              _context.ExcelData.Add(excelData);
+            _context.ExcelData.Add(excelData);
+        }
+
+        public void DeleteData(int id)
+        {
+            var data = _context.ExcelData.Where(c => c.Id == id)
+                                         .FirstOrDefault();
+
+            if (data != null)
+            {
+                _context.ExcelData.Remove(data);
+                _context.SaveChanges();
+            }
+
         }
 
 
 
-  public async Task<GetExcelDto> GetExcelDataByPublicIdAsync(string publicId)
-{
-    var excelDataDto = await _context.ExcelData
-        .Where(ed => ed.PublicId == publicId)
-        .ProjectTo<GetExcelDto>(_mapper.ConfigurationProvider)
-        .FirstOrDefaultAsync();
+        public async Task<GetExcelDto> GetExcelDataByPublicIdAsync(string publicId)
+        {
+            var excelDataDto = await _context.ExcelData
+                .Where(ed => ed.PublicId == publicId)
+                .ProjectTo<GetExcelDto>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync();
 
-    return excelDataDto;
-}
+            return excelDataDto;
+        }
 
 
 
