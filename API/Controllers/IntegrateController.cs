@@ -154,6 +154,8 @@ namespace API.Controllers
                     PublicId = publicId,
                     Title = dto.Title,
                     DateUploaded = dto.DateUploaded,
+                    DateFrom = dto.DateFrom,
+                    DateTo = dto.DateTo
                 };
 
                 // Process files

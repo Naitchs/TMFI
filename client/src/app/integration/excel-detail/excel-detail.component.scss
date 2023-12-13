@@ -14,7 +14,18 @@
   font-size: 12px;
   border: 1px solid #ccc;
   padding: 8px;
+  min-width: 50px; // Set a minimum width for the cells
+  text-align: left;
 }
+
+.table th:empty {
+  font-weight: bold;
+}
+
+.table tr:not(:first-child) td:first-child:empty {
+  font-weight: bold;
+}
+
 
 .table th {
   background-color: #f5f5f5;
