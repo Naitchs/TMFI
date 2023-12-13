@@ -30,6 +30,8 @@ export class ExcelDetailComponent implements OnInit {
   excelFileUrl: string;
   excelFiles: any[];
   excelData: any[] = [];
+  jsonData: Map<string, any[]> = new Map<string, any[]>();
+
 
   constructor(private integrationService: IntegrationService,
     private route: ActivatedRoute,
@@ -179,19 +181,24 @@ export class ExcelDetailComponent implements OnInit {
   //   );
   // }
 
-  private parseExcelFile(file: Blob): Promise<any> {
+  // Inside the method where you parse the Excel file
+  private parseExcelFile(file: Blob): Promise<any[]> {
     const reader = new FileReader();
   
     return new Promise((resolve, reject) => {
       reader.onload = (event: any) => {
         const data = event.target.result;
         const workbook = XLSX.read(data, { type: 'binary' });
+        const sheetDataArray = [];
   
-        // Access the sheet or perform other operations as needed
-        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-        const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+        workbook.SheetNames.forEach(sheetName => {
+          const sheet = workbook.Sheets[sheetName];
+          const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
   
-        resolve(jsonData);
+          sheetDataArray.push({ sheetName, jsonData });
+        });
+  
+        resolve(sheetDataArray);
       };
   
       reader.onerror = (error) => {
@@ -202,14 +209,19 @@ export class ExcelDetailComponent implements OnInit {
     });
   }
   
-  
-
-
   getExcelFiles(publicId: string): void {
     this.integrationService.getExcelFile(publicId).subscribe(
       (file: Blob) => {
-        this.parseExcelFile(file).then((jsonData) => {
-          console.log(jsonData);
+        this.parseExcelFile(file).then((sheetsData) => {
+          console.log("Data for all sheets: ", sheetsData);
+  
+          this.sheetNames = sheetsData.map(sheetData => sheetData.sheetName);
+          this.selectedSheet = this.sheetNames[0];
+  
+          // Create a Map from the array
+          this.jsonData = new Map(sheetsData.map(sheetData => [sheetData.sheetName, sheetData.jsonData]));
+  
+          this.show = false;
         }).catch((error) => {
           console.error('Error parsing Excel file:', error);
         });
@@ -219,6 +231,10 @@ export class ExcelDetailComponent implements OnInit {
       }
     );
   }
+  
+  
+  
+  
   
 
   

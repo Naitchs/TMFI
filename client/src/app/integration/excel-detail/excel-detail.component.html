@@ -66,12 +66,60 @@
   </div>
 
 
-  <!-- Sa iyong HTML component -->
-  <div *ngFor="let row of excelData">
-    <div *ngFor="let cell of row">
-      {{ cell }}
+  <!-- Add this inside your template -->
+  <!-- <div>
+    <label for="sheetSelect">Select Sheet:</label>
+    <select id="sheetSelect" [(ngModel)]="selectedSheet">
+      <option *ngFor="let sheetName of sheetNames" [value]="sheetName">{{ sheetName }}</option>
+    </select>
+  </div> -->
+
+
+  <!-- <div *ngFor="let sheetName of sheetNames">
+
+    <div *ngIf="selectedSheet === sheetName">
+      <h2>{{ sheetName }}</h2>
+  
+      <table *ngIf="jsonData && jsonData[sheetName]">
+        <thead>
+          <tr>
+            <th *ngFor="let header of jsonData[sheetName][0]">{{ header }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of jsonData[sheetName].slice(1)">
+            <td *ngFor="let cell of row">{{ cell }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div> -->
+  
+  <!-- Assuming jsonData is an array of arrays -->
+  <div>
+    <label for="sheetSelect">Select Sheet:</label>
+    <select id="sheetSelect" [(ngModel)]="selectedSheet">
+      <option *ngFor="let sheetName of sheetNames" [value]="sheetName">{{ sheetName }}</option>
+    </select>
   </div>
+  
+  <!-- Assuming jsonData is a Map<string, any[]> -->
+  <div *ngIf="selectedSheet && jsonData.has(selectedSheet)" class="table-container">
+    <table class="table" border="1">
+      <thead>
+        <tr>
+          <!-- Access the headers for the selected sheet -->
+          <th *ngFor="let header of jsonData.get(selectedSheet)[0]">{{ header }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of jsonData.get(selectedSheet).slice(1)">
+          <td *ngFor="let cell of row">{{ cell }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
 
 
   <!-- <li *ngFor="let file of excelDatas?.excelFiles" class="list-group-item mb-3">
