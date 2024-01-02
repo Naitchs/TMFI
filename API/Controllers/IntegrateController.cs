@@ -3,9 +3,10 @@ using API.DTOs;
 using API.Interfaces;
 using API.Services;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static API.DTOs.HrModelsDto;
 using static API.Entities.ExcelModels;
+using static API.Entities.HrModels;
 
 
 namespace API.Controllers
@@ -16,19 +17,22 @@ namespace API.Controllers
         private readonly IExcelService _excelService;
         private readonly IMapper _mapper;
         private readonly LogService _logService;
+        private readonly IHrService _hrService;
         private readonly DataContext _context;
         private readonly IMediaService _mediaService;
         public IntegrateController(IExcelService excelService,
                                    DataContext context,
                                    IMediaService mediaService,
                                    IMapper mapper,
-                                   LogService logService)
+                                   LogService logService,
+                                   IHrService hrService)
         {
             _mediaService = mediaService;
             _context = context;
             _excelService = excelService;
             _mapper = mapper;
             _logService = logService;
+            _hrService = hrService;
         }
 
         //    [HttpPost("upload-excel")]
@@ -209,7 +213,7 @@ namespace API.Controllers
         [HttpGet("{fileName}")]
         public IActionResult GetFile(string fileName)
         {
-           var filePath = _mediaService.GetFilePath(fileName);
+            var filePath = _mediaService.GetFilePath(fileName);
 
             if (!System.IO.File.Exists(filePath))
             {
@@ -368,21 +372,311 @@ namespace API.Controllers
             return Ok(_excelService.GetExcelDataAsync());
         }
 
-        // [HttpGet("get-excel-file/{publicId}")]
-        // public async Task<IActionResult> GetExcelFile(string publicId)
-        // {
-        //     var excelData = await _context.ExcelData
-        //         .FirstOrDefaultAsync(ed => ed.PublicId == publicId);
+        [HttpPost("save-certificate")]
+        public async Task<ActionResult> SaveCertFile([FromForm] UploadCertDto dto)
+        {
+            try
+            {
+                List<Certificates> certList = new List<Certificates>();
 
-        //     if (excelData == null)
-        //     {
-        //         return NotFound();
-        //     }
+                string publicId = GeneratePublicId();
 
-        //     var fileBytes = await _excelService.GetExcelFileBytesAsync(excelData);
+                var cert = new Certificates
+                {
+                    Title = dto.Title,
+                    UploadDate = dto.UploadDate,
+                    CertType = dto.CertType
+                };
 
-        //     return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelData.Title);
-        // }
+                // Process files
+                if (dto.CertFile != null)
+                {
+                    foreach (var file in dto.CertFile)
+                    {
+                        try
+                        {
+
+                            var filename = Guid.NewGuid().ToString();
+                            var fileExtension = System.IO.Path.GetExtension(file.FileName);
+                            // Save the file to wwwroot/uploads
+                            if (await _mediaService.AddCertFileAsync(file, filename, fileExtension))
+                            {
+
+                                var fileEntity = new HrFiles
+                                {
+                                    FilePath = "wwwroot/uploads/hr/cert",
+                                    FileName = filename + fileExtension,
+                                    FileType = "certificate"
+                                };
+
+                                // Add the file entity to the list
+                                cert.CertFiles.Add(fileEntity);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error saving file: {ex}");
+                            // Handle the error as needed
+                            return StatusCode(500, "Error saving file");
+                        }
+                    }
+                }
+
+                // Add the ExcelData entity to the database
+                _excelService.AddCert(cert);
+                await _excelService.SaveAllAsync();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logService.AddErrorLogs(ex.ToString());
+                Console.WriteLine($"Internal server error: {ex}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+
+        [HttpGet("get-cert/{id}")]
+        public async Task<ActionResult<IEnumerable<Certificates>>> GetCert(int id)
+        {
+            try
+            {
+                var certDetails = await _hrService.GetCertByIdAsync(id);
+
+                return Ok(certDetails);
+            }
+            catch (Exception ex)
+            {
+                _logService.AddErrorLogs(ex.ToString());
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        [HttpGet("get-all-cert")]
+        public async Task<ActionResult<IEnumerable<GetCertDto>>> GetAllCert()
+        {
+            try
+            {
+                // Retrieve the list of documentations from your repository
+                var certs = await _hrService.GetAllCertAsync(); // Adjust this based on your repository method
+
+                return Ok(certs);
+            }
+            catch (Exception ex)
+            {
+                _logService.AddErrorLogs(ex.ToString());
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        [HttpPost("add-cert")]
+        public async Task<ActionResult<List<HrFileDto>>> AddCertFiles(int certId, List<IFormFile> certFiles)
+        {
+            try
+            {
+                List<HrFileDto> uploadedFiles = new List<HrFileDto>();
+
+                foreach (var file in certFiles)
+                {
+                    var filename = Guid.NewGuid().ToString();
+                    var fileExtension = System.IO.Path.GetExtension(file.FileName);
+
+                    // Save the file to wwwroot/uploads/hr/cert
+                    if (await _mediaService.AddCertFileAsync(file, filename, fileExtension))
+                    {
+                        var fileEntity = new HrFiles
+                        {
+                            FilePath = "wwwroot/uploads/hr/cert",
+                            FileName = filename + fileExtension,
+                            FileType = "certificate",
+                            CertId = certId  // Assigning the provided 'id' to the CertId property
+                        };
+
+                        // You may need to add this fileEntity to the database using your data context or repository
+                        // e.g., _yourDbContext.HrFiles.Add(fileEntity);
+                        // Then save changes to the database
+
+                        var fileDto = new HrFileDto
+                        {
+                            FileName = fileEntity.FileName,
+                            FilePath = fileEntity.FilePath,
+                            FileType = fileEntity.FileType,
+                            UploadDate = DateTime.UtcNow  // Set the upload date based on your requirements
+                        };
+
+                        uploadedFiles.Add(fileDto);
+                    }
+                }
+
+                if (uploadedFiles.Count > 0)
+                {
+                    return Ok(uploadedFiles);
+                }
+                else
+                {
+                    return BadRequest("No files were uploaded or an error occurred while uploading.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error adding certificate files: {ex}");
+                // Handle the error as needed
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpDelete("delete-cert-file/{certId}")]
+        public async Task<ActionResult> DeleteCertFile(int certId, string fileName)
+        {
+            // Fetch all HrFiles by certId
+            var hrFiles = await _hrService.GetHrFilesByCertIdAsync(certId);
+
+            // Find the specific file by its FileName
+            var hrFileToDelete = hrFiles.FirstOrDefault(cf => cf.FileName == fileName);
+
+            if (hrFileToDelete == null)
+                return NotFound($"Certificate file with name {fileName} not found in the certificate.");
+
+            try
+            {
+                // Delete the certificate file from the file system using its filename
+                _mediaService.DeleteCertFile(hrFileToDelete.FileName);
+
+                // Remove the reference to the file (HrFiles) from the database
+                _context.HrFiles.Remove(hrFileToDelete);
+
+                // Save changes to the database
+                if (await _hrService.SaveAllAsync())
+                    return Ok($"Certificate file with name {fileName} deleted successfully.");
+
+                return BadRequest("Problem saving changes to the database.");
+            }
+            catch (FileNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Problem deleting certificate file.");
+            }
+        }
+
+        [HttpDelete("delete-certificate/{certId}")]
+        public async Task<ActionResult> DeleteCertificate(int certId)
+        {
+            var cert = await _hrService.GetCertByIdAsync(certId);
+
+            if (cert == null)
+                return NotFound($"Certificate with ID {certId} not found.");
+
+            var hrFiles = await _hrService.GetHrFilesByCertIdAsync(certId);
+
+            var hrFileToDelete = hrFiles.FirstOrDefault(cf => cf.CertId == certId);
+
+             if (hrFiles == null || !hrFiles.Any())
+                return NotFound($"Certificate file with name not found in the certificate.");
+
+            try
+            {
+                // Delete the physical files from wwwroot folder
+                foreach (var hrFile in hrFiles)
+                {
+                    _mediaService.DeleteCertificate( hrFile.FileName);
+                }
+
+                // Delete the certificate entity
+                _hrService.DeleteCert(cert);
+
+                // Save changes to the database
+                if (await _excelService.SaveAllAsync())
+                    return Ok($"Certificate with ID {certId} and its related files deleted successfully.");
+
+                return BadRequest("Problem saving changes to the database.");
+            }
+            catch (Exception ex)
+            {
+                _logService.AddErrorLogs(ex.ToString());
+                Console.WriteLine($"Error deleting certificate: {ex}");
+                return StatusCode(500, "Error deleting certificate");
+            }
+        }
+
+
+
+
+
+
+
+
+        [HttpPost("save-memo")]
+        public async Task<ActionResult> SaveMemoFile([FromForm] UploadMemoDto dto)
+        {
+            try
+            {
+                List<Memos> certList = new List<Memos>();
+
+                string publicId = GeneratePublicId();
+
+                var memo = new Memos
+                {
+                    Title = dto.Title,
+                    UploadDate = dto.UploadDate,
+                    MemoType = dto.MemoType
+                };
+
+                // Process files
+                if (dto.MemoFile != null)
+                {
+                    foreach (var file in dto.MemoFile)
+                    {
+                        try
+                        {
+
+                            var filename = Guid.NewGuid().ToString();
+                            var fileExtension = System.IO.Path.GetExtension(file.FileName);
+                            // Save the file to wwwroot/uploads
+                            if (await _mediaService.AddMemoFileAsync(file, filename, fileExtension))
+                            {
+
+                                var fileEntity = new HrFiles
+                                {
+                                    FilePath = "wwwroot/uploads/hr/memo",
+                                    FileName = filename + fileExtension,
+                                    FileType = "memo"
+                                };
+
+                                // Add the file entity to the list
+                                memo.MemoFiles.Add(fileEntity);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error saving file: {ex}");
+                            // Handle the error as needed
+                            return StatusCode(500, "Error saving file");
+                        }
+                    }
+                }
+
+                // Add the ExcelData entity to the database
+                _excelService.AddMemo(memo);
+                await _excelService.SaveAllAsync();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logService.AddErrorLogs(ex.ToString());
+                Console.WriteLine($"Internal server error: {ex}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+
+
+
+
 
 
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using static API.Entities.ExcelModels;
+using static API.Entities.HrModels;
 using static API.Entities.MediaModels;
 
 namespace API.Data
@@ -24,6 +25,11 @@ namespace API.Data
         public DbSet<AppSap> Saps { get; set; }
         public DbSet<ExcelData> ExcelData { get; set; }
         public DbSet<ExcelFile> ExcelFile { get; set; }
+
+        //hr
+        public DbSet<Certificates> Certificates { get; set; }
+        public DbSet<Memos> Memos { get; set; }
+        public DbSet<HrFiles> HrFiles { get; set; }
 
         public DbSet<AppCourse> Courses { get; set; }
         public DbSet<AppSubject> Subjects { get; set; }
@@ -113,6 +119,23 @@ namespace API.Data
                 .HasOne(a => a.Subject)
                 .WithMany(s => s.Attendances)
                 .HasForeignKey(a => a.SubjectID);
+
+            builder.Entity<HrFiles>()
+                .HasOne(h => h.Certs)
+                .WithMany(c => c.CertFiles)
+                .HasForeignKey(h => h.CertId);
+            
+            builder.Entity<Certificates>()
+            .HasMany(c => c.CertFiles)
+            .WithOne(h => h.Certs)
+            .HasForeignKey(h => h.CertId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<HrFiles>()
+                .HasOne(h => h.Memos)
+                .WithMany(m => m.MemoFiles)
+                .HasForeignKey(h => h.MemoId);
+
 
 
 

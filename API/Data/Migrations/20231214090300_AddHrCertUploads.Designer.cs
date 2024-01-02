@@ -3,6 +3,7 @@ using System;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20231214090300_AddHrCertUploads")]
+    partial class AddHrCertUploads
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.3");
@@ -424,6 +427,57 @@ namespace API.Data.Migrations
                     b.ToTable("Attendances");
                 });
 
+            modelBuilder.Entity("API.Entities.CertificatesModels+Certificates", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CertType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UploadDate")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Certificates");
+                });
+
+            modelBuilder.Entity("API.Entities.CertificatesModels+HrFiles", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CertId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("CertsId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FilePath")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FileType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UploadDate")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CertsId");
+
+                    b.ToTable("HrFiles");
+                });
+
             modelBuilder.Entity("API.Entities.CourseStudent", b =>
                 {
                     b.Property<int>("CourseID")
@@ -500,79 +554,6 @@ namespace API.Data.Migrations
                     b.HasIndex("ExcelDataId");
 
                     b.ToTable("ExcelFile");
-                });
-
-            modelBuilder.Entity("API.Entities.HrModels+Certificates", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("CertType")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("UploadDate")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Certificates");
-                });
-
-            modelBuilder.Entity("API.Entities.HrModels+HrFiles", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("CertId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("FileName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FilePath")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FileType")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("MemoId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("UploadDate")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CertId");
-
-                    b.HasIndex("MemoId");
-
-                    b.ToTable("HrFiles");
-                });
-
-            modelBuilder.Entity("API.Entities.HrModels+Memos", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("MemoType")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("UploadDate")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Memos");
                 });
 
             modelBuilder.Entity("API.Entities.MediaModels+Files", b =>
@@ -788,6 +769,15 @@ namespace API.Data.Migrations
                     b.Navigation("Subject");
                 });
 
+            modelBuilder.Entity("API.Entities.CertificatesModels+HrFiles", b =>
+                {
+                    b.HasOne("API.Entities.CertificatesModels+Certificates", "Certs")
+                        .WithMany("CertFiles")
+                        .HasForeignKey("CertsId");
+
+                    b.Navigation("Certs");
+                });
+
             modelBuilder.Entity("API.Entities.CourseStudent", b =>
                 {
                     b.HasOne("API.Entities.AppCourse", "Course")
@@ -835,22 +825,6 @@ namespace API.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("ExcelData");
-                });
-
-            modelBuilder.Entity("API.Entities.HrModels+HrFiles", b =>
-                {
-                    b.HasOne("API.Entities.HrModels+Certificates", "Certs")
-                        .WithMany("CertFiles")
-                        .HasForeignKey("CertId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("API.Entities.HrModels+Memos", "Memos")
-                        .WithMany("MemoFiles")
-                        .HasForeignKey("MemoId");
-
-                    b.Navigation("Certs");
-
-                    b.Navigation("Memos");
                 });
 
             modelBuilder.Entity("API.Entities.MediaModels+Files", b =>
@@ -975,19 +949,14 @@ namespace API.Data.Migrations
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("API.Entities.ExcelModels+ExcelData", b =>
-                {
-                    b.Navigation("Files");
-                });
-
-            modelBuilder.Entity("API.Entities.HrModels+Certificates", b =>
+            modelBuilder.Entity("API.Entities.CertificatesModels+Certificates", b =>
                 {
                     b.Navigation("CertFiles");
                 });
 
-            modelBuilder.Entity("API.Entities.HrModels+Memos", b =>
+            modelBuilder.Entity("API.Entities.ExcelModels+ExcelData", b =>
                 {
-                    b.Navigation("MemoFiles");
+                    b.Navigation("Files");
                 });
 #pragma warning restore 612, 618
         }

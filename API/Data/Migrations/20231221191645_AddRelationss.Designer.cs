@@ -3,6 +3,7 @@ using System;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20231221191645_AddRelationss")]
+    partial class AddRelationss
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.3");
@@ -528,7 +531,7 @@ namespace API.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CertId")
+                    b.Property<int>("CertId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("FileName")
@@ -540,7 +543,7 @@ namespace API.Data.Migrations
                     b.Property<string>("FileType")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("MemoId")
+                    b.Property<int>("MemoId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("UploadDate")
@@ -842,11 +845,14 @@ namespace API.Data.Migrations
                     b.HasOne("API.Entities.HrModels+Certificates", "Certs")
                         .WithMany("CertFiles")
                         .HasForeignKey("CertId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("API.Entities.HrModels+Memos", "Memos")
                         .WithMany("MemoFiles")
-                        .HasForeignKey("MemoId");
+                        .HasForeignKey("MemoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Certs");
 

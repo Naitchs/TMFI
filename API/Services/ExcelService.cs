@@ -1,4 +1,3 @@
-using System.Globalization;
 using API.Data;
 using API.DTOs;
 using API.Helpers;
@@ -9,8 +8,8 @@ using ClosedXML.Excel;
 using CloudinaryDotNet;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using static API.Entities.ExcelModels;
+using static API.Entities.HrModels;
 
 namespace API.Services
 {
@@ -418,6 +417,16 @@ namespace API.Services
                 .FirstOrDefaultAsync();
 
             return excelDataDto;
+        }
+
+        public void AddCert(Certificates cert)
+        {
+            _context.Certificates.Add(cert);
+        }
+
+        public void AddMemo(Memos memo)
+        {
+            _context.Memos.Add(memo);
         }
 
 

@@ -1,5 +1,6 @@
 using API.DTOs;
 using static API.Entities.ExcelModels;
+using static API.Entities.HrModels;
 
 namespace API.Interfaces
 {
@@ -20,5 +21,10 @@ namespace API.Interfaces
         Task<bool> SaveAllAsync();
         void Add(ExcelData excelData);
         void DeleteData(int id);
+
+        void AddCert(Certificates cert);
+
+        void AddMemo(Memos memo);
+
     }
 }
