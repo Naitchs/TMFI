@@ -26,7 +26,7 @@ namespace API.Services
         }
 
         public void AddErrorLogs(string error) {
-             AppLogs logs = new AppLogs();
+            AppLogs logs = new AppLogs();
             logs.Date = DateTime.UtcNow;
             logs.Error = error;
             logs.LogType = Enums.LogTypeEnum.Error;

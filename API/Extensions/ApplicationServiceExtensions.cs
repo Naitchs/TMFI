@@ -25,6 +25,7 @@ namespace API.Extensions
             services.AddScoped<IExcelService, ExcelService>();
             services.AddScoped<ICourseService, CourseService>();
             services.AddTransient<LogService>();
+            services.AddScoped<IHrService, HrService>();
 
 
 

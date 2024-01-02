@@ -81,6 +81,114 @@ namespace API.Services
             }
         }
 
+
+        public async Task<bool> AddCertFileAsync(IFormFile file, string filename, string fileExtension)
+        {
+            try
+            {
+                if (file == null || file.Length == 0)
+                {
+                    throw new Exception("Invalid file");
+                }
+
+                var cert = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "hr", "cert");
+                if (!Directory.Exists(cert))
+                {
+                    Directory.CreateDirectory(cert);
+                }
+
+                var filePath = Path.Combine(cert, filename + fileExtension);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+
+        public void DeleteCertFile(string filename)
+        {
+            var certDirectory = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "hr", "cert");
+            var filePath = Path.Combine(certDirectory, filename);
+
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+            else
+            {
+                throw new FileNotFoundException($"File not found at path: {filePath}");
+            }
+        }
+
+
+        public void DeleteCertificate(string fileName)
+        {
+            try
+            {
+                // Combine the wwwroot path, the specified filePath, and fileName to get the full path of the file
+                var certDirectory = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "hr", "cert");
+                var filePath = Path.Combine(certDirectory, fileName);
+
+                // Check if the file exists
+                if (File.Exists(filePath))
+                {
+                    // Delete the file
+                    File.Delete(filePath);
+                    Console.WriteLine($"File {fileName} deleted successfully.");
+                }
+                else
+                {
+                    Console.WriteLine($"File {fileName} not found in the specified path.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting file: {ex}");
+                throw; // Handle the exception as per your application requirements
+            }
+        }
+
+
+
+        public async Task<bool> AddMemoFileAsync(IFormFile file, string filename, string fileExtension)
+        {
+            try
+            {
+                if (file == null || file.Length == 0)
+                {
+                    throw new Exception("Invalid file");
+                }
+
+                var memo = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "hr", "memo");
+                if (!Directory.Exists(memo))
+                {
+                    Directory.CreateDirectory(memo);
+                }
+
+                var filePath = Path.Combine(memo, filename + fileExtension);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+
         //         public async Task<string> AddExcelFileAsync(IFormFile file)
         // {
         //     if (file == null || file.Length == 0)

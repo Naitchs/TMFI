@@ -2,8 +2,9 @@ using API.DTOs;
 using API.Entities;
 using API.Extensions;
 using AutoMapper;
+using static API.DTOs.HrModelsDto;
 using static API.Entities.ExcelModels;
-using static API.Entities.MediaModels;
+using static API.Entities.HrModels;
 
 namespace API.Helpers
 {
@@ -92,6 +93,34 @@ namespace API.Helpers
             CreateMap<AppSubject, SubjectDto>().ReverseMap();
             CreateMap<AppCourse, AppCourse>();
             CreateMap<AppSubject, AppSubject>();
+
+            //cert
+
+            CreateMap<Certificates, UploadCertDto>()
+           .ForMember(dest => dest.CertFile, opt => opt.MapFrom(src => src.CertFiles));
+
+            CreateMap<HrFiles, HrFileDto>();
+
+            CreateMap<UploadCertDto, Certificates>()
+                .ForMember(dest => dest.CertFiles, opt => opt.MapFrom(src => src.CertFile));
+
+            CreateMap<HrFileDto, HrFiles>();
+
+            //memo
+
+            CreateMap<Memos, UploadMemoDto>()
+            .ForMember(dest => dest.MemoFile, opt => opt.MapFrom(src => src.MemoFiles));
+
+
+            CreateMap<UploadMemoDto, Memos>()
+                .ForMember(dest => dest.MemoFiles, opt => opt.MapFrom(src => src.MemoFile));
+
+             CreateMap<Certificates, GetCertDto>()
+            .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+            .ForMember(dest => dest.CertType, opt => opt.MapFrom(src => src.CertType))
+            .ForMember(dest => dest.UploadDate, opt => opt.MapFrom(src => src.UploadDate))
+            .ForMember(dest => dest.CertFiles, opt => opt.MapFrom(src => src.CertFiles)); 
+            CreateMap<Certificates, Certificates>();
 
         }
 
