@@ -2,6 +2,16 @@ namespace API.DTOs
 {
     public class HrModelsDto
     {
+        public class HrFileDto
+        {
+
+            public string FileType { get; set; }
+            public string FileName { get; set; }
+            public string FilePath { get; set; }
+            public DateTime UploadDate { get; set; }
+
+            public int CertId { get; set; }
+        }
         public class UploadCertDto
         {
             public int Id { get; set; }
@@ -34,14 +44,17 @@ namespace API.DTOs
             public List<IFormFile> MemoFile { get; set; }
         }
 
-        public class HrFileDto
+        public class GetMemoDto
         {
-
-            public string FileType { get; set; }
+            public string Title { get; set; }
+            public string CertType { get; set; }
             public string FileName { get; set; }
             public string FilePath { get; set; }
             public DateTime UploadDate { get; set; }
+            public List<HrFileDto> MemoFiles { get; set; } = new List<HrFileDto>();
         }
+
+
 
 
     }

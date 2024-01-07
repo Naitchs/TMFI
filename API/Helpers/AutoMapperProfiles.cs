@@ -46,34 +46,23 @@ namespace API.Helpers
            })));
 
             CreateMap<DocumentationDto, AppDocumentation>();
-            // .ForMember(dest => dest.Videos, opt => opt.MapFrom(src => src.Videos.Select(v => new Video
-            // {
-            //     Url = v.FileName  // Assuming 'Url' in Video corresponds to the file name
-            // })))
-            // .ForMember(dest => dest.Files, opt => opt.MapFrom(src => src.Files.Select(f => new Files
-            // {
-            //     Url = f.FileName  // Assuming 'Url' in Files corresponds to the file name
-            // })))
-            // .ForMember(dest => dest.Pictures, opt => opt.MapFrom(src => src.Pictures.Select(p => new Picture
-            // {
-            //     Url = p.FileName  // Assuming 'Url' in Picture corresponds to the file name
-            // })));
+
             CreateMap<AppDocumentation, GetDocsDto>()
-     .ForMember(dest => dest.Videos, opt => opt.MapFrom(src => src.Videos.Select(v => new VideoDto
-     {
-         PublicId = v.PublicId,
-         Url = v.Url,
-     })))
-     .ForMember(dest => dest.Files, opt => opt.MapFrom(src => src.Files.Select(f => new FilesDto
-     {
-         PublicId = f.PublicId,
-         Url = f.Url
-     })))
-     .ForMember(dest => dest.Pictures, opt => opt.MapFrom(src => src.Pictures.Select(p => new PictureDto
-     {
-         PublicId = p.PublicId,
-         Url = p.Url,
-     })));
+              .ForMember(dest => dest.Videos, opt => opt.MapFrom(src => src.Videos.Select(v => new VideoDto
+              {
+                  PublicId = v.PublicId,
+                  Url = v.Url,
+              })))
+             .ForMember(dest => dest.Files, opt => opt.MapFrom(src => src.Files.Select(f => new FilesDto
+             {
+                 PublicId = f.PublicId,
+                 Url = f.Url
+             })))
+            .ForMember(dest => dest.Pictures, opt => opt.MapFrom(src => src.Pictures.Select(p => new PictureDto
+            {
+                PublicId = p.PublicId,
+                Url = p.Url,
+            })));
 
             CreateMap<ExcelData, ExcelDataDto>();
             CreateMap<ExcelDataDto, ExcelData>();
@@ -94,33 +83,48 @@ namespace API.Helpers
             CreateMap<AppCourse, AppCourse>();
             CreateMap<AppSubject, AppSubject>();
 
+
+            //hr
+            CreateMap<HrFiles, HrFileDto>();
+
+            CreateMap<HrFileDto, HrFiles>();
+            
             //cert
 
             CreateMap<Certificates, UploadCertDto>()
-           .ForMember(dest => dest.CertFile, opt => opt.MapFrom(src => src.CertFiles));
+                .ForMember(dest => dest.CertFile, opt => opt.MapFrom(src => src.CertFiles));
 
-            CreateMap<HrFiles, HrFileDto>();
 
             CreateMap<UploadCertDto, Certificates>()
                 .ForMember(dest => dest.CertFiles, opt => opt.MapFrom(src => src.CertFile));
 
-            CreateMap<HrFileDto, HrFiles>();
+            CreateMap<Certificates, GetCertDto>()
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+                .ForMember(dest => dest.CertType, opt => opt.MapFrom(src => src.CertType))
+                .ForMember(dest => dest.UploadDate, opt => opt.MapFrom(src => src.UploadDate))
+                .ForMember(dest => dest.CertFiles, opt => opt.MapFrom(src => src.CertFiles));
+
+            CreateMap<Certificates, Certificates>();
 
             //memo
 
             CreateMap<Memos, UploadMemoDto>()
-            .ForMember(dest => dest.MemoFile, opt => opt.MapFrom(src => src.MemoFiles));
-
+                .ForMember(dest => dest.MemoFile, opt => opt.MapFrom(src => src.MemoFiles));
 
             CreateMap<UploadMemoDto, Memos>()
                 .ForMember(dest => dest.MemoFiles, opt => opt.MapFrom(src => src.MemoFile));
+           
+            CreateMap<Memos, GetMemoDto>()
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+                .ForMember(dest => dest.CertType, opt => opt.MapFrom(src => src.MemoType)) 
+                .ForMember(dest => dest.UploadDate, opt => opt.MapFrom(src => src.UploadDate))
+                .ForMember(dest => dest.MemoFiles, opt => opt.MapFrom(src => src.MemoFiles)); 
 
-             CreateMap<Certificates, GetCertDto>()
-            .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
-            .ForMember(dest => dest.CertType, opt => opt.MapFrom(src => src.CertType))
-            .ForMember(dest => dest.UploadDate, opt => opt.MapFrom(src => src.UploadDate))
-            .ForMember(dest => dest.CertFiles, opt => opt.MapFrom(src => src.CertFiles)); 
-            CreateMap<Certificates, Certificates>();
+            CreateMap<Memos, Memos>();
+
+
+
+
 
         }
 
