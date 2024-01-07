@@ -25,19 +25,14 @@ namespace API.Services
 
         }
 
-        public void AddCert(Certificates cert)
-        {
-            _context.Certificates.Add(cert);
-        }
-
-        public void AddMemo(Memos memo)
-        {
-            _context.Memos.Add(memo);
-        }
-
         public async Task<bool> SaveAllAsync()
         {
             return await _context.SaveChangesAsync() > 0;
+        }
+
+        public void AddCert(Certificates cert)
+        {
+            _context.Certificates.Add(cert);
         }
 
         public async Task<bool> DeleteCertByIdAsync(int id)
@@ -81,7 +76,15 @@ namespace API.Services
             }
         }
 
+        public void UpdateCert(Certificates certificate)
+        {
+            _context.Certificates.Update(certificate);
+        }
 
+        public async Task<Certificates> FindCertByIdAsync(int certificateId)
+        {
+            return await _context.Certificates.FindAsync(certificateId);
+        }
 
         public async Task<IEnumerable<GetCertDto>> GetAllCertAsync()
         {
@@ -101,6 +104,44 @@ namespace API.Services
                 .FirstOrDefaultAsync();
 
             return cert;
+        }
+
+
+
+        public void AddMemo(Memos memo)
+        {
+            _context.Memos.Add(memo);
+        }
+
+
+        public async Task<Memos> GetMemoByIdAsync(int id)
+        {
+            var memo = await _context.Memos
+                .Where(ed => ed.Id == id)
+                .ProjectTo<Memos>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync();
+
+            return memo;
+        }
+
+        public async Task<IEnumerable<GetMemoDto>> GetAllMemoAsync()
+        {
+            var data = await _context.Memos
+               .ProjectTo<GetMemoDto>(_mapper.ConfigurationProvider)
+               .OrderByDescending(dto => dto.UploadDate)
+               .ToListAsync();
+
+            return data;
+        }
+
+        public void UpdateMemo(Memos memo)
+        {
+            _context.Memos.Update(memo);
+        }
+
+        public async Task<Memos> FindMemoByIdAsync(int memoId)
+        {
+            return await _context.Memos.FindAsync(memoId);
         }
     }
 }

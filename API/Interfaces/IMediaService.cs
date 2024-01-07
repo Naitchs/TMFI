@@ -26,6 +26,7 @@ namespace API.Interfaces
         Task<bool> AddCertFileAsync(IFormFile file, string filename, string fileExtension);
         void DeleteCertFile(string filename);
         void DeleteCertificate(string fileName);
+        
         Task<bool> AddMemoFileAsync(IFormFile file, string filename, string fileExtension);
     }
 }

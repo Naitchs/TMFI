@@ -379,8 +379,6 @@ namespace API.Controllers
             {
                 List<Certificates> certList = new List<Certificates>();
 
-                string publicId = GeneratePublicId();
-
                 var cert = new Certificates
                 {
                     Title = dto.Title,
@@ -470,12 +468,17 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("add-cert")]
+        [HttpPost("add-cert/{certId}")]
         public async Task<ActionResult<List<HrFileDto>>> AddCertFiles(int certId, List<IFormFile> certFiles)
         {
             try
             {
-                List<HrFileDto> uploadedFiles = new List<HrFileDto>();
+                var existingCert = await _hrService.FindCertByIdAsync(certId); 
+
+                if (existingCert == null)
+                {
+                    return NotFound("Certificate not found");
+                }
 
                 foreach (var file in certFiles)
                 {
@@ -493,30 +496,16 @@ namespace API.Controllers
                             CertId = certId  // Assigning the provided 'id' to the CertId property
                         };
 
-                        // You may need to add this fileEntity to the database using your data context or repository
-                        // e.g., _yourDbContext.HrFiles.Add(fileEntity);
-                        // Then save changes to the database
+                        existingCert.CertFiles.Add(fileEntity);
 
-                        var fileDto = new HrFileDto
-                        {
-                            FileName = fileEntity.FileName,
-                            FilePath = fileEntity.FilePath,
-                            FileType = fileEntity.FileType,
-                            UploadDate = DateTime.UtcNow  // Set the upload date based on your requirements
-                        };
-
-                        uploadedFiles.Add(fileDto);
                     }
                 }
 
-                if (uploadedFiles.Count > 0)
-                {
-                    return Ok(uploadedFiles);
-                }
-                else
-                {
-                    return BadRequest("No files were uploaded or an error occurred while uploading.");
-                }
+                _hrService.UpdateCert(existingCert);
+                await _hrService.SaveAllAsync();
+                return Ok();
+
+
             }
             catch (Exception ex)
             {
@@ -574,7 +563,7 @@ namespace API.Controllers
 
             var hrFileToDelete = hrFiles.FirstOrDefault(cf => cf.CertId == certId);
 
-             if (hrFiles == null || !hrFiles.Any())
+            if (hrFiles == null || !hrFiles.Any())
                 return NotFound($"Certificate file with name not found in the certificate.");
 
             try
@@ -582,7 +571,7 @@ namespace API.Controllers
                 // Delete the physical files from wwwroot folder
                 foreach (var hrFile in hrFiles)
                 {
-                    _mediaService.DeleteCertificate( hrFile.FileName);
+                    _mediaService.DeleteCertificate(hrFile.FileName);
                 }
 
                 // Delete the certificate entity
@@ -669,6 +658,86 @@ namespace API.Controllers
             {
                 _logService.AddErrorLogs(ex.ToString());
                 Console.WriteLine($"Internal server error: {ex}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpGet("get-memo/{id}")]
+        public async Task<ActionResult<IEnumerable<Memos>>> GetMemo(int id)
+        {
+            try
+            {
+                var memoDetails = await _hrService.GetMemoByIdAsync(id);
+
+                return Ok(memoDetails);
+            }
+            catch (Exception ex)
+            {
+                _logService.AddErrorLogs(ex.ToString());
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        [HttpGet("get-all-memo")]
+        public async Task<ActionResult<IEnumerable<GetMemoDto>>> GetAllMemo()
+        {
+            try
+            {
+                // Retrieve the list of documentations from your repository
+                var memos = await _hrService.GetAllMemoAsync(); // Adjust this based on your repository method
+
+                return Ok(memos);
+            }
+            catch (Exception ex)
+            {
+                _logService.AddErrorLogs(ex.ToString());
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+         [HttpPost("add-memo/{memoId}")]
+        public async Task<ActionResult<List<HrFileDto>>> AddMemoFiles(int memoId, List<IFormFile> memoFiles)
+        {
+            try
+            {
+                var existingMemo = await _hrService.FindMemoByIdAsync(memoId); 
+
+                if (existingMemo == null)
+                {
+                    return NotFound("Certificate not found");
+                }
+
+                foreach (var file in memoFiles)
+                {
+                    var filename = Guid.NewGuid().ToString();
+                    var fileExtension = System.IO.Path.GetExtension(file.FileName);
+
+                    // Save the file to wwwroot/uploads/hr/cert
+                    if (await _mediaService.AddMemoFileAsync(file, filename, fileExtension))
+                    {
+                        var fileEntity = new HrFiles
+                        {
+                            FilePath = "wwwroot/uploads/hr/memo",
+                            FileName = filename + fileExtension,
+                            FileType = fileExtension,
+                            MemoId = memoId  // Assigning the provided 'id' to the CertId property
+                        };
+
+                        existingMemo.MemoFiles.Add(fileEntity);
+
+                    }
+                }
+
+                _hrService.UpdateMemo(existingMemo);
+                await _hrService.SaveAllAsync();
+                return Ok();
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error adding certificate files: {ex}");
+                // Handle the error as needed
                 return StatusCode(500, "Internal server error");
             }
         }
