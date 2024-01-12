@@ -68,6 +68,13 @@ import { AttendanceComponent } from './course/attendance/attendance.component';
 import { UpdateSubjectComponent } from './course/update-subject/update-subject.component';
 import { SubjectDetailComponent } from './course/subject-detail/subject-detail.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
+import { CertUploadComponent } from './hr/certificate/cert-upload/cert-upload.component';
+import { CertViewComponent } from './hr/certificate/cert-view/cert-view.component';
+import { CertPanelComponent } from './hr/certificate/cert-panel/cert-panel.component';
+import { PanelComponent } from './hr/certificate/board-resolution/panel/panel.component';
+import { UploadBrComponent } from './hr/certificate/board-resolution/upload-br/upload-br.component';
+import { GetBrComponent } from './hr/certificate/board-resolution/get-br/get-br.component';
+
 
 
 
@@ -131,6 +138,12 @@ import { NgxDocViewerModule } from 'ngx-doc-viewer';
     AttendanceComponent,
     UpdateSubjectComponent,
     SubjectDetailComponent,
+    CertUploadComponent,
+    CertViewComponent,
+    CertPanelComponent,
+    PanelComponent,
+    UploadBrComponent,
+    GetBrComponent,
 
   ],
   imports: [

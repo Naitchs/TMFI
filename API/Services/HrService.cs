@@ -96,6 +96,42 @@ namespace API.Services
             return data;
         }
 
+        public async Task<IEnumerable<GetCertDto>> GetAllBoardResolutionCertsAsync()
+        {
+            var data = await _context.Certificates
+               .Where(c => c.CertType == "Certificate of Board Resolution") // Filtering by CertType
+               .ProjectTo<GetCertDto>(_mapper.ConfigurationProvider)
+               .OrderByDescending(dto => dto.UploadDate)
+               .ToListAsync();
+
+            return data;
+        }
+
+        public async Task<IEnumerable<GetCertDto>> GetAllRetirementFundCertsAsync()
+        {
+            var data = await _context.Certificates
+               .Where(c => c.CertType == "Certificate of Retirement fund") // Filtering by CertType
+               .ProjectTo<GetCertDto>(_mapper.ConfigurationProvider)
+               .OrderByDescending(dto => dto.UploadDate)
+               .ToListAsync();
+
+            return data;
+        }
+
+        public async Task<IEnumerable<GetCertDto>> GetAllEmploymentCertsAsync()
+        {
+            var data = await _context.Certificates
+               .Where(c => c.CertType == "Certificate of Employment") // Filtering by CertType
+               .ProjectTo<GetCertDto>(_mapper.ConfigurationProvider)
+               .OrderByDescending(dto => dto.UploadDate)
+               .ToListAsync();
+
+            return data;
+        }
+
+
+
+
         public async Task<Certificates> GetCertByIdAsync(int id)
         {
             var cert = await _context.Certificates

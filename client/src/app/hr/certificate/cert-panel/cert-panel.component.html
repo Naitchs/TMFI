@@ -1,0 +1,36 @@
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a [routerLink]="['/home']" >Home</a></li>
+  <li class="breadcrumb-item active">Certificates</li>
+</ol>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+  <!-- Certificate of Board Resolution Card -->
+  <div class="col ">
+    <a class="card shadow h-100" routerLink="/panel-br" routerLinkActive="active">
+      <img src="../../assets/Board Resolution.png" class="card-img-top" alt="Certificate of Board Resolution">
+      <div class="card-body">
+        <h5 class="card-title">Certificate of Board Resolution</h5>
+      </div>
+    </a>
+  </div>
+  
+  <!-- Certificate of Retirement fund Card -->
+  <div class="col">
+    <a class="card shadow h-100" routerLink="/cert-upload" >
+      <img src="../../assets/emptyy.jpg" class="card-img-top" alt="Certificate of Retirement fund">
+      <div class="card-body">
+        <h5 class="card-title" >Certificate of Retirement fund</h5>
+      </div>
+    </a>
+  </div>
+
+  <!-- Certificate of Employment Card -->
+  <div class="col">
+    <a class="card shadow h-100" routerLink="/cert-panel" routerLinkActive="active">
+      <img src="../../assets/employment-image.jpg" class="card-img-top" alt="Certificate of Employment">
+      <div class="card-body">
+        <h5 class="card-title">Certificate of Employment</h5>
+      </div>
+    </a>
+  </div>
+</div>

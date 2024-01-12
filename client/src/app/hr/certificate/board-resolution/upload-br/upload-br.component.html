@@ -1,0 +1,105 @@
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a [routerLink]="['/home']">Home</a></li>
+  <li class="breadcrumb-item"><a [routerLink]="['/cert-panel']">Certificates</a></li>
+  <li class="breadcrumb-item"><a [routerLink]="['/panel-br']">Board Resolution</a></li>
+  <li class="breadcrumb-item active">Add</li>
+</ol>
+
+
+<div class="alert alert-dismissible alert-primary" *ngIf="errorMessage">
+  <!-- <button type="button" class="btn-close" data-bs-dismiss="alert"></button> -->
+  <strong>Oh snap!</strong>
+  <p>{{ errorMessage }}</p>
+</div>
+<div class="alert alert-dismissible alert-success" *ngIf="successMessage && !certForm.dirty">
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  <strong>Well done!</strong>
+  <p>{{ successMessage }}</p>
+</div>
+
+<div class="row">
+  <div class="card col-md-4 p-3 shadow">
+    <div class="card-header">
+      <h5>Certificate Upload</h5>
+    </div>
+    <form [formGroup]="certForm">
+      <div class="card-body">
+        <!-- Title Input -->
+        <div class="mb-3">
+          <label for="title" class="form-label">Certificate Title</label>
+          <input type="text" class="form-control" id="title" name="title" formControlName="title" required
+            placeholder="Enter Certificate Title">
+          <div *ngIf="certForm.controls['title'].touched && !certForm.value.title" class="text-danger">Title is required
+          </div>
+        </div>
+
+        <!-- File Input for Multiple Files -->
+        <div class="mb-3">
+          <label for="certFile" class="form-label">Select Certificate Files (pdf, .docx)</label>
+          <input type="file" class="form-control" id="certFile" formControlName="fileToUpload"
+            (change)="handleFileInput($event.target.files)" accept=".pdf, .docx" multiple required>
+          <small class="form-text text-muted">Allowed file extensions: .docx or .pdf. You can select multiple
+            files.</small>
+          <div *ngIf="certForm.controls['fileToUpload'].touched && !fileToUpload.length" class="text-danger">At least
+            one file is required</div>
+        </div>
+
+        <!-- Upload Button -->
+        <button type="button" class="btn btn-primary" [disabled]="!certForm.valid" (click)="onFileUpload()">Upload
+          Certificates</button>&nbsp;
+        <button type="button" class="btn btn-secondary"  [routerLink]="['/panel-br']">Back</button>
+      </div>
+    </form>
+  </div>
+
+
+  <div class="card col-md-8">
+    <div class="card-body mt-2" style="margin-bottom: 40px">
+
+
+      <!-- Conditionally display a message or image if no files are selected -->
+      <div class="d-flex flex-column justify-content-center align-items-center"
+        *ngIf="!fileToUpload || fileToUpload.length === 0">
+
+
+        <img src="../../assets/empty transparent.png" alt="No files selected" class="card-img-top mx-auto"
+          style="max-width: 250px;" />
+
+        <!-- Display a message if no files are selected -->
+        <h3 class="text-primary">No Files Selected</h3>
+
+        <p style="color: blue;">Please select files to upload.</p>
+
+
+      </div>
+
+
+      <!-- Display file list if files are selected -->
+      <ng-container *ngIf="fileToUpload && fileToUpload.length">
+        <h3>Upload File</h3>
+        <p>Queue Length: {{fileToUpload.length}} files</p>
+        <table class="table">
+          <thead>
+            <tr>
+              <th width="70%">Name</th>
+              <th>Size</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let file of fileToUpload; let i = index">
+              <td><strong>{{ file.name }}</strong></td>
+              <td>{{ (file.size / 1024 / 1024).toFixed(2) }} MB</td>
+              <td>
+                <button (click)="removeFile(i)" class="btn btn-sm btn-danger">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </ng-container>
+    </div>
+  </div>
+
+</div>

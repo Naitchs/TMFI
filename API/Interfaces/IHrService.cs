@@ -15,6 +15,9 @@ namespace API.Interfaces
         void UpdateCert(Certificates certificate);
         Task<Certificates> FindCertByIdAsync(int certificateId);
         Task<IEnumerable<GetCertDto>> GetAllCertAsync();
+        Task<IEnumerable<GetCertDto>> GetAllBoardResolutionCertsAsync();
+        Task<IEnumerable<GetCertDto>> GetAllRetirementFundCertsAsync();
+        Task<IEnumerable<GetCertDto>> GetAllEmploymentCertsAsync();
         Task<Certificates> GetCertByIdAsync(int id);
 
         //memo

@@ -23,6 +23,24 @@
     </ng-container>
 
     <ng-container>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#collapseHr" role="button" aria-expanded="false"
+        aria-controls="collapseHr">
+          <i class="bi bi-file-earmark-spreadsheet"></i> &nbsp;HR
+        </a>
+          <div class="collapse" id="collapseHr">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/cert-panel" routerLinkActive="active">&nbsp;
+                  <i class="bi bi-arrow-return-right"></i>&nbsp; Certificate</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/subject" routerLinkActive="active">&nbsp;
+                  <i class="bi bi-arrow-return-right"></i>&nbsp; Subject</a>
+              </li>
+            </ul>
+          </div>
+      </li>
 
       <li class="nav-item">
         <a class="nav-link" routerLink="/integration" routerLinkActive="active">

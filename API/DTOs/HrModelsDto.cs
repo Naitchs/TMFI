@@ -25,6 +25,7 @@ namespace API.DTOs
 
         public class GetCertDto
         {
+            public int Id { get; set; }
             public string Title { get; set; }
             public string CertType { get; set; }
             public string FileName { get; set; }
@@ -46,6 +47,7 @@ namespace API.DTOs
 
         public class GetMemoDto
         {
+            public int Id { get; set; }
             public string Title { get; set; }
             public string CertType { get; set; }
             public string FileName { get; set; }
