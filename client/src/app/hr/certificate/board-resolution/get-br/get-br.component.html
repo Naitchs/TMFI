@@ -1,0 +1,59 @@
+<div class="alert alert-dismissible alert-primary" *ngIf="errorMessage">
+  <!-- <button type="button" class="btn-close" data-bs-dismiss="alert"></button> -->
+  <strong>Oh snap!</strong>
+  <p>{{ errorMessage }}</p>
+</div>
+<div class="alert alert-dismissible alert-success" *ngIf="successMessage">
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  <strong>Well done!</strong>
+  <p>{{ successMessage }}</p>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-bordered table-hover">
+    <thead class="table-light">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Upload Date</th>
+        <th scope="col">Title</th>
+        <th scope="col">Certificate Type</th>
+        <th style="width: 30%;" *appHasRole="['SuperAdmin', 'Admin']">Action</th>
+      </tr>
+    </thead>
+    <tbody class="table-group-divider">
+      <tr *ngFor="let cert of certBr; let i = index">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ cert.uploadDate | date:'medium' }}</td>
+        <td>{{ cert.title }}</td>
+        <td>{{ cert.certType }}</td>
+        <td *appHasRole="['SuperAdmin', 'Admin']"><button class="btn btn-info" (click)="redirectToEdit(course.id)"><i class="bi bi-pencil"></i></button>
+          &nbsp;
+          <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#proceedModal"
+            (click)="deleteClick(cert.id)"><i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<div class="modal fade border-info" id="proceedModal" tabindex="-1" aria-labelledby="exampleModalLabels"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><strong>Heads up!</strong></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to Delete Certificate?</p>
+      </div>
+      <div class="modal-footer" *ngIf="certBr">
+        <button type="button" class="btn btn-success me-2" (click)="deleteCert(certBr.id)">Yes</button>
+        <button type="button" class="btn btn-danger me-2" (click)="modalHide()">No</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a [routerLink]="['/home']" >Home</a></li>
+  <li class="breadcrumb-item"><a [routerLink]="['/cert-panel']" >Certificates</a></li>
+  <li class="breadcrumb-item active">Board Resolution</li>
+</ol>
+
+
+<div class="card shadow">
+  <div class="card-header">
+    <h5 class="mb-0">Board Resolution Certificates</h5>
+  </div>
+  <div class="card-body">
+
+    <button *appHasRole="['SuperAdmin', 'Admin']" class="btn btn-primary mb-3" [routerLink]="['/upload-br']">
+      <i class="bi bi-plus-lg"></i>
+    </button>
+
+
+    <app-get-br></app-get-br>
+
+
+  </div>
+</div>

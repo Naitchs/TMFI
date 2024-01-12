@@ -404,7 +404,7 @@ namespace API.Controllers
                                 {
                                     FilePath = "wwwroot/uploads/hr/cert",
                                     FileName = filename + fileExtension,
-                                    FileType = "certificate"
+                                    FileType = fileExtension
                                 };
 
                                 // Add the file entity to the list
@@ -468,12 +468,60 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("get-all-board-resolution-cert")]
+        public async Task<ActionResult<IEnumerable<GetCertDto>>> GetAllBoardResolutionCerts()
+        {
+            try
+            {
+                var certs = await _hrService.GetAllBoardResolutionCertsAsync();
+                return Ok(certs);
+            }
+            catch (Exception ex)
+            {
+                _logService.AddErrorLogs(ex.ToString());
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        [HttpGet("get-all-retirement-fund-cert")]
+        public async Task<ActionResult<IEnumerable<GetCertDto>>> GetAllRetirementFundCerts()
+        {
+            try
+            {
+                var certs = await _hrService.GetAllRetirementFundCertsAsync();
+                return Ok(certs);
+            }
+            catch (Exception ex)
+            {
+                _logService.AddErrorLogs(ex.ToString());
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        [HttpGet("get-all-employment-cert")]
+        public async Task<ActionResult<IEnumerable<GetCertDto>>> GetAllEmploymentCerts()
+        {
+            try
+            {
+                var certs = await _hrService.GetAllEmploymentCertsAsync();
+                return Ok(certs);
+            }
+            catch (Exception ex)
+            {
+                _logService.AddErrorLogs(ex.ToString());
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+
+
+
         [HttpPost("add-cert/{certId}")]
         public async Task<ActionResult<List<HrFileDto>>> AddCertFiles(int certId, List<IFormFile> certFiles)
         {
             try
             {
-                var existingCert = await _hrService.FindCertByIdAsync(certId); 
+                var existingCert = await _hrService.FindCertByIdAsync(certId);
 
                 if (existingCert == null)
                 {
@@ -563,8 +611,8 @@ namespace API.Controllers
 
             var hrFileToDelete = hrFiles.FirstOrDefault(cf => cf.CertId == certId);
 
-            if (hrFiles == null || !hrFiles.Any())
-                return NotFound($"Certificate file with name not found in the certificate.");
+            // if (hrFiles == null || !hrFiles.Any())
+            //     return NotFound($"Certificate file with name not found in the certificate.");
 
             try
             {
@@ -579,7 +627,7 @@ namespace API.Controllers
 
                 // Save changes to the database
                 if (await _excelService.SaveAllAsync())
-                    return Ok($"Certificate with ID {certId} and its related files deleted successfully.");
+                    return Ok();
 
                 return BadRequest("Problem saving changes to the database.");
             }
@@ -632,7 +680,7 @@ namespace API.Controllers
                                 {
                                     FilePath = "wwwroot/uploads/hr/memo",
                                     FileName = filename + fileExtension,
-                                    FileType = "memo"
+                                    FileType = fileExtension
                                 };
 
                                 // Add the file entity to the list
@@ -695,12 +743,12 @@ namespace API.Controllers
             }
         }
 
-         [HttpPost("add-memo/{memoId}")]
+        [HttpPost("add-memo/{memoId}")]
         public async Task<ActionResult<List<HrFileDto>>> AddMemoFiles(int memoId, List<IFormFile> memoFiles)
         {
             try
             {
-                var existingMemo = await _hrService.FindMemoByIdAsync(memoId); 
+                var existingMemo = await _hrService.FindMemoByIdAsync(memoId);
 
                 if (existingMemo == null)
                 {

@@ -17,12 +17,10 @@ import { SapDetailComponent } from "./profiling/sap-detail/sap-detail.component"
 import { DocumentationPanelComponent } from "./media/documentation-panel/documentation-panel.component";
 import { DocumentationDetailComponent } from "./media/documentation-detail/documentation-detail.component";
 import { SapPanelComponent } from "./profiling/sap-panel/sap-panel.component";
-import { ExcelUploadFileComponent } from "./integration/excel-upload-file/excel-upload-file.component";
 import { ExcelPanelComponent } from "./integration/excel-panel/excel-panel.component";
 import { ExcelDetailComponent } from "./integration/excel-detail/excel-detail.component";
 import { IpEditComponent } from "./profiling/ip-edit/ip-edit.component";
 import { SapEditComponent } from "./profiling/sap-edit/sap-edit.component";
-import { AddCourseComponent } from "./course/add-course/add-course.component";
 import { CoursePanelComponent } from "./course/course-panel/course-panel.component";
 import { SubjectPanelComponent } from "./course/subject-panel/subject-panel.component";
 import { UpdateCourseComponent } from "./course/update-course/update-course.component";
@@ -33,6 +31,9 @@ import { HeroesComponent } from "./heroes/heroes.component";
 import { UpdateSubjectComponent } from "./course/update-subject/update-subject.component";
 import { SubjectDetailComponent } from "./course/subject-detail/subject-detail.component";
 import { SubjectListComponent } from "./course/subject-list/subject-list.component";
+import { CertPanelComponent } from "./hr/certificate/cert-panel/cert-panel.component";
+import { PanelComponent } from "./hr/certificate/board-resolution/panel/panel.component";
+import { UploadBrComponent } from "./hr/certificate/board-resolution/upload-br/upload-br.component";
 
 
 const routes : Routes = [
@@ -65,6 +66,12 @@ const routes : Routes = [
       {path: 'integration', component: ExcelPanelComponent},
       {path: 'excel-detail/:publicId', component: ExcelDetailComponent},
       {path: 'excel-panel', component: ExcelPanelComponent},
+
+      {path: 'cert-panel', component: CertPanelComponent},
+
+      //board resolution
+      {path: 'panel-br', component: PanelComponent},
+      {path: 'upload-br', component: UploadBrComponent},
    
    
       {path: 'subject', component: SubjectPanelComponent},
